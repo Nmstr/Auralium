@@ -22,7 +22,7 @@
         }
 
         #sidebar {
-            width: 200px;
+            width: 400px;
             background-color: #f1f1f1;
             padding: 20px;
             position: relative;
@@ -73,9 +73,20 @@
     <div id="sidebar" class="bg-dark">
         <!-- Your sidebar content goes here -->
         <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
+            <!-- Applications -->
+            <div class="container">
+                {% for app in apps %}
+                    <li>{{ app }}</li>
+                {% endfor %}
+                <li>Default Application 2</li>
+                <li>Default Application 3</li>
+            </div>
+            <!-- Playlist -->
+            <div class="container">
+                <li>Default Playlist 1</li>
+                <li>Default Playlist 2</li>
+                <li>Default Playlist 3</li>
+            </div>
         </ul>
     </div>
     <div id="content">

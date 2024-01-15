@@ -16,6 +16,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Dynamically load in applications
+for dir in os.listdir('applications'):
+    if os.path.isdir(os.path.join('applications', dir)):
+        module = __import__(f'applications.{dir}.routes', fromlist=[dir])
+        blueprint = getattr(module, dir)
+        app.jinja_loader.searchpath.append(os.path.join('applications', dir, 'templates'))
+        app.register_blueprint(blueprint, url_prefix=f'/applications/{dir}')
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 def get_db_connection():
@@ -25,6 +33,16 @@ def get_db_connection():
                             password = os.getenv('DB_PASSWORD')
                             )
     return conn
+
+@app.context_processor
+def inject_var():
+    apps = []
+    app0 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
+    app1 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
+    app2 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
+    apps = [app0, app1, app2]
+    print(apps)
+    return dict(apps=apps)
 
 @app.route('/')
 def index():
