@@ -35,6 +35,10 @@
             position: relative;
             z-index: 2;
         }
+
+        .no-bullets {
+            list-style-type: none;
+        }
     </style>
 
     <title>{% block title %} {% endblock %} - Music Player</title>
@@ -72,14 +76,12 @@
 <div id="app-container">
     <div id="sidebar" class="bg-dark">
         <!-- Your sidebar content goes here -->
-        <ul>
+        <ul class="no-bullets">
             <!-- Applications -->
             <div class="container">
                 {% for app in apps %}
-                    <li>{{ app }}</li>
+                    <li>{{ app['name'] }}</li>
                 {% endfor %}
-                <li>Default Application 2</li>
-                <li>Default Application 3</li>
             </div>
             <!-- Playlist -->
             <div class="container">

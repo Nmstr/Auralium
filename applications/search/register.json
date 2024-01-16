@@ -1,0 +1,7 @@
+{
+    "application": "search",
+    "name": "Search",
+    "description": "Search application",
+    "version": "1.0.0",
+    "priority": "9000"
+}

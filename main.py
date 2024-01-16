@@ -8,6 +8,7 @@ import smtplib
 import argon2
 import random
 import string
+import json
 import os
 import re
 
@@ -17,12 +18,23 @@ load_dotenv()
 app = Flask(__name__)
 
 # Dynamically load in applications
+applications = []
 for dir in os.listdir('applications'):
-    if os.path.isdir(os.path.join('applications', dir)):
+    if os.path.exists(os.path.join('applications', dir, 'register.json')):
+        # Load the modules
         module = __import__(f'applications.{dir}.routes', fromlist=[dir])
         blueprint = getattr(module, dir)
         app.jinja_loader.searchpath.append(os.path.join('applications', dir, 'templates'))
         app.register_blueprint(blueprint, url_prefix=f'/applications/{dir}')
+
+        # Load in applications for sidebar
+        with open(os.path.join('applications', dir, 'register.json')) as f:
+            data = json.load(f)
+            print(data)
+        applications.append(data)
+# Sort applications
+applications = sorted(applications, key=lambda x: x['priority'])
+
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
@@ -36,13 +48,7 @@ def get_db_connection():
 
 @app.context_processor
 def inject_var():
-    apps = []
-    app0 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
-    app1 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
-    app2 = ''.join(random.choice(string.ascii_letters + string.digits) for i in range(8))
-    apps = [app0, app1, app2]
-    print(apps)
-    return dict(apps=apps)
+    return dict(apps=applications)
 
 @app.route('/')
 def index():
@@ -63,8 +69,6 @@ def login():
         
         # Connect to the database
         conn = get_db_connection()
-        
-        # Create a cursor object
         cursor = conn.cursor(cursor_factory=extras.DictCursor)
 
         # Execute the SQL query to fetch account with given username
