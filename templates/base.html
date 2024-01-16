@@ -44,6 +44,11 @@
             color: white;
             text-decoration: none;
           }
+        .profile-pic {
+          max-width: 50px;
+          max-height: 50px;
+          border-radius: 50%;
+        }
     </style>
 
     <title>{% block title %} {% endblock %} - Music Player</title>
@@ -72,7 +77,9 @@
         <!-- Move the profile picture to the right -->
         <div class="navbar-nav ms-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ url_for('serveProfilePicture') }}" alt="Profile Picture" class="profile-pic">
+                </a>
             </li>
         </div>
     </div>

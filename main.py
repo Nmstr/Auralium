@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, send_file, session, redirect, url_for
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
@@ -8,6 +8,7 @@ import smtplib
 import argon2
 import random
 import string
+import shutil
 import json
 import os
 import re
@@ -47,7 +48,28 @@ def get_db_connection():
 
 @app.context_processor
 def inject_var():
-    return dict(apps=applications)
+    profilePic = '/accounts/default/profile-picture.png' # Default pfp
+    if 'loggedin' in session:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM accounts WHERE uid = %s', (session['uid'],))
+        account = cursor.fetchone()
+        conn.close()
+        if account:
+            profilePic = f'accounts/{session["id"]}-{session["username"]}/profile-picture.png'
+    return dict(apps=applications, profilePic = profilePic)
+
+@app.route('/pfp/')
+def serveProfilePicture():
+    if 'loggedin' in session:
+        print(session)
+        filepath = f'accounts/{session["id"]}-{session["username"]}/profile-picture.png'
+        print(filepath)
+        if os.path.exists(filepath):
+            return send_file(filepath)
+        else:
+            shutil.copy('accounts/default/profile-picture.png', f'{filepath}')
+            return send_file(filepath)
 
 @app.route('/')
 def index():
@@ -76,6 +98,7 @@ def login():
 
         # Fetch one record and return the result
         account = cursor.fetchone()
+        print(account)
 
         # If account exists in accounts table in our database
         if account:
@@ -91,7 +114,8 @@ def login():
             if account['verified'] == True:
                 # If verified, log the user in and redirect to home page
                 session['loggedin'] = True
-                session['id'] = account['uid']
+                session['uid'] = account['uid']
+                session['id'] = account['user_id']
                 session['username'] = account['username']
                 return redirect(url_for('index'))
             else:
@@ -140,7 +164,16 @@ def register():
             sendVerificationEmail(email, uid)
             
         msg = 'You have successfully registered! Please check your email to verify your account.'
+        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+        account = cursor.fetchone()
         conn.close()
+
+        if not os.path.exists(f'accounts/{account[0]}-{account[1]}'):
+            os.makedirs(f'accounts/{account[0]}-{account[1]}')
+            shutil.copy('accounts/default/profile-picture.png', f'accounts/{account[0]}-{account[1]}/profile-picture.png')
+        else:
+            if not os.path.exists(f'accounts/{account[0]}-{account[1]}/profile-picture.png'):
+                shutil.copy('accounts/default/profile-picture.png', f'accounts/{account[0]}-{account[1]}/profile-picture.png')
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
 
@@ -148,6 +181,7 @@ def register():
 def logout():
     # Remove session data, this will log the user out
     session.pop('loggedin', None)
+    session.pop('uid', None)
     session.pop('id', None)
     session.pop('username', None)
     # Redirect to login page
