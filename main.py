@@ -21,8 +21,8 @@ app = Flask(__name__)
 # Dynamically load in applications
 applications = []
 for dir in os.listdir('applications'):
-    if os.path.exists(os.path.join('applications', dir, 'register.json')):
-        with open(os.path.join('applications', dir, 'register.json')) as f:
+    if os.path.exists(os.path.join('applications', dir, 'manifest.json')):
+        with open(os.path.join('applications', dir, 'manifest.json')) as f:
             data = json.load(f)
         # Load the modules
         module = __import__(f'applications.{dir}.routes', fromlist=[dir])
