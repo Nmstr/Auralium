@@ -39,6 +39,11 @@
         .no-bullets {
             list-style-type: none;
         }
+
+        .sidebar-link {
+            color: white;
+            text-decoration: none;
+          }
     </style>
 
     <title>{% block title %} {% endblock %} - Music Player</title>
@@ -80,7 +85,9 @@
             <!-- Applications -->
             <div class="container">
                 {% for app in apps %}
-                    <li>{{ app['name'] }}</li>
+                <li>
+                    <a href="/applications/{{ app['application'] }}/{{ app['defaultRoute'] }}" class="sidebar-link">{{ app['name'] }}</a>
+                </li>
                 {% endfor %}
             </div>
             <!-- Playlist -->

@@ -1,7 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
-search = Blueprint('search', __name__, template_folder='templates')
+searchApp = Blueprint('searchApp', __name__, template_folder='templates')
 
-@search.route('/search/')
+@searchApp.route('/search/')
 def searchRoute():
-    return "Hello from search!"
+    return render_template('search.html')

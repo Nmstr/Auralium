@@ -21,16 +21,15 @@ app = Flask(__name__)
 applications = []
 for dir in os.listdir('applications'):
     if os.path.exists(os.path.join('applications', dir, 'register.json')):
-        # Load the modules
-        module = __import__(f'applications.{dir}.routes', fromlist=[dir])
-        blueprint = getattr(module, dir)
-        app.jinja_loader.searchpath.append(os.path.join('applications', dir, 'templates'))
-        app.register_blueprint(blueprint, url_prefix=f'/applications/{dir}')
-
-        # Load in applications for sidebar
         with open(os.path.join('applications', dir, 'register.json')) as f:
             data = json.load(f)
-            print(data)
+        # Load the modules
+        module = __import__(f'applications.{dir}.routes', fromlist=[dir])
+        blueprint = getattr(module, data["blueprint"])
+        app.jinja_loader.searchpath.append(os.path.join('applications', dir, 'templates'))
+        app.register_blueprint(blueprint, url_prefix=f'/applications/{data["application"]}')
+        
+        # Load in applications for sidebar
         applications.append(data)
 # Sort applications
 applications = sorted(applications, key=lambda x: x['priority'])
