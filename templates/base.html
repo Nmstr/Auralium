@@ -43,11 +43,19 @@
         .sidebar-link {
             color: white;
             text-decoration: none;
-          }
+            font-size: 20px;
+        }
+
         .profile-pic {
           max-width: 50px;
           max-height: 50px;
           border-radius: 50%;
+        }
+
+        .application-box {
+          padding: 20px;
+          background-color: #0d1117;
+          border-radius: 10px;
         }
     </style>
 
@@ -74,12 +82,21 @@
                 </li>
             </ul>
         </div>
-        <!-- Move the profile picture to the right -->
+        <!-- profile picture -->
         <div class="navbar-nav ms-auto">
             <li class="nav-item">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ url_for('serveProfilePicture') }}" alt="Profile Picture" class="profile-pic">
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    {% if session["loggedin"] %}
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                </ul>
             </li>
         </div>
     </div>
@@ -90,7 +107,7 @@
         <!-- Your sidebar content goes here -->
         <ul class="no-bullets">
             <!-- Applications -->
-            <div class="container">
+            <div class="container application-box">
                 {% for app in apps %}
                 <li>
                     <a href="/applications/{{ app['application'] }}/{{ app['defaultRoute'] }}" class="sidebar-link">{{ app['name'] }}</a>
@@ -98,7 +115,11 @@
                 {% endfor %}
             </div>
             <!-- Playlist -->
-            <div class="container">
+            <div class="container application-box" style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <li><a class="sidebar-link" href="#">Your library</a></li>
+                    <li><a class="sidebar-link" href="#">+</a></li>
+                </div>
                 <li>Default Playlist 1</li>
                 <li>Default Playlist 2</li>
                 <li>Default Playlist 3</li>

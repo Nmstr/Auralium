@@ -62,14 +62,15 @@ def inject_var():
 @app.route('/pfp/')
 def serveProfilePicture():
     if 'loggedin' in session:
-        print(session)
         filepath = f'accounts/{session["id"]}-{session["username"]}/profile-picture.png'
-        print(filepath)
         if os.path.exists(filepath):
             return send_file(filepath)
         else:
             shutil.copy('accounts/default/profile-picture.png', f'{filepath}')
             return send_file(filepath)
+    else:
+        filepath = 'accounts/default/profile-picture.png'
+        return send_file(filepath)
 
 @app.route('/')
 def index():
