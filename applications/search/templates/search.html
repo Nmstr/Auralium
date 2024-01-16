@@ -6,4 +6,31 @@
 
 <h1>Search</h1>
 
+<input type="text" id="search-input" placeholder="Search...">
+<div id="search-results"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            var query = $(this).val();
+            if (query.length >= 1) {
+                $.ajax({
+                    url: '/applications/search/searchResult',
+                    data: {query: query},
+                    success: function(results) {
+                        var resultsContainer = $('#search-results');
+                        resultsContainer.empty();
+                        results.forEach(function(result) {
+                            resultsContainer.append('<p>' + result + '</p>');
+                        });
+                    }
+                });
+            } else {
+                $('#search-results').empty();
+            }
+        });
+    });
+</script>
+
 {% endblock %}

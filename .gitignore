@@ -2,3 +2,4 @@ __pycache__
 .env
 accounts/*
 !accounts/default
+static/music/*.mp3
