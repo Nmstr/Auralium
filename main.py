@@ -51,9 +51,10 @@ def inject_var():
 
 @app.route('/')
 def index():
-    # Render the template and pass the graph filename to it
     print(session)
-    return render_template('index.html')
+    if 'loggedin' in session:
+        return render_template('index.html')
+    return redirect(url_for('login'))
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -142,6 +143,15 @@ def register():
         conn.close()
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
+
+@app.route('/logout/')
+def logout():
+    # Remove session data, this will log the user out
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    # Redirect to login page
+    return redirect(url_for('login'))
 
 def sendVerificationEmail(email, uid):
     selfReference = os.getenv('SELF_REFERENCE')
