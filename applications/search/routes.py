@@ -18,7 +18,7 @@ def search():
     return redirect(url_for('login'))
 
 @searchApp.route('/loadMoreSongs/')
-def load_more_songs():
+def loadMoreSongs():
     if 'loggedin' in session:
         offset = int(request.args.get('offset', 0))
         limit = int(request.args.get('limit', 30))  # Default limit is 100
@@ -26,14 +26,6 @@ def load_more_songs():
         paginatedSongs = allSongsFull[offset:offset + limit]
         return render_template('songsPartial.html', songs=paginatedSongs, os=os)
     return '', 401  # Unauthorized access
-
-@searchApp.route('/play/')
-def play():
-    if 'loggedin' in session:
-        #song_name = request.args.get('song_name')
-        #return render_template('play.html', song_name=song_name, os=os)
-        return 'Hello World'
-    return redirect(url_for('login'))
 
 @searchApp.route('/getSongImage/')
 def getSongImage():

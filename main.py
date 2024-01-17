@@ -35,6 +35,20 @@ for dir in os.listdir('applications'):
 # Sort applications
 applications = sorted(applications, key=lambda x: x['priority'])
 
+# Dynamically load in backend applications
+backendApplications = []
+for dir in os.listdir('backendApplications'):
+    if os.path.exists(os.path.join('backendApplications', dir, 'manifest.json')):
+        with open(os.path.join('backendApplications', dir, 'manifest.json')) as f:
+            data = json.load(f)
+        # Load the modules
+        module = __import__(f'backendApplications.{dir}.routes', fromlist=[dir])
+        blueprint = getattr(module, data["blueprint"])
+        app.jinja_loader.searchpath.append(os.path.join('backendApplications', dir, 'templates'))
+        app.register_blueprint(blueprint, url_prefix=f'/backendApplications/{data["application"]}')
+        
+        # Load in applications for sidebar
+        backendApplications.append(data)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 

@@ -1,0 +1,9 @@
+{
+    "application": "songView",
+    "name": "🎵 Song View",
+    "description": "Song View application",
+    "version": "1.0.0",
+    "priority": "10000",
+    "blueprint": "songViewApp",
+    "defaultRoute": "/songView/"
+}
