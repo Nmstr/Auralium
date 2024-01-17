@@ -5,11 +5,6 @@
 {% block content %}
 
 <style>
-    .no-bullets {
-        list-style-type: none;
-        padding: 0;
-    }
-
     .song-container-image {
         border-radius: 25px;
         width: 400px;
@@ -50,7 +45,6 @@
 </style>
 
 <h1>Song-View</h1>
-<a>{{ songName }}</a>
 
 <div class="image-container">
     <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image">
@@ -59,5 +53,11 @@
     <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-4">
     <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-5">
 </div>
+
+<a style="margin: 500px;">Title: {{ songInfo['title'] }}</a>
+<a style="margin: 500px;">Artist: {{ songInfo['artist'] }}</a>
+<a style="margin: 500px;">Album: {{ songInfo['album'] }}</a>
+<a style="margin: 500px;">Genre: {{ songInfo['genre'] }}</a>
+<a style="margin: 500px;">Duration: {{ songInfo['duration_long'] }} ({{ songInfo['duration_secs'] }} secs)</a>
 
 {% endblock %}
