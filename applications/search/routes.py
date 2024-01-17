@@ -19,27 +19,29 @@ def search():
     print(allSongs)
 
     # Define the minimum match score and minimum number of results
-    min_score = 0.75
-    min_results = 3
+    minScore = 0.75
+    minResults = 3
 
     # Define a custom key function
     def match_score(filename):
         return textdistance.jaro_winkler(query, filename)
 
     # Filter and sort the files based on the match score
-    filtered_files = [file for file in allSongs if match_score(os.path.splitext(os.path.basename(file))[0]) >= min_score]
+    filteredSongs = [file for file in allSongs if match_score(os.path.splitext(os.path.basename(file))[0]) >= minScore]
 
     # Check the number of filtered files
-    num_results = len(filtered_files)
+    numResults = len(filteredSongs)
 
     # While the number of results is less than the minimum, lower the match score threshold
-    while num_results < min_results:
-        min_score -= 0.05  # Lower the match score threshold by 0.05
-        filtered_files = [file for file in allSongs if match_score(os.path.splitext(os.path.basename(file))[0]) >= min_score]
-        num_results = len(filtered_files)
+    while numResults < minResults:
+        minScore -= 0.05  # Lower the match score threshold by 0.05
+        filteredSongs = [file for file in allSongs if match_score(file) >= minScore]
+        numResults = len(filteredSongs)  # Update the number of results
+        print(f"Number of results: {numResults} {minScore}")  # Now prints the correct number of results
 
     # Sort the files based on the match score
-    sorted_files = sorted(filtered_files, key=match_score, reverse=True)
+    sortedFiles = sorted(filteredSongs, key=match_score, reverse=True)
+    print(filteredSongs)
+    print(sortedFiles)
 
-    results = ['Result 1', 'Result 2', 'Result 3']
-    return jsonify(sorted_files)
+    return jsonify(sortedFiles)
