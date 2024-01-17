@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+
+<style>
+    .no-bullets {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .song-container-image {
+        border-radius: 25px;
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        top: 100;
+        left: 100;
+        z-index: 1;
+    }
+
+    .song-container-image-2 {
+        width: 402px;
+        height: 402px;
+        opacity: 0.75;
+        z-index: 0;
+    }
+
+    .song-container-image-3 {
+        width: 404px;
+        height: 404px;
+        opacity: 0.5;
+        z-index: 0;
+    }
+
+    .song-container-image-4 {
+        width: 406px;
+        height: 406px;
+        opacity: 0.25;
+        z-index: 0;
+    }
+
+    .song-container-image-5 {
+        width: 408px;
+        height: 408px;
+        opacity: 0.1;
+        z-index: 0;
+    }
+</style>
+
+<h1>Song-View</h1>
+<a>{{ songName }}</a>
+
+<div class="image-container">
+    <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image">
+    <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-2">
+    <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-3">
+    <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-4">
+    <img src="{{ url_for('searchApp.getSongImage', songName=songName) }}" alt="Song Image" class="song-container-image song-container-image-5">
+</div>
+
+{% endblock %}
