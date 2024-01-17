@@ -74,17 +74,17 @@
 
 <h2>All Songs</h2>
 <div style="display: flex; overflow-x: auto;">
-    <ul style="display: flex; list-style-type: none;" class="no-bullets">
+    <ul style="display: flex; list-style-type: none;" class="no-bullets extend-more-songs">
         {% for song in allSongsFull %}
         <div class="song-container-box">
             <li style="margin-right: 10px;">
                 <a href="{{ url_for('searchApp.play', songName=os.path.splitext(os.path.basename(song))[0]) }}">
                     <div class="image-container">
-                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image">
-                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2">
-                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3">
-                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4">
-                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image" loading="lazy">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2" loading="lazy">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3" loading="lazy">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4" loading="lazy">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5" loading="lazy">
                     </div>
                     {{ os.path.splitext(os.path.basename(song))[0] }}
                 </a>
@@ -92,6 +92,7 @@
         </div>
         {% endfor %}
     </ul>
+    <button id="load-more" onclick="loadMoreSongs()">Load More</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -116,6 +117,24 @@
             }
         });
     });
+
+    var offset = 0;
+    var limit = 30;
+    
+    function loadMoreSongs() {
+        offset += limit;
+        fetch(`/applications/search/loadMoreSongs/?offset=${offset}&limit=${limit}`)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('.extend-more-songs').insertAdjacentHTML('beforeend', html);
+                // If no more songs, you can hide the Load More button
+                // This assumes the response will be empty if there are no more songs
+                if (!html.trim()) {
+                    document.getElementById('load-more').style.display = 'none';
+                }
+            })
+            .catch(error => console.error('Error loading more songs:', error));
+    }
 </script>
 
 {% endblock %}

@@ -10,9 +10,22 @@ searchApp = Blueprint('searchApp', __name__, template_folder='templates')
 @searchApp.route('/search/')
 def search():
     if 'loggedin' in session:
+        offset = int(request.args.get('offset', 0))
+        limit = int(request.args.get('limit', 30))  # Default limit is 100
         allSongsFull = glob.glob(os.path.join('static', 'music') + "/*.mp3")
-        return render_template('search.html', allSongsFull=allSongsFull, os=os)
+        paginatedSongs = allSongsFull[offset:offset + limit]
+        return render_template('search.html', allSongsFull=paginatedSongs, os=os)
     return redirect(url_for('login'))
+
+@searchApp.route('/loadMoreSongs/')
+def load_more_songs():
+    if 'loggedin' in session:
+        offset = int(request.args.get('offset', 0))
+        limit = int(request.args.get('limit', 30))  # Default limit is 100
+        allSongsFull = glob.glob(os.path.join('static', 'music') + "/*.mp3")
+        paginatedSongs = allSongsFull[offset:offset + limit]
+        return render_template('songsPartial.html', songs=paginatedSongs, os=os)
+    return '', 401  # Unauthorized access
 
 @searchApp.route('/play/')
 def play():

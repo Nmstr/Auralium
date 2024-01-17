@@ -1,0 +1,16 @@
+{% for song in songs %}
+<div class="song-container-box">
+    <li style="margin-right: 10px;">
+        <a href="{{ url_for('searchApp.play', songName=os.path.splitext(os.path.basename(song))[0]) }}">
+            <div class="image-container">
+                <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image" loading="lazy">
+                <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2" loading="lazy">
+                <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3" loading="lazy">
+                <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4" loading="lazy">
+                <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5" loading="lazy">
+            </div>
+            {{ os.path.splitext(os.path.basename(song))[0] }}
+        </a>
+    </li>
+</div>
+{% endfor %}
