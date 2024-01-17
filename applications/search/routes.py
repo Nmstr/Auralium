@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3
 import textdistance
 import glob
 import os
@@ -6,13 +8,47 @@ import os
 searchApp = Blueprint('searchApp', __name__, template_folder='templates')
 
 @searchApp.route('/search/')
-def searchRoute():
+def search():
     if 'loggedin' in session:
-        return render_template('search.html')
+        allSongsFull = glob.glob(os.path.join('static', 'music') + "/*.mp3")
+        return render_template('search.html', allSongsFull=allSongsFull, os=os)
+    return redirect(url_for('login'))
+
+@searchApp.route('/play/')
+def play():
+    if 'loggedin' in session:
+        #song_name = request.args.get('song_name')
+        #return render_template('play.html', song_name=song_name, os=os)
+        return 'Hello World'
+    return redirect(url_for('login'))
+
+@searchApp.route('/getSongImage/')
+def getSongImage():
+    if 'loggedin' in session:
+        songName = request.args.get('songName')
+        
+        # Get the cover
+        try:
+            audio = MP3(songName)
+            if 'APIC:' in audio:
+                cover = audio['APIC:'].data
+                return cover
+            else:
+                id3 = ID3(songName)
+                if id3 and id3.getall('APIC'):
+                    cover = id3.getall('APIC')[0].data
+                    return cover
+        except:
+            with open('static/noCover.png', 'rb') as file:
+                return file.read()
+
+        with open('static/defaultSongCover.jpg', 'rb') as file:
+            return file.read()
+
     return redirect(url_for('login'))
 
 @searchApp.route('/searchResult', methods=['GET'])
-def search():
+def searchResult():
     query = request.args.get('query')
     allSongsFull = glob.glob(os.path.join('static', 'music') + "/*.mp3")
     allSongs = [os.path.splitext(os.path.basename(file))[0] for file in allSongsFull]
@@ -27,7 +63,6 @@ def search():
 
     # Filter
     filteredSongs = [file for file in allSongs if matchScore(os.path.splitext(os.path.basename(file))[0]) >= minScore]
-
 
     # While the number of results is less than the minimum, lower the match score threshold
     numResults = len(filteredSongs)

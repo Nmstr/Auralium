@@ -4,10 +4,95 @@
 
 {% block content %}
 
+<style>
+    .no-bullets {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .song-container-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+        width: 600px;
+        background-color: #010409;
+        border-radius: 25px;
+        margin-left: 20px;
+    }
+
+    .image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .song-container-image {
+        border-radius: 25px;
+        width: 250px;
+        height: 250px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .song-container-image-2 {
+        width: 252px;
+        height: 252px;
+        opacity: 0.75;
+        z-index: 0;
+    }
+
+    .song-container-image-3 {
+        width: 254px;
+        height: 254px;
+        opacity: 0.5;
+        z-index: 0;
+    }
+
+    .song-container-image-4 {
+        width: 256px;
+        height: 256px;
+        opacity: 0.25;
+        z-index: 0;
+    }
+
+    .song-container-image-5 {
+        width: 258px;
+        height: 258px;
+        opacity: 0.1;
+        z-index: 0;
+    }
+</style>
+
 <h1>Search</h1>
 
 <input type="text" id="search-input" placeholder="Search...">
 <div id="search-results"></div>
+
+<h2>All Songs</h2>
+<div style="display: flex; overflow-x: auto;">
+    <ul style="display: flex; list-style-type: none;" class="no-bullets">
+        {% for song in allSongsFull %}
+        <div class="song-container-box">
+            <li style="margin-right: 10px;">
+                <a href="{{ url_for('searchApp.play', songName=os.path.splitext(os.path.basename(song))[0]) }}">
+                    <div class="image-container">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4">
+                        <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5">
+                    </div>
+                    {{ os.path.splitext(os.path.basename(song))[0] }}
+                </a>
+            </li>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
