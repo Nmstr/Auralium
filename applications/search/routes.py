@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
+import textdistance
 import glob
 import os
-import textdistance
 
 searchApp = Blueprint('searchApp', __name__, template_folder='templates')
 
