@@ -30,6 +30,14 @@
         }
 
         #content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #load-page-content {
             flex: 1;
             padding: 20px;
             position: relative;
@@ -56,6 +64,20 @@
             padding: 20px;
             background-color: #0d1117;
             border-radius: 10px;
+            width: 350px;
+            position: absolute;
+            top: 0;
+            left: 30px;
+        }
+        
+        .playlist-box {
+            padding: 20px;
+            background-color: #0d1117;
+            border-radius: 10px;
+            width: 350px;
+            position: absolute;
+            top: 100px;
+            left: 30px;
         }
         
         .bottom-bar {
@@ -72,7 +94,6 @@
     
 </head>
 <body>
-    
     <!-- style="position: fixed; margin-top: -40px; margin-left: -40px" -->
     <div id="content">  <!-- Start of dynamic content -->
         <!-- navbar -->
@@ -103,11 +124,11 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             {% if session["loggedin"] %}
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -128,7 +149,7 @@
                         {% endfor %}
                     </div>
                     <!-- Playlist -->
-                    <div class="container application-box" style="margin-top: 20px;">
+                    <div class="container playlist-box" style="margin-top: 20px;">
                         <div style="display: flex; justify-content: space-between;">
                             <li><a class="sidebar-link" href="#">Your library</a></li>
                             <li><a class="sidebar-link" href="#">+</a></li>
@@ -139,7 +160,7 @@
                     </div>
                 </ul>
             </div>
-            <div id="content">
+            <div id="load-page-content">
                 <div class="container">
                     {% block content %}
                     {% endblock %}
@@ -159,10 +180,6 @@
             <div>
                 <button id="prev">Previous</button>
                 <button id="next">Next</button>
-            </div>
-            <div style="margin-left: 100px;">
-                <button id="load-home">Home</button>
-                <button id="load-settings">Settings</button>
             </div>
         </div>
     </div>
@@ -205,20 +222,6 @@
             const homeButton = document.getElementById('load-home');
             const settingsButton = document.getElementById('load-settings');
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
-            
-            if (homeButton) {
-                homeButton.addEventListener('click', () => {
-                    console.log('Home button clicked');
-                    loadPageContent('http://localhost:5000/applications/home/home');
-                });
-            }
-            
-            if (settingsButton) {
-                settingsButton.addEventListener('click', () => {
-                    console.log('Settings button clicked');
-                    loadPageContent('http://localhost:5000/applications/search/search');
-                });
-            }
 
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', function(event) {
