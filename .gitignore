@@ -3,3 +3,4 @@ __pycache__
 accounts/*
 !accounts/default
 static/music/*.mp3
+node_modules
