@@ -80,3 +80,9 @@ def searchResult():
     sortedSongs = sorted(filteredSongs, key=matchScore, reverse=True)
 
     return jsonify(sortedSongs)
+
+@searchApp.route('/listAllSongs/')
+def listAllSongs():
+    musicDir = 'static/music/'
+    songs = [f"static/music/{filename}" for filename in os.listdir(musicDir) if filename.endswith('.mp3')]
+    return jsonify(songs)

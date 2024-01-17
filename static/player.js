@@ -1,22 +1,39 @@
 // player.js
 
+const { copyFileSync } = require("original-fs");
+
 const audioPlayer = document.getElementById('audioPlayer');
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
 
-let playlist = [
-    '/static/music/cro.mp3',
-    '/static/music/Tream, treamiboii - SUMMER OF MY LIFE.mp3',
-    // Add as many songs as you like
-];
+let allSongs = [];
+
+fetch('/applications/search/listAllSongs/')
+  .then(response => response.json())
+  .then(data => {
+    allSongs = data;
+    // Start with the first track
+    playTrack(currentTrackIndex);
+  });
 let currentTrackIndex = 0;
 
+function playSong(songName) {
+    const index = allSongs.indexOf(songName);
+    if (index === -1) {
+        console.log(allSongs)
+        console.log('Song not found');
+        console.log(songName);
+        return; // Song not found
+    }
+    playTrack(index);
+}
+
 function playTrack(index) {
-    if (index < 0 || index >= playlist.length) {
+    if (index < 0 || index >= allSongs.length) {
         return; // Index out of range
     }
     currentTrackIndex = index;
-    audioPlayer.src = playlist[currentTrackIndex];
+    audioPlayer.src = allSongs[currentTrackIndex];
     audioPlayer.play();
 }
 
@@ -37,8 +54,8 @@ nextButton.addEventListener('click', function() {
 
 function nextTrack() {
     // Play next track or loop back to start
-    playTrack((currentTrackIndex + 1) % playlist.length);
+    playTrack((currentTrackIndex + 1) % allSongs.length);
 }
 
 // Start with the first track
-playTrack(currentTrackIndex);
+//playTrack(currentTrackIndex);

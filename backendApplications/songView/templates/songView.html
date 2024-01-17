@@ -60,6 +60,6 @@
 <a style="margin: 500px;">Genre: {{ songInfo['genre'] }}</a>
 <a style="margin: 500px;">Duration: {{ songInfo['duration_long'] }} ({{ songInfo['duration_secs'] }} secs)</a>
 
-<button onclick="changeAudio('/{{ songName }}')">Play</button>
+<button onclick="playSong('{{ songName }}')">Play</button>
 
 {% endblock %}
