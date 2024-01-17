@@ -39,101 +39,211 @@
         .no-bullets {
             list-style-type: none;
         }
-
+        
         .sidebar-link {
             color: white;
             text-decoration: none;
             font-size: 20px;
         }
-
+        
         .profile-pic {
-          max-width: 50px;
-          max-height: 50px;
-          border-radius: 50%;
+            max-width: 50px;
+            max-height: 50px;
+            border-radius: 50%;
         }
-
+        
         .application-box {
-          padding: 20px;
-          background-color: #0d1117;
-          border-radius: 10px;
+            padding: 20px;
+            background-color: #0d1117;
+            border-radius: 10px;
+        }
+        
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            z-index: 9999;
         }
     </style>
-
+    
     <title>{% block title %} {% endblock %} - Music Player</title>
+    
 </head>
 <body>
-<!-- navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Number of Lines Over Time</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Number of Files Over Time</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">File Analysis</a>
-                </li>
-            </ul>
-        </div>
-        <!-- profile picture -->
-        <div class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ url_for('serveProfilePicture') }}" alt="Profile Picture" class="profile-pic">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    {% if session["loggedin"] %}
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
-                    {% else %}
-                        <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </li>
-        </div>
-    </div>
-</nav>
-
-<div id="app-container">
-    <div id="sidebar" class="bg-dark">
-        <!-- Your sidebar content goes here -->
-        <ul class="no-bullets">
-            <!-- Applications -->
-            <div class="container application-box">
-                {% for app in apps %}
-                <li>
-                    <a href="/applications/{{ app['application'] }}/{{ app['defaultRoute'] }}" class="sidebar-link">{{ app['name'] }}</a>
-                </li>
-                {% endfor %}
-            </div>
-            <!-- Playlist -->
-            <div class="container application-box" style="margin-top: 20px;">
-                <div style="display: flex; justify-content: space-between;">
-                    <li><a class="sidebar-link" href="#">Your library</a></li>
-                    <li><a class="sidebar-link" href="#">+</a></li>
+    
+    <!-- style="position: fixed; margin-top: -40px; margin-left: -40px" -->
+    <div id="content">  <!-- Start of dynamic content -->
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Number of Lines Over Time</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Number of Files Over Time</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">File Analysis</a>
+                        </li>
+                    </ul>
                 </div>
-                <li>Default Playlist 1</li>
-                <li>Default Playlist 2</li>
-                <li>Default Playlist 3</li>
+                <!-- profile picture -->
+                <div class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ url_for('serveProfilePicture') }}" alt="Profile Picture" class="profile-pic">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            {% if session["loggedin"] %}
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </div>
             </div>
-        </ul>
-    </div>
-    <div id="content">
-        <div class="container">
-            {% block content %}
-            {% endblock %}
+        </nav>
+        
+        <div id="app-container">
+            <div id="sidebar" class="bg-dark">
+                <!-- Your sidebar content goes here -->
+                <ul class="no-bullets">
+                    <!-- Applications -->
+                    <div class="container application-box">
+                        {% for app in apps %}
+                        <li>
+                            <a href="/applications/{{ app['application'] }}/{{ app['defaultRoute'] }}" class="sidebar-link">{{ app['name'] }}</a>
+                        </li>
+                        {% endfor %}
+                    </div>
+                    <!-- Playlist -->
+                    <div class="container application-box" style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <li><a class="sidebar-link" href="#">Your library</a></li>
+                            <li><a class="sidebar-link" href="#">+</a></li>
+                        </div>
+                        <li>Default Playlist 1</li>
+                        <li>Default Playlist 2</li>
+                        <li>Default Playlist 3</li>
+                    </div>
+                </ul>
+            </div>
+            <div id="content">
+                <div class="container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div> <!-- End of dynamic content -->
+        
+    <!-- Add a bar at the bottom -->
+    <div class="bottom-bar bg-dark">
+        <div class="container" style="display: flex; overflow-x: auto;">
+            <a>Music Player</a>
+            <audio id="audioPlayer" controls>
+                <source src="/static/music/Tream - Zelten auf Kies - Luca-Dante Spadafora & Niklas Dee Remix.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div>
+                <button id="prev">Previous</button>
+                <button id="next">Next</button>
+            </div>
+            <div style="margin-left: 100px;">
+                <button id="load-home">Home</button>
+                <button id="load-settings">Settings</button>
+            </div>
         </div>
     </div>
-</div>
+        
+    <script>
+        const { ipcRenderer } = require('electron');
+        console.log('Script loaded');
+    
+        // Function to request content from Flask and update the page
+        function loadPageContent(route) {
+            console.log('loadPageContent');
+            fetch(route)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    const contentElement = document.getElementById('content');
+                    contentElement.innerHTML = html;
+                    // Find all script tags in the new content
+                    const scripts = contentElement.getElementsByTagName('script');
+                    for (const script of scripts) {
+                        // Create a new script element
+                        const newScript = document.createElement('script');
+                        // Copy over the text
+                        newScript.text = script.text;
+                        // Remove the old script tag and add the new one
+                        script.parentNode.replaceChild(newScript, script);
+                    }
+                    attachButtonListeners();  // Reattach the event listeners
+                })
+                .catch(e => {
+                    console.log('Error loading the page content: ', e);
+                });
+        }
+    
+        function attachButtonListeners() {
+            const homeButton = document.getElementById('load-home');
+            const settingsButton = document.getElementById('load-settings');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            
+            if (homeButton) {
+                homeButton.addEventListener('click', () => {
+                    console.log('Home button clicked');
+                    loadPageContent('http://localhost:5000/applications/home/home');
+                });
+            }
+            
+            if (settingsButton) {
+                settingsButton.addEventListener('click', () => {
+                    console.log('Settings button clicked');
+                    loadPageContent('http://localhost:5000/applications/search/search');
+                });
+            }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const route = this.getAttribute('href');
+                    loadPageContent(route);
+                });
+            });
+
+            document.querySelectorAll('.dynamic-link').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    const route = this.getAttribute('href');
+                    loadPageContent(route);
+                });
+            });
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed');
+            attachButtonListeners();  // Attach for the first time
+        });
+    </script>
+        
+    <script src="/static/player.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 </body>
 </html>

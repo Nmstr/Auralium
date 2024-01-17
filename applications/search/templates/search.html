@@ -9,7 +9,7 @@
         list-style-type: none;
         padding: 0;
     }
-
+    
     .song-container-box {
         position: relative;
         display: flex;
@@ -21,13 +21,13 @@
         border-radius: 25px;
         margin-left: 20px;
     }
-
+    
     .image-container {
         position: absolute;
         top: 0;
         left: 0;
     }
-
+    
     .song-container-image {
         border-radius: 25px;
         width: 250px;
@@ -37,28 +37,28 @@
         left: 0;
         z-index: 1;
     }
-
+    
     .song-container-image-2 {
         width: 252px;
         height: 252px;
         opacity: 0.75;
         z-index: 0;
     }
-
+    
     .song-container-image-3 {
         width: 254px;
         height: 254px;
         opacity: 0.5;
         z-index: 0;
     }
-
+    
     .song-container-image-4 {
         width: 256px;
         height: 256px;
         opacity: 0.25;
         z-index: 0;
     }
-
+    
     .song-container-image-5 {
         width: 258px;
         height: 258px;
@@ -76,15 +76,15 @@
 <div style="display: flex; overflow-x: auto;">
     <ul style="display: flex; list-style-type: none;" class="no-bullets extend-more-songs">
         {% for song in allSongsFull %}
-            <div class="song-container-box">
-                <li style="margin-right: 10px;">
-                    <a href="{{ url_for('songViewApp.view', songName=song) }}">
-                        <div class="image-container">
-                            <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image" loading="lazy">
-                            <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2" loading="lazy">
-                            <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3" loading="lazy">
-                            <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4" loading="lazy">
-                            <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5" loading="lazy">
+        <div class="song-container-box">
+            <li style="margin-right: 10px;">
+                <a href="{{ url_for('songViewApp.view', songName=song) }}" class="dynamic-link">{{ song }}</a>
+                <div class="image-container">
+                    <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image" loading="lazy">
+                    <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-2" loading="lazy">
+                    <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-3" loading="lazy">
+                    <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-4" loading="lazy">
+                    <img src="{{ url_for('searchApp.getSongImage', songName=song) }}" alt="Song Image" class="song-container-image song-container-image-5" loading="lazy">
                         </div>
                         {{ os.path.splitext(os.path.basename(song))[0] }}
                     </a>
@@ -92,12 +92,26 @@
             </div>
         {% endfor %}
     </ul>
-    <button id="load-more" onclick="loadMoreSongs()">Load More</button>
+    <button id="load-more">Load More</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function loadScript(url, callback) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onload = callback; // Callback when script is loaded
+        document.head.appendChild(script);
+    }
+    
+    loadScript('https://code.jquery.com/jquery-3.6.0.min.js', function() {
+        console.log('jQuery loaded!');
+        // Place the code that depends on jQuery here or trigger a function that contains it
+    });
+
     $(document).ready(function() {
+        console.log('DOM is ready.');
         $('#search-input').on('input', function() {
             var query = $(this).val();
             if (query.length >= 1) {
@@ -116,25 +130,62 @@
                 $('#search-results').empty();
             }
         });
-    });
 
-    var offset = 0;
-    var limit = 30;
-    
-    function loadMoreSongs() {
-        offset += limit;
-        fetch(`/applications/search/loadMoreSongs/?offset=${offset}&limit=${limit}`)
-            .then(response => response.text())
-            .then(html => {
-                document.querySelector('.extend-more-songs').insertAdjacentHTML('beforeend', html);
-                // If no more songs, you can hide the Load More button
-                // This assumes the response will be empty if there are no more songs
-                if (!html.trim()) {
-                    document.getElementById('load-more').style.display = 'none';
-                }
-            })
-            .catch(error => console.error('Error loading more songs:', error));
-    }
+        // Event delegation for dynamically added button
+        $('#load-more').on('click', function() {
+            console.log('Load more clicked!');
+            loadMoreSongs();
+        });
+
+            var offset = 0;
+            var limit = 30;
+            
+            function loadMoreSongs() {
+                console.log('Loading more songs...');
+                offset += limit;
+                fetch(`/applications/search/loadMoreSongs/?offset=${offset}&limit=${limit}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        var extendMoreSongsContainer = document.querySelector('.extend-more-songs');
+                        extendMoreSongsContainer.insertAdjacentHTML('beforeend', html);
+                        attachDynamicLinkListeners(extendMoreSongsContainer);
+                        // If no more songs, you can hide the Load More button
+                        if (!html.trim()) {
+                            document.getElementById('load-more').style.display = 'none';
+                        }
+                    })
+                    .catch(error => console.error('Error loading more songs:', error));
+            }
+            
+            function attachDynamicLinkListeners(container) {
+                console.log('Attaching dynamic link listeners...');
+                // Attach event listeners to all dynamic links within the specified container
+                container.querySelectorAll('.dynamic-link').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent the default link behavior
+                        const route = this.getAttribute('href');
+                        loadPageContent(route);
+                    });
+                });
+            }
+
+            function loadPageContent(route) {
+                fetch(route)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        // Assuming you have a container to display your content
+                        document.getElementById('content').innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('Error loading content:', error);
+                    });
+            }
+    });
 </script>
 
 {% endblock %}
