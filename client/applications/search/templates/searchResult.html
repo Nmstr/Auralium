@@ -1,0 +1,23 @@
+<div class="search-container-box">
+    <div>
+        <div class="search-results-image-container">
+            <img src="{{ url_for('searchApp.getSongImage', songName=firstSong) }}" alt="Song Image" class="song-container-image" loading="lazy">
+            <img src="{{ url_for('searchApp.getSongImage', songName=firstSong) }}" alt="Song Image" class="song-container-image song-container-image-2" loading="lazy">
+            <img src="{{ url_for('searchApp.getSongImage', songName=firstSong) }}" alt="Song Image" class="song-container-image song-container-image-3" loading="lazy">
+            <img src="{{ url_for('searchApp.getSongImage', songName=firstSong) }}" alt="Song Image" class="song-container-image song-container-image-4" loading="lazy">
+            <img src="{{ url_for('searchApp.getSongImage', songName=firstSong) }}" alt="Song Image" class="song-container-image song-container-image-5" loading="lazy">
+        </div>
+        <div class="search-results-first-song-container">
+            <a href="{{ url_for('songViewApp.view', songName=firstSong) }}" class="sidebar-link" onclick="loadContent(event, this.href)">
+            {{ os.path.splitext(os.path.basename(firstSong))[0] }}
+            </a>
+        </div>
+    </div>
+    <div class="search-results-relevant-songs">
+        <ul>
+            {% for song in relevantSongs%}
+                <li>{{ song }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

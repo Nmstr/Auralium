@@ -71,8 +71,11 @@ def searchResult():
 
     # Sort the files based on the match score
     sortedSongs = sorted(filteredSongs, key=matchScore, reverse=True)
+    firstSong = 'static/music/' + sortedSongs[0] + '.mp3'
+    relevantSongs = sortedSongs[1:6]
+    otherSongs = sortedSongs[6:]
 
-    return jsonify(sortedSongs)
+    return render_template('searchResult.html', sortedSongs=sortedSongs, firstSong=firstSong, relevantSongs=relevantSongs, otherSongs=otherSongs, os=os)
 
 @searchApp.route('/listAllSongs/')
 def listAllSongs():

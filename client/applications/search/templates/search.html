@@ -1,9 +1,39 @@
 <link href="/static/search.css" rel="stylesheet">
 
+<style>
+    .search-container {
+        background-color: #010409;
+        border-radius: 25px;
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .search-results-image-container {
+        position: relative;
+        margin-top: 50px;
+    }
+      
+    .search-results-first-song-container {
+        position: relative;
+        top: -35px;
+    }
+
+    .search-results-relevant-songs {
+        position: relative;
+        margin-top: 0;
+        margin-left: 500px;
+    }
+</style>
+
 <h1>Search</h1>
 
-<input type="text" id="search-input" placeholder="Search...">
-<div id="search-results"></div>
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Search...">
+    <div id="search-results">
+    </div>
+</div>
+
+</div>
 
 <h2>All Songs</h2>
 <div style="display: flex; overflow-x: auto;">
