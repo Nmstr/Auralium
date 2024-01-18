@@ -34,10 +34,3 @@ function skipBackward() {
         console.log("This is the first song in the queue.");
     }
 }
-
-// Example usage:
-queueSong('/static/music/cro.mp3');
-queueSong('/static/music/Tream - Zelten auf Kies - Luca-Dante Spadafora & Niklas Dee Remix.mp3');
-setSong(songQueue[currentSongIndex]); // Start playing the first song
-
-// You can now call skipForward() to go to the next song, or skipBackward() to go to the previous one.
