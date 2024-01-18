@@ -37,8 +37,11 @@ function createWindow() {
 }
 
 app.on('ready', () => {
+    // Construct the relative path to the Python executable within your venv
+    const pythonPath = path.join(__dirname, '.venv', 'bin', 'python3');
+
     // Start Flask server
-    flaskProcess = spawn('python', ['main.py']);
+    flaskProcess = spawn(pythonPath, ['main.py']);
 
     // Wait for Flask server to start before creating window
     setTimeout(createWindow, 3000); // Adjust time as necessary
