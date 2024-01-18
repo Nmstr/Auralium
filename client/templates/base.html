@@ -5,90 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
-    <style>
-        body {
-            background-color: #0d1117;
-            color: #fff;
-        }
-
-        .bg-dark {
-            background-color: #010409 !important;
-        }
-
-        #app-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        #sidebar {
-            width: 400px;
-            background-color: #f1f1f1;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        #content {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #load-page-content {
-            flex: 1;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .no-bullets {
-            list-style-type: none;
-        }
-        
-        .sidebar-link {
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
-        }
-        
-        .profile-pic {
-            max-width: 50px;
-            max-height: 50px;
-            border-radius: 50%;
-        }
-        
-        .application-box {
-            padding: 20px;
-            background-color: #0d1117;
-            border-radius: 10px;
-            width: 350px;
-            position: absolute;
-            top: 0;
-            left: 30px;
-        }
-        
-        .playlist-box {
-            padding: 20px;
-            background-color: #0d1117;
-            border-radius: 10px;
-            width: 350px;
-            position: absolute;
-            top: 100px;
-            left: 30px;
-        }
-        
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            z-index: 9999;
-        }
-    </style>
+    <link href="/static/base.css" rel="stylesheet">
     
     <title>{% block title %} {% endblock %} - Music Player</title>
     
@@ -181,35 +98,10 @@
         </div>
     </div>
     
+    <!-- <a href="/applications/search/search" class="sidebar-link" onclick="loadContent(event, this.href)">App Name</a> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="/static/player.js"></script>
-    <script>
-        function loadContent(event, url) {
-            event.preventDefault(); // Stop the page from navigating to the href
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    const contentBlock = document.querySelector('.main-dynamic-content-block');
-                    contentBlock.innerHTML = html;
-                    // Execute any script tags found in the HTML
-                    const scripts = contentBlock.querySelectorAll('script');
-                    for (let script of scripts) {
-                        const newScript = document.createElement('script');
-                        if (script.src) {
-                            newScript.src = script.src;
-                        } else {
-                            newScript.textContent = script.textContent;
-                        }
-                        // Replace the old script with the new one to ensure it's executed
-                        script.parentNode.replaceChild(newScript, script);
-                    }
-                    // You might need to update the URL in the browser if desired
-                    window.history.pushState({}, '', url);
-                })
-                .catch(error => console.error('Error loading content:', error));
-        }
-        //<a href="/applications/search/search" class="sidebar-link" onclick="loadContent(event, this.href)">App Name</a>
-    </script>
+    <script src="/static/loadContent.js"></script>
 </body>
 </html>

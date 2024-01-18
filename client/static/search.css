@@ -1,0 +1,60 @@
+.no-bullets {
+    list-style-type: none;
+    padding: 0;
+}
+
+.song-container-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    width: 600px;
+    background-color: #010409;
+    border-radius: 25px;
+    margin-left: 20px;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.song-container-image {
+    border-radius: 25px;
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.song-container-image-2 {
+    width: 252px;
+    height: 252px;
+    opacity: 0.75;
+    z-index: 0;
+}
+
+.song-container-image-3 {
+    width: 254px;
+    height: 254px;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.song-container-image-4 {
+    width: 256px;
+    height: 256px;
+    opacity: 0.25;
+    z-index: 0;
+}
+
+.song-container-image-5 {
+    width: 258px;
+    height: 258px;
+    opacity: 0.1;
+    z-index: 0;
+}
