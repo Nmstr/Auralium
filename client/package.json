@@ -1,15 +1,14 @@
 {
-  "name": "musicplayer",
+  "name": "musicplayerclient",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "electron": "^28.1.4"
   }
 }

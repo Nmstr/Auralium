@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #fff;
+        }
+
+        .bg-dark {
+            background-color: #010409 !important;
+        }
+
+        #app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 400px;
+            background-color: #f1f1f1;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #load-page-content {
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .no-bullets {
+            list-style-type: none;
+        }
+        
+        .sidebar-link {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        
+        .profile-pic {
+            max-width: 50px;
+            max-height: 50px;
+            border-radius: 50%;
+        }
+        
+        .application-box {
+            padding: 20px;
+            background-color: #0d1117;
+            border-radius: 10px;
+            width: 350px;
+            position: absolute;
+            top: 0;
+            left: 30px;
+        }
+        
+        .playlist-box {
+            padding: 20px;
+            background-color: #0d1117;
+            border-radius: 10px;
+            width: 350px;
+            position: absolute;
+            top: 100px;
+            left: 30px;
+        }
+        
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            z-index: 9999;
+        }
+    </style>
+    
+    <title>{% block title %} {% endblock %} - Music Player</title>
+    
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Number of Lines Over Time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Number of Files Over Time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">File Analysis</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- profile picture -->
+            <div class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="#" alt="Profile Picture" class="profile-pic">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        {% if session["loggedin"] %}
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="#">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="app-container">
+        <div id="sidebar" class="bg-dark">
+            <!-- Your sidebar content goes here -->
+            <ul class="no-bullets">
+                <!-- Applications -->
+                <div class="container application-box">
+                    {% for app in apps %}
+                    <li>
+                        <a href="/applications/{{ app['application'] }}/{{ app['defaultRoute'] }}" class="sidebar-link" onclick="loadContent(event, this.href)">{{ app['name'] }}</a>
+                    </li>
+                    {% endfor %}
+                </div>
+                <!-- Playlist -->
+                <div class="container playlist-box" style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <li><a class="sidebar-link" href="#">Your library</a></li>
+                        <li><a class="sidebar-link" href="#">+</a></li>
+                    </div>
+                    <li>Default Playlist 1</li>
+                    <li>Default Playlist 2</li>
+                    <li>Default Playlist 3</li>
+                </div>
+            </ul>
+        </div>
+        <div id="load-page-content">
+            <div class="container main-dynamic-content-block">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+        
+    <!-- Add a bar at the bottom -->
+    <div class="bottom-bar bg-dark">
+        <div class="container" style="display: flex; overflow-x: auto;">
+            <a>Music Player</a>
+            <audio id="audioPlayer" controls>
+                <source src="/static/music/Tream - Zelten auf Kies - Luca-Dante Spadafora & Niklas Dee Remix.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div>
+                <button id="prev" onclick="skipBackward()">Previous</button>
+                <button id="next" onclick="skipForward()">Next</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="/static/player.js"></script>
+    <script>
+        function loadContent(event, url) {
+            event.preventDefault(); // Stop the page from navigating to the href
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const contentBlock = document.querySelector('.main-dynamic-content-block');
+                    contentBlock.innerHTML = html;
+                    // Execute any script tags found in the HTML
+                    const scripts = contentBlock.querySelectorAll('script');
+                    for (let script of scripts) {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        // Replace the old script with the new one to ensure it's executed
+                        script.parentNode.replaceChild(newScript, script);
+                    }
+                    // You might need to update the URL in the browser if desired
+                    window.history.pushState({}, '', url);
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+        //<a href="/applications/search/search" class="sidebar-link" onclick="loadContent(event, this.href)">App Name</a>
+    </script>
+</body>
+</html>

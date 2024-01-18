@@ -1,9 +1,3 @@
-{% extends 'base.html' %}
-
-{% block title %}Index{% endblock %}
-
-{% block content %}
-
 <style>
     .song-container-image {
         border-radius: 25px;
@@ -60,6 +54,5 @@
 <a style="margin: 500px;">Genre: {{ songInfo['genre'] }}</a>
 <a style="margin: 500px;">Duration: {{ songInfo['duration_long'] }} ({{ songInfo['duration_secs'] }} secs)</a>
 
-<button onclick="playSong('{{ songName }}')">Play</button>
-
-{% endblock %}
+<button onclick="setSong('/{{ songName }}')">Play</button>
+<button onclick="queueSong('/{{ songName }}')">Queue</button>

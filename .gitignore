@@ -1,6 +1,9 @@
 __pycache__
 .env
-accounts/*
-!accounts/default
-static/music/*.mp3
+.venv
+old/accounts/*
+!old/accounts/default
+old/static/music/*.mp3
 node_modules
+old
+client/static/music/*.mp3
