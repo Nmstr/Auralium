@@ -71,9 +71,9 @@ def searchResult():
 
     # Sort the files based on the match score
     sortedSongs = sorted(filteredSongs, key=matchScore, reverse=True)
-    firstSong = 'static/music/' + sortedSongs[0] + '.mp3'
-    relevantSongs = sortedSongs[1:6]
-    otherSongs = sortedSongs[6:]
+    firstSong = f'static/music/{sortedSongs[0]}.mp3'
+    relevantSongs = [f'static/music/{song}.mp3' for song in sortedSongs[1:5]]
+    otherSongs = [f'static/music/{song}.mp3' for song in sortedSongs[5:]]
 
     return render_template('searchResult.html', sortedSongs=sortedSongs, firstSong=firstSong, relevantSongs=relevantSongs, otherSongs=otherSongs, os=os)
 
