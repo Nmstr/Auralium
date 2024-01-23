@@ -30,16 +30,7 @@ function createWindow() {
 
 app.on('ready', () => {
     // Start Flask server
-    flaskProcess = spawn('.venv/bin/python', ['app.py']);
-    
-    // Attach listeners to the stdout and stderr of the Flask process
-    flaskProcess.stdout.on('data', (data) => {
-        console.log(`Flask stdout: ${data}`);
-    });
-
-    flaskProcess.stderr.on('data', (data) => {
-        console.error(`Flask stderr: ${data}`);
-    });
+    flaskProcess = spawn('.venv/bin/python', ['app.py'], { stdio: 'inherit' });
 
     // Wait for Flask server to start before creating window
     setTimeout(createWindow, 3000); // Adjust time as necessary

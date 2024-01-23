@@ -1,0 +1,17 @@
+<ul>
+    <li>Name: {{ playlistData['name'] }}</li>
+    <li>Description: {{ playlistData['description'] }}</li>
+    <li>Image: {{ playlistData['image'] }}</li>
+    <li>Last Access: {{ playlistData['lastAccess'] }}</li>
+    <li>Playlist Manifest Version: {{ playlistData['playlistManifestVersion'] }}</li>
+    <li>Songs:</li>
+    <ul>        
+        {% for song in playlistData['songs'] %}
+            <li>{{ song }}</li>
+        {% endfor %}
+    </ul>
+</ul>
+
+<script>
+    reloadPlaylists();
+</script>

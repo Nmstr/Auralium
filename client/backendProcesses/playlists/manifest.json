@@ -1,0 +1,9 @@
+{
+    "application": "playlists",
+    "name": "Playlists",
+    "description": "Backend solution for playlists",
+    "version": "1.0.0",
+    "priority": "10000",
+    "blueprint": "backendPlaylists",
+    "defaultRoute": "/playlists/"
+}

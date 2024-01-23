@@ -1,0 +1,14 @@
+<style>
+    .main-playlists-ul {
+        list-style-type: none;
+        padding: 0;
+    }
+</style>
+
+<ul class="no-bullets main-playlists-ul">
+    {% for playlist in allPlaylists %}
+        <li>
+            <a href="/backendApplications/playlists/playlistView/?playlistName={{ playlist['name'] }}" class="sidebar-link" onclick="loadContent(event, this.href)">{{ playlist['name'] }}</a>
+        </li>
+    {% endfor %}
+</ul>

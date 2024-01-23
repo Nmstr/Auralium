@@ -67,11 +67,13 @@
                 <div class="container playlist-box" style="margin-top: 20px;">
                     <div style="display: flex; justify-content: space-between;">
                         <li><a class="sidebar-link" href="#">Your library</a></li>
-                        <li><a class="sidebar-link" href="#">+</a></li>
+                        <li><a class="sidebar-link" onclick="createPlaylist()">+</a></li>
                     </div>
-                    <li>Default Playlist 1</li>
-                    <li>Default Playlist 2</li>
-                    <li>Default Playlist 3</li>
+                    <div class="playlists-side-bar-list">
+                        <li>Default Playlist 1</li>
+                        <li>Default Playlist 2</li>
+                        <li>Default Playlist 3</li>
+                    </div>
                 </div>
             </ul>
         </div>
@@ -103,5 +105,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="/static/player.js"></script>
     <script src="/static/loadContent.js"></script>
+    <script>
+        function reloadPlaylists() {
+        fetch('/backendProcesses/playlists/retrieveAll/')
+            .then(response => response.text())
+            .then(html => {
+            var playlistContainer = document.querySelector('.playlists-side-bar-list');
+            playlistContainer.innerHTML = html;
+            });
+        }
+        
+        reloadPlaylists();
+
+        function createPlaylist() {
+            fetch('/backendProcesses/playlists/createPlaylist/')
+                .then(response => {
+                    reloadPlaylists();
+                });
+        }
+    </script>
 </body>
 </html>
