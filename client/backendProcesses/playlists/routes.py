@@ -44,3 +44,16 @@ def createPlaylist():
         json.dump(playlistData, f)
 
     return "Done"
+
+@backendPlaylists.route('/editPlaylistOperation/')
+def editPlaylistOperation():
+    playlistName = request.args.get('playlistName')
+    updatedField = request.args.get('updatedField')
+    newValue = request.args.get('newValue')
+    if not os.path.exists('backendProcesses/playlists/playlists'):
+        return "Error: No playlists found"
+    
+    if not os.path.exists(f'backendProcesses/playlists/playlists/{playlistName}.json'):
+        return f"Error: Playlist not found: {playlistName}"
+
+    return f"Done: {newValue} in {updatedField} of {playlistName}"

@@ -1,3 +1,6 @@
+<div class="playlist-edit-container-in-playlist-view">
+</div>
+
 <ul>
     <li>Name: {{ playlistData['name'] }}</li>
     <li>Description: {{ playlistData['description'] }}</li>
@@ -7,10 +10,16 @@
     <li>Songs:</li>
     <ul>        
         {% for song in playlistData['songs'] %}
-            <li>{{ song }}</li>
+        <li>{{ song }}</li>
         {% endfor %}
     </ul>
 </ul>
+
+<a href="{{ url_for('playlistsBackendApplication.editPlaylist', playlistName=playlistData['name']) }}"
+    onclick="loadContent(event, this.href, '.playlist-edit-container-in-playlist-view')">
+    Edit
+</a>
+
 
 <script>
     reloadPlaylists();

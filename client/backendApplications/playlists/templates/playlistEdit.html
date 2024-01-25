@@ -1,0 +1,43 @@
+<ul>
+    <li>
+        <a>Name:</a>
+        <input type="text" id="newPlaylistTitleInput" value="{{ playlistData['name'] }}">
+        <button onclick="submitEditPlaylistForm('title')">Submit</button>
+    </li>
+    <li>
+        <a>Description:</a>
+        <input type="text" id="newPlaylistDescriptionInput" value="{{ playlistData['description'] }}">
+        <button onclick="submitEditPlaylistForm('description')">Submit</button>
+    </li>
+    <li>
+        <a>Image:</a>
+        <input type="text" id="newPlaylistImageInput" value="{{ playlistData['image'] }}">
+        <button onclick="submitEditPlaylistForm('image')">Submit</button>
+    </li>
+</ul>
+
+<div class="playlist-edit-container-in-playlist-view-test">
+</div>
+
+<script>
+    function submitEditPlaylistForm() {
+        // Get the updated values
+        if (arguments[0] == 'title') {
+            var newValue = document.getElementById('newPlaylistTitleInput').value;
+        } else if (arguments[0] == 'description') {
+            var newValue = document.getElementById('newPlaylistDescriptionInput').value;
+        } else if (arguments[0] == 'image') {
+            var newValue = document.getElementById('newPlaylistImageInput').value;
+        }
+        var playlistName = "{{ playlistData['name'] }}";
+
+        // Send the request
+        fetch(`/backendProcesses/playlists/editPlaylistOperation/?playlistName=${playlistName}&updatedField=${arguments[0]}&newValue=${newValue}`)
+            .then(response => response.text())
+            .then(html => {
+                var playlistContainer = document.querySelector('.playlist-edit-container-in-playlist-view-test');
+                playlistContainer.innerHTML = html;
+            });
+    }
+</script>
+

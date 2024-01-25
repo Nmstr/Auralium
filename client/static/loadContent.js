@@ -1,9 +1,9 @@
-function loadContent(event, url) {
+function loadContent(event, url, targetSelector = '.main-dynamic-content-block') {
     event.preventDefault(); // Stop the page from navigating to the href
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            const contentBlock = document.querySelector('.main-dynamic-content-block');
+            const contentBlock = document.querySelector(targetSelector);
             contentBlock.innerHTML = html;
             // Execute any script tags found in the HTML
             const scripts = contentBlock.querySelectorAll('script');
