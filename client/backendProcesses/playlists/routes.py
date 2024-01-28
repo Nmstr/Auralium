@@ -5,10 +5,25 @@ import os
 
 backendPlaylists = Blueprint('backendPlaylists', __name__, template_folder='templates')
 
+def repairPlaylistNames():
+    playlistDir = 'backendProcesses/playlists/playlists'
+    for playlist in os.listdir(playlistDir):
+        with open(os.path.join(playlistDir, playlist), 'r') as file:
+            playlistData = json.load(file)
+        
+        newFilename = f"{playlistData['name']}.json"
+        currentPath = os.path.join(playlistDir, playlist)
+        newPath = os.path.join(playlistDir, newFilename)
+
+        if currentPath != newPath:  # Check if renaming is necessary
+            os.rename(currentPath, newPath)
+
 @backendPlaylists.route('/retrieveAll/')
 def retrieveAll():
     if not os.path.exists('backendProcesses/playlists/playlists'):
         return []
+    
+    repairPlaylistNames()
     
     allPlaylists = os.listdir('backendProcesses/playlists/playlists')
 
@@ -41,7 +56,7 @@ def createPlaylist():
     }
 
     with open(f'backendProcesses/playlists/playlists/{playlistData["name"]}.json', 'w') as f:
-        json.dump(playlistData, f)
+        json.dump(playlistData, f, indent=4)
 
     return "Done"
 
@@ -55,5 +70,18 @@ def editPlaylistOperation():
     
     if not os.path.exists(f'backendProcesses/playlists/playlists/{playlistName}.json'):
         return f"Error: Playlist not found: {playlistName}"
+
+    with open('backendProcesses/playlists/playlists/' + playlistName + '.json', 'r') as file:
+        playlistData = json.load(file)
+    
+    if updatedField == 'title':
+        playlistData['name'] = newValue
+    elif updatedField == 'description':
+        playlistData['description'] = newValue
+    elif updatedField == 'image':
+        playlistData['image'] = newValue
+
+    with open('backendProcesses/playlists/playlists/' + playlistName + '.json', 'w') as file:
+        json.dump(playlistData, file, indent=4)
 
     return f"Done: {newValue} in {updatedField} of {playlistName}"
