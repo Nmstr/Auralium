@@ -7,11 +7,17 @@ function submitEditPlaylistForm() {
     } else if (arguments[0] == 'image') {
         var newValue = document.getElementById('newPlaylistImageInput').value;
     }
-    var playlistName = "{{ playlistData['name'] }}";
 
     // Send the request
     fetch(`/backendProcesses/playlists/editPlaylistOperation/?playlistName=${playlistName}&updatedField=${arguments[0]}&newValue=${newValue}`)
         .then(response => {
             reloadPlaylists();
        });
+}
+
+function createPlaylist() {
+    fetch('/backendProcesses/playlists/createPlaylist/')
+        .then(response => {
+            reloadPlaylists();
+        });
 }

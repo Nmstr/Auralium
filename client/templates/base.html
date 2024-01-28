@@ -117,13 +117,6 @@
         }
         
         reloadPlaylists();
-
-        function createPlaylist() {
-            fetch('/backendProcesses/playlists/createPlaylist/')
-                .then(response => {
-                    reloadPlaylists();
-                });
-        }
     </script>
 </body>
 </html>
