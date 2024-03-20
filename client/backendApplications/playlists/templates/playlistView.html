@@ -20,7 +20,7 @@
     <li>Last Access: {{ playlistData['lastAccess'] }}</li>
     <li>Playlist Manifest Version: {{ playlistData['playlistManifestVersion'] }}</li>
     <li>Songs:</li>
-    <ul>        
+    <ul>
         {% for song in playlistData['songs'] %}
         <li>{{ song }}</li>
         {% endfor %}
