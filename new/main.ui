@@ -32,10 +32,10 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="home">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="homeLabel">
         <property name="geometry">
          <rect>
           <x>300</x>
@@ -50,18 +50,175 @@
        </widget>
       </widget>
       <widget class="QWidget" name="search">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLineEdit" name="searchBar">
         <property name="geometry">
          <rect>
-          <x>280</x>
-          <y>160</y>
-          <width>58</width>
-          <height>15</height>
+          <x>2</x>
+          <y>10</y>
+          <width>291</width>
+          <height>22</height>
          </rect>
         </property>
-        <property name="text">
-         <string>search</string>
+        <property name="toolTip">
+         <string>Enter what you want to search for!</string>
         </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>Search...</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="searchScrollArea">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>40</y>
+          <width>781</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>-135</y>
+           <width>765</width>
+           <height>1000</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>1000</height>
+          </size>
+         </property>
+         <widget class="QScrollArea" name="searchSongsScrollArea">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>170</y>
+            <width>741</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1000</width>
+             <height>105</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>1000</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QFrame" name="searchTopResults">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>741</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="searchTopResultsLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>71</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Top Results</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="searchSongsLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>150</y>
+            <width>71</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Songs</string>
+          </property>
+         </widget>
+         <widget class="QScrollArea" name="searchArtistsScrollArea">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>320</y>
+            <width>741</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1000</width>
+             <height>105</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>1000</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QLabel" name="searchArtistsLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>300</y>
+            <width>71</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Artists</string>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
      </widget>
