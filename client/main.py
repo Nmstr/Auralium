@@ -15,18 +15,23 @@ class Main(QWidget):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
 
+        # Connect buttons for applications
         self.ui.homeBtn.clicked.connect(self.goHome)
         self.ui.searchBtn.clicked.connect(self.goSearch)
 
+        # Connect buttons/text fields for search
+        self.ui.searchBarTextChange('') # Trigger searchBarTextChange once on startup
         self.ui.searchBar.textChanged.connect(self.searchBarTextChange)
         self.ui.searchFilterAllBtn.clicked.connect(self.switchSearchFilter)
         self.ui.searchFilterSongsBtn.clicked.connect(self.switchSearchFilter)
         self.ui.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
 
+        # Connect buttons for music controls
         self.ui.musicControlsNext.clicked.connect(songQueue.goToNextSong)
         self.ui.musicControlsLast.clicked.connect(songQueue.goToLastSong)
         self.ui.musicControlsGetQueue.clicked.connect(songQueue.getQueue)
 
+        # Connect play buttons on top results
         self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult0Name.text()))
         self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult1Name.text()))
         self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult2Name.text()))
