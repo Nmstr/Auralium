@@ -1,6 +1,5 @@
-import difflib
-import sqlite3
 import hashlib
+import sqlite3
 import os
 
 def connectToDB():
@@ -131,58 +130,21 @@ def retrieveAllSongs() -> list:
         conn.close()
     return allSongs
 
-def retrieveSimilarSongs(inputQuery: str) -> list:
+def retrieveAllSongTitles() -> list:
     """
-    Retrieve similar songs based on the inputQuery provided.
-    Connects to the SQLite database, executes a query to select similar strings, calculates similarity,
-    and prints the 50 most similar strings. Finally, closes the database connection.
-
-    Parameters:
-    - inputQuery: str, the input string to search for
-
-    Returns:
-    - None if successful
+    Retrieve all songs from the database
     """
-
-    if not inputQuery.strip():
-        # Return an empty list if the input query is empty or only contains whitespace
-        return []
-    
-    similarSongs = []    
     try:
-        # Connect to the SQLite database
         cursor, conn = connectToDB()
-        
-        # Query to select similar strings using case-insensitive LIKE
-        query = """
-        SELECT title
-        FROM Songs
-        WHERE title LIKE ?
-        LIMIT 50;
-        """
-        
-        # Use a case-insensitive pattern for matching
-        pattern = f"%{inputQuery.lower()}%"
-        
-        # Execute the query with parameter substitution to prevent SQL injection
-        cursor.execute(query, (pattern,))
-        results = cursor.fetchall()
-        
-        # Calculate similarity and sort the results
-        similarSongs = sorted(results, key=lambda x: difflib.SequenceMatcher(None, x[0].lower(), inputQuery.lower()).ratio(), reverse=True)
-
-    except sqlite3.OperationalError as e:
-        print(f"Error: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        cursor.execute('SELECT title FROM Songs')
+        allSongTitles = cursor.fetchall()
+    except Exception:
+        raise
     finally:
-        # Close the cursor and connection safely if they were successfully created
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-    
-    return similarSongs[:50]
+        cursor.close()
+        conn.close()
+
+    return [item[0] for item in allSongTitles]
 
 #createDB()
 #print(insertSong("Hier sind die Onkelz", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
@@ -190,11 +152,9 @@ def retrieveSimilarSongs(inputQuery: str) -> list:
 #print(insertSong("Major Fans", "new/music/Major Conspiracy - Major Fans.mp3", source="local"))
 #print(insertSong("Numb - Aftershock Remix", "new/music/Harris & Ford, DJ Gollum - Numb - Aftershock Remix.mp3", source="local"))
 #print(insertSong("Body Moving", "new/music/Eliza Rose, Calvin Harris - Body Moving.mp3", source="local"))
-#for song in os.listdir("new/music"):
-#    print(insertSong(song, f"new/music/{song}", source="local"))
-
+#for song in os.listdir("music"):
+#    print(insertSong(song, f"music/{song}", source="local"))
 #print(retrieveSimilarSongs("Böhse Onkelz - H"))
-
 #print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
 #print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
 #print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))

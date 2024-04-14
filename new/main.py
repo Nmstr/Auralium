@@ -1,3 +1,5 @@
+import musicPlayerSqlHandler as sqlHandler
+
 from PyQt6.QtWidgets import QApplication, QWidget
 from PyQt6 import uic
 import difflib
@@ -24,7 +26,7 @@ class Main(QWidget):
         This function handles the search functionality based on the search bar text.
         """
         print(text)
-        allSongs = os.listdir('music')
+        allSongs = sqlHandler.retrieveAllSongTitles()
         print(allSongs)
         simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
         print(simmilar)
