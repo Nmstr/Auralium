@@ -181,16 +181,3 @@ def retrieveRandomSong() -> list:
         cursor.close()
         conn.close()
     return song
-
-#createDB()
-#print(insertSong("Hier sind die Onkelz", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
-#print(insertSong("Ohrgasmus", "new/music/DJ Robin - Ohrgasmus.mp3", source="local"))
-#print(insertSong("Major Fans", "new/music/Major Conspiracy - Major Fans.mp3", source="local"))
-#print(insertSong("Numb - Aftershock Remix", "new/music/Harris & Ford, DJ Gollum - Numb - Aftershock Remix.mp3", source="local"))
-#print(insertSong("Body Moving", "new/music/Eliza Rose, Calvin Harris - Body Moving.mp3", source="local"))
-#for song in os.listdir("music"):
-#    print(insertSong(song, f"music/{song}", source="local"))
-#print(retrieveSimilarSongs("Böhse Onkelz - H"))
-#print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
-#print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
-#print(insertSong("Song Title", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))

@@ -40,15 +40,3 @@ class SongQueue():
         print(self.currentSongIndex)
         print(self.getCurrentSong())
         return self.queue
-    
-
-"""queue = SongQueue()
-queue.addSong('test')
-queue.addSong('test2')
-print(queue.getQueue())
-print(queue.getCurrentSong())
-queue.goToNextSong()
-print(queue.getCurrentSong())
-queue.goToNextSong()
-print(queue.getCurrentSong())
-"""
