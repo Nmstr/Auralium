@@ -7,7 +7,7 @@ from songQueue import SongQueue
 songQueue = SongQueue()
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QPushButton, QToolBar
-from PyQt6.QtGui import QPixmap, QAction, QKeySequence
+from PyQt6.QtGui import QCloseEvent, QPixmap, QAction, QKeySequence
 from PyQt6 import uic
 import difflib
 import sys
@@ -36,7 +36,7 @@ class MainWindow(QWidget):
 
         # Connect buttons for music controls
         self.ui.musicControlsNext.clicked.connect(songQueue.goToNextSong)
-        self.ui.musicControlsLast.clicked.connect(songQueue.goToLastSong)
+        self.ui.musicControlsLast.clicked.connect(songQueue.goToPreviousSong)
         self.ui.musicControlsGetQueue.clicked.connect(songQueue.getQueue)
 
         # Connect play buttons on top results
@@ -63,7 +63,18 @@ class MainWindow(QWidget):
         self.setSongImage(simmilar[1], self.ui.searchTopResults1Img)
         self.setSongImage(simmilar[2], self.ui.searchTopResults2Img)
 
-    def setSongImage(self, songTitle, graphicsView):
+    def setSongImage(self, songTitle: str, graphicsView):
+        """
+        A function that sets the image of a song in a graphics view.
+
+        Parameters:
+        - self: the object instance
+        - songTitle: str, the title of the song to set the image for
+        - graphicsView: the graphics view where the image will be set
+
+        Returns:
+        - None
+        """
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
@@ -100,9 +111,19 @@ class MainWindow(QWidget):
         self.ui.mainContentStack.setCurrentWidget(self.ui.search)
     
     def openDebugWindow(self):
-        print('Open debug window')
-        debugWindow = DebugWindow()
-        #debugWindow.show()
+        """
+        Openes the debug window.
+        """
+        DebugWindow()
+    
+    def closeEvent(self, a0: QCloseEvent | None) -> None:
+        """
+        A function that handles the close event. Closes all top-level widgets except itself.
+        """
+        for widget in QApplication.topLevelWidgets():
+            if widget is not self:
+                widget.close()
+        return super().closeEvent(a0)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
