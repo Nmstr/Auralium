@@ -6,8 +6,8 @@ import imgHandler as imgHandler
 from songQueue import SongQueue
 songQueue = SongQueue()
 
-from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QPushButton, QToolBar
-from PyQt6.QtGui import QCloseEvent, QPixmap, QAction, QKeySequence
+from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
+from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
 from PyQt6 import uic
 import difflib
 import sys
