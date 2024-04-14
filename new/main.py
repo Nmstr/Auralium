@@ -1,10 +1,12 @@
 import musicPlayerSqlHandler as sqlHandler
 
+from songQueue import SongQueue
+songQueue = SongQueue()
+
 from PyQt6.QtWidgets import QApplication, QWidget
 from PyQt6 import uic
 import difflib
 import sys
-import os
 
 class Main(QWidget):
     def __init__(self):
@@ -18,6 +20,14 @@ class Main(QWidget):
         self.ui.searchFilterAllBtn.clicked.connect(self.switchSearchFilter)
         self.ui.searchFilterSongsBtn.clicked.connect(self.switchSearchFilter)
         self.ui.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
+
+        self.ui.musicControlsNext.clicked.connect(songQueue.goToNextSong)
+        self.ui.musicControlsLast.clicked.connect(songQueue.goToLastSong)
+        self.ui.musicControlsGetQueue.clicked.connect(songQueue.getQueue)
+
+        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult0Name.text()))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult1Name.text()))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult2Name.text()))
 
         self.show()
     
