@@ -146,6 +146,42 @@ def retrieveAllSongTitles() -> list:
 
     return [item[0] for item in allSongTitles]
 
+def retrieveSongByTitle(title: str) -> list:
+    """
+    Retrieve a song from the database based on the provided title.
+
+    Parameters:
+    - title: str, the title of the song to retrieve
+
+    Returns:
+    - list: The song retrieved based on the title
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM Songs WHERE title = ?', (title,))
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
+def retrieveRandomSong() -> list:
+    """
+    Retrieve a random song from the database.
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM Songs ORDER BY RANDOM() LIMIT 1')
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
 #createDB()
 #print(insertSong("Hier sind die Onkelz", "new/music/Böhse Onkelz - Hier sind die Onkelz.mp3", source="local"))
 #print(insertSong("Ohrgasmus", "new/music/DJ Robin - Ohrgasmus.mp3", source="local"))

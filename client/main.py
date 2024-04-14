@@ -1,9 +1,11 @@
 import musicPlayerSqlHandler as sqlHandler
+import imgHandler as imgHandler
 
 from songQueue import SongQueue
 songQueue = SongQueue()
 
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
+from PyQt6.QtGui import QPixmap
 from PyQt6 import uic
 import difflib
 import sys
@@ -35,19 +37,28 @@ class Main(QWidget):
         """
         This function handles the search functionality based on the search bar text.
         """
-        print(text)
         allSongs = sqlHandler.retrieveAllSongTitles()
-        print(allSongs)
         simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
-        print(simmilar)
-        if len(simmilar) < 3:
-            simmilar.append('')
-            simmilar.append('')
-            simmilar.append('')
+        simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1] for _ in range(3 - len(simmilar))]
 
+        # Update top results labels
         self.ui.searchTopResult0Name.setText(simmilar[0])
         self.ui.searchTopResult1Name.setText(simmilar[1])
         self.ui.searchTopResult2Name.setText(simmilar[2])
+        # Update top results images
+        self.setSongImage(simmilar[0], self.ui.searchTopResults0Img)
+        self.setSongImage(simmilar[1], self.ui.searchTopResults1Img)
+        self.setSongImage(simmilar[2], self.ui.searchTopResults2Img)
+
+    def setSongImage(self, songTitle, graphicsView):
+        graphicsScene = QGraphicsScene()
+        pixmap = QPixmap()
+        try:
+            pixmap.loadFromData(imgHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[4]))
+        except Exception:
+            pixmap.loadFromData(imgHandler.getImgData('covers/default.png'))
+        graphicsScene.addPixmap(pixmap)
+        graphicsView.setScene(graphicsScene)
 
     def switchSearchFilter(self, filter):
         """

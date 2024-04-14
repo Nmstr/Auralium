@@ -408,8 +408,8 @@
                      <widget class="QGraphicsView" name="searchTopResults0Img">
                       <property name="minimumSize">
                        <size>
-                        <width>0</width>
-                        <height>0</height>
+                        <width>150</width>
+                        <height>150</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -424,6 +424,15 @@
                         <height>0</height>
                        </size>
                       </property>
+                      <property name="verticalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
+                      </property>
+                      <property name="horizontalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+                      </property>
                      </widget>
                     </item>
                     <item>
@@ -431,7 +440,7 @@
                       <property name="minimumSize">
                        <size>
                         <width>200</width>
-                        <height>100</height>
+                        <height>80</height>
                        </size>
                       </property>
                       <property name="frameShape">
@@ -486,11 +495,23 @@
                     </item>
                     <item>
                      <widget class="QGraphicsView" name="searchTopResults1Img">
+                      <property name="minimumSize">
+                       <size>
+                        <width>150</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>150</width>
                         <height>150</height>
                        </size>
+                      </property>
+                      <property name="verticalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
+                      </property>
+                      <property name="horizontalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
                       </property>
                      </widget>
                     </item>
@@ -499,7 +520,7 @@
                       <property name="minimumSize">
                        <size>
                         <width>200</width>
-                        <height>100</height>
+                        <height>80</height>
                        </size>
                       </property>
                       <property name="frameShape">
@@ -554,11 +575,23 @@
                     </item>
                     <item>
                      <widget class="QGraphicsView" name="searchTopResults2Img">
+                      <property name="minimumSize">
+                       <size>
+                        <width>150</width>
+                        <height>150</height>
+                       </size>
+                      </property>
                       <property name="maximumSize">
                        <size>
                         <width>150</width>
                         <height>150</height>
                        </size>
+                      </property>
+                      <property name="verticalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
+                      </property>
+                      <property name="horizontalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
                       </property>
                      </widget>
                     </item>
@@ -567,7 +600,7 @@
                       <property name="minimumSize">
                        <size>
                         <width>200</width>
-                        <height>100</height>
+                        <height>80</height>
                        </size>
                       </property>
                       <property name="frameShape">

@@ -12,3 +12,4 @@ client/backendProcesses/playlists/playlists/*.json
 music
 client/sql.py
 musicPlayer.db
+covers
