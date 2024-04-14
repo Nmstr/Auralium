@@ -133,6 +133,9 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QStackedWidget" name="mainContentStack">
         <property name="sizePolicy">
@@ -144,13 +147,13 @@
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>800</height>
+          <height>700</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>700</height>
          </size>
         </property>
         <property name="frameShape">
@@ -175,110 +178,29 @@
          </widget>
         </widget>
         <widget class="QWidget" name="search">
-         <widget class="QLineEdit" name="searchBar">
-          <property name="geometry">
-           <rect>
-            <x>9</x>
-            <y>9</y>
-            <width>261</width>
-            <height>22</height>
-           </rect>
+         <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+          <property name="spacing">
+           <number>6</number>
           </property>
-          <property name="toolTip">
-           <string>Enter what you want to search for!</string>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
           </property>
-          <property name="inputMask">
-           <string/>
+          <property name="topMargin">
+           <number>9</number>
           </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>Search...</string>
-          </property>
-         </widget>
-         <widget class="QScrollArea" name="searchScrollArea">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>30</y>
-            <width>771</width>
-            <height>611</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>755</width>
-             <height>1000</height>
-            </rect>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>1000</height>
-            </size>
-           </property>
-           <widget class="QScrollArea" name="searchSongsScrollArea">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>170</y>
-              <width>721</width>
-              <height>121</height>
-             </rect>
+          <item>
+           <widget class="QFrame" name="searchTopBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
             </property>
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents_2">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>1000</width>
-               <height>105</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>1000</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="searchTopResults">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>30</y>
-              <width>721</width>
-              <height>111</height>
-             </rect>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -286,128 +208,449 @@
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="searchBar">
+               <property name="toolTip">
+                <string>Enter what you want to search for!</string>
+               </property>
+               <property name="inputMask">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="placeholderText">
+                <string>Search...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="searchFilterAllBtn">
+               <property name="text">
+                <string>All</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="searchFilterSongsBtn">
+               <property name="text">
+                <string>Songs</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="searchFilterArtistsBtn">
+               <property name="text">
+                <string>Artists</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-           <widget class="QLabel" name="searchTopResultsLabel">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>71</width>
-              <height>16</height>
-             </rect>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="searchScrollArea">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="text">
-             <string>Top Results</string>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>600</height>
+             </size>
             </property>
-           </widget>
-           <widget class="QLabel" name="searchSongsLabel">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>150</y>
-              <width>71</width>
-              <height>16</height>
-             </rect>
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
             </property>
-            <property name="text">
-             <string>Songs</string>
-            </property>
-           </widget>
-           <widget class="QScrollArea" name="searchArtistsScrollArea">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>320</y>
-              <width>721</width>
-              <height>121</height>
-             </rect>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+            <widget class="QWidget" name="scrollAreaWidgetContents">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1000</width>
-               <height>105</height>
+               <width>746</width>
+               <height>1000</height>
               </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>1000</width>
-               <height>0</height>
+               <width>0</width>
+               <height>1000</height>
               </size>
              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="searchTopResultsLabel">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Top Results</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="searchTopResults">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>300</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QFrame" name="searchTopResults0Frame">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_5">
+                    <item>
+                     <widget class="QGraphicsView" name="searchTopResults0Img">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="sizeIncrement">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="searchTopResults0DataFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>100</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_3">
+                       <item row="2" column="0">
+                        <widget class="QLabel" name="searchTioResult0Artist">
+                         <property name="text">
+                          <string>Artist</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="QLabel" name="Type">
+                         <property name="text">
+                          <string>Type</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="searchTioResult0Name">
+                         <property name="text">
+                          <string>Name</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="searchTopResults1Frame">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_6">
+                    <item>
+                     <widget class="QGraphicsView" name="searchTopResults1Img">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="searchTopResults1DataFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>100</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_4">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="searchTioResult1Name">
+                         <property name="text">
+                          <string>Name</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="searchTioResult1Artist">
+                         <property name="text">
+                          <string>Artist</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QLabel" name="searchTioResult1Type">
+                         <property name="text">
+                          <string>Type</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="searchTopResults2Frame">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_7">
+                    <item>
+                     <widget class="QGraphicsView" name="searchTopResults2Img">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="searchTopResults2DataFrame">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>100</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_5">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="searchTioResult2Name">
+                         <property name="text">
+                          <string>Name</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="searchTioResult2Artist">
+                         <property name="text">
+                          <string>Artist</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QLabel" name="searchTioResult2Type">
+                         <property name="text">
+                          <string>Type</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="searchSongsLabel">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Songs</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QScrollArea" name="searchSongsScrollArea">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>250</height>
+                 </size>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>1000</width>
+                   <height>234</height>
+                  </rect>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>1000</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="searchArtistsLabel">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Artists</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QScrollArea" name="searchArtistsScrollArea">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>250</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>1000</width>
+                   <height>234</height>
+                  </rect>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>1000</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </widget>
-           <widget class="QLabel" name="searchArtistsLabel">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>300</y>
-              <width>71</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Artists</string>
-            </property>
-           </widget>
-          </widget>
-         </widget>
-         <widget class="QPushButton" name="searchFilterAllBtn">
-          <property name="geometry">
-           <rect>
-            <x>280</x>
-            <y>10</y>
-            <width>80</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>All</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="searchFilterSongsBtn">
-          <property name="geometry">
-           <rect>
-            <x>380</x>
-            <y>10</y>
-            <width>80</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Songs</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="searchFilterArtistsBtn">
-          <property name="geometry">
-           <rect>
-            <x>480</x>
-            <y>10</y>
-            <width>80</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Artists</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
