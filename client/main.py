@@ -1,19 +1,27 @@
+from debugWindow import DebugWindow
+
 import musicPlayerSqlHandler as sqlHandler
 import imgHandler as imgHandler
 
 from songQueue import SongQueue
 songQueue = SongQueue()
 
-from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QPushButton, QToolBar
+from PyQt6.QtGui import QPixmap, QAction, QKeySequence
 from PyQt6 import uic
 import difflib
 import sys
 
-class Main(QWidget):
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
+
+        # Create hotkey action
+        self.hotkeyAction = QAction(self)
+        self.hotkeyAction.setShortcut("F12")
+        self.hotkeyAction.triggered.connect(self.openDebugWindow)
+        self.addAction(self.hotkeyAction)
 
         # Connect buttons for applications
         self.ui.homeBtn.clicked.connect(self.goHome)
@@ -90,8 +98,13 @@ class Main(QWidget):
 
     def goSearch(self):
         self.ui.mainContentStack.setCurrentWidget(self.ui.search)
+    
+    def openDebugWindow(self):
+        print('Open debug window')
+        debugWindow = DebugWindow()
+        #debugWindow.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Main()
+    window = MainWindow()
     sys.exit(app.exec())

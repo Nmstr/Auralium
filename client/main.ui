@@ -192,14 +192,14 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>700</height>
+          <height>16777215</height>
          </size>
         </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="home">
          <widget class="QLabel" name="homeLabel">
