@@ -9,3 +9,4 @@ old
 client/static/music/*.mp3
 packaged
 client/backendProcesses/playlists/playlists/*.json
+music
