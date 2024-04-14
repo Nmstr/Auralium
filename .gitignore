@@ -10,5 +10,5 @@ client/static/music/*.mp3
 packaged
 client/backendProcesses/playlists/playlists/*.json
 music
-new/sql.py
+client/sql.py
 musicPlayer.db

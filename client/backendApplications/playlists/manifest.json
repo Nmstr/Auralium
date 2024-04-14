@@ -1,9 +1,0 @@
-{
-    "application": "playlists",
-    "name": "Playlists",
-    "description": "Main playlists site",
-    "version": "1.0.0",
-    "priority": "10000",
-    "blueprint": "playlistsBackendApplication",
-    "defaultRoute": "/playlistView/"
-}

@@ -1,9 +1,0 @@
-{
-    "application": "home",
-    "name": "🏠 Home",
-    "description": "Home application",
-    "version": "1.0.0",
-    "priority": "10000",
-    "blueprint": "homeApp",
-    "defaultRoute": "/home/"
-}
