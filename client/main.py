@@ -1,13 +1,14 @@
 from debugWindow import DebugWindow
 
 import musicPlayerSqlHandler as sqlHandler
-import imgHandler as imgHandler
+import songDataHandler as songDataHandler
 
 from songQueue import SongQueue
 songQueue = SongQueue()
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
+from PyQt6.QtCore import QTimer
 from PyQt6 import uic
 import difflib
 import sys
@@ -38,14 +39,59 @@ class MainWindow(QWidget):
         self.ui.musicControlsNext.clicked.connect(songQueue.goToNextSong)
         self.ui.musicControlsLast.clicked.connect(songQueue.goToPreviousSong)
         self.ui.musicControlsGetQueue.clicked.connect(songQueue.getQueue)
+        self.ui.musicControlsPlay.clicked.connect(songQueue.play)
+        self.ui.musicControlsPause.clicked.connect(songQueue.pause)
+        self.ui.musicControlsVolume.valueChanged.connect(songQueue.setVolume)
+        self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
         # Connect play buttons on top results
-        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult0Name.text()))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult1Name.text()))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(self.ui.searchTopResult2Name.text()))
+        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[4]))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[4]))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[4]))
+
+
+        # Create a QTimer to update the time slider automatically every second
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.updateTimeSliderAuto)
+        self.timer.start(1000)
+
+        # Create value for song duration
+        self.oldDuration = 0
 
         self.show()
-    
+
+    def updateSliderPositionManual(self):
+        """
+        Updates the slider position manually based on the value of musicControlsTime.
+        Changes the position in the song.
+        """
+        timeInSeconds = self.ui.musicControlsTime.value()
+        songQueue.setTime(timeInSeconds)
+
+    def updateTimeSliderAuto(self):
+        """
+        Updates the time slider automatically based on the current song's duration.
+        Adjusts the slider value and triggers actions based on song progress.
+        """
+        newValue = self.ui.musicControlsTime.value() + 1
+        if songQueue.playing:
+            newValue += 1
+            self.ui.musicControlsTime.setValue(newValue)
+
+        try:
+            newDuration = songDataHandler.getTag(songQueue.getCurrentSong()).duration
+            if self.oldDuration != newDuration:
+                self.ui.musicControlsTime.setValue(0)
+                self.ui.musicControlsTime.setRange(0, int(newDuration))
+            self.oldDuration = newDuration
+
+            if newValue == int(newDuration):
+                self.ui.musicControlsTime.setValue(0)
+                songQueue.goToNextSong()
+        except Exception:
+            print('No song loaded')
+
+
     def searchBarTextChange(self, text):
         """
         This function handles the search functionality based on the search bar text.
@@ -78,9 +124,9 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(imgHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[4]))
+            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[4]))
         except Exception:
-            pixmap.loadFromData(imgHandler.getImgData('covers/default.png'))
+            pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
         graphicsView.setScene(graphicsScene)
 

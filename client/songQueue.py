@@ -1,10 +1,35 @@
+import pygame
+
 class QueueEndReached(Exception):
     pass
 
 class SongQueue():
     def __init__(self):
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(0.1) # Temp
         self.queue = []
         self.currentSongIndex = 0
+        self.playing = False
+
+    def play(self):
+        self.playing = True
+        pygame.mixer.music.unpause()
+    
+    def pause(self):
+        self.playing = False
+        pygame.mixer.music.pause()
+    
+    def getTime(self):
+        return pygame.mixer.music.get_pos()
+    
+    def setTime(self, time):
+        pygame.mixer.music.set_pos(time)
+    
+    def getVolume(self):
+        return pygame.mixer.music.get_volume()
+    
+    def setVolume(self, volume):
+        pygame.mixer.music.set_volume(volume / 100)
 
     def addSong(self, song: str):
         """
@@ -31,9 +56,9 @@ class SongQueue():
         self.addSong(song)
         self.currentSongIndex = len(self.queue) - 1
 
-        print(self.queue)
-        print(self.currentSongIndex)
-        print(self.getCurrentSong())
+        pygame.mixer.music.load(self.queue[self.currentSongIndex])
+        pygame.mixer.music.play()
+        self.playing = True
 
     def getCurrentSong(self):
         """
@@ -58,7 +83,11 @@ class SongQueue():
         if self.currentSongIndex < len(self.queue) - 1:
             self.currentSongIndex += 1
         else:
+            self.playing = False
             raise QueueEndReached('No more songs in the queue')
+        if self.playing:
+            pygame.mixer.music.load(self.queue[self.currentSongIndex])
+            pygame.mixer.music.play()
     
     def goToPreviousSong(self):
         """
@@ -71,7 +100,11 @@ class SongQueue():
         if self.currentSongIndex > 0:
             self.currentSongIndex -= 1
         else:
+            self.playing = False
             raise QueueEndReached('No more songs in the queue')
+        if self.playing:
+            pygame.mixer.music.load(self.queue[self.currentSongIndex])
+            pygame.mixer.music.play()
     
     def getQueue(self):
         """
