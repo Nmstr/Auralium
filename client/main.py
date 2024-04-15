@@ -73,7 +73,7 @@ class MainWindow(QWidget):
         Updates the time slider automatically based on the current song's duration.
         Adjusts the slider value and triggers actions based on song progress.
         """
-        newValue = self.ui.musicControlsTime.value() + 1
+        newValue = self.ui.musicControlsTime.value()
         if songQueue.playing:
             newValue += 1
             self.ui.musicControlsTime.setValue(newValue)
@@ -85,7 +85,7 @@ class MainWindow(QWidget):
                 self.ui.musicControlsTime.setRange(0, int(newDuration))
             self.oldDuration = newDuration
 
-            if newValue == int(newDuration):
+            if newValue >= int(newDuration):
                 self.ui.musicControlsTime.setValue(0)
                 songQueue.goToNextSong()
         except Exception:
