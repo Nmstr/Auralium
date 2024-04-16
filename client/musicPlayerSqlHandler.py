@@ -44,10 +44,10 @@ def createDB() -> None:
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             artist TEXT,
-            album TEXT,
             filePath TEXT NOT NULL UNIQUE,
             sha256hash TEXT,
-            source TEXT
+            source TEXT,
+            releaseDate TEXT
         )
         ''')
 
@@ -62,8 +62,8 @@ def createDB() -> None:
 def insertSong(title: str, 
                filePath: str,
                artist: str = None,
-               album: str = None,
-               source: str = None):
+               source: str = None,
+               releaseDate: str = None):
     """
     A function to insert a song into the database.
     
@@ -71,8 +71,8 @@ def insertSong(title: str,
     - title: str, required, the title of the song
     - filePath: str, required, the file path of the song
     - artist: str, optional, the artist of the song
-    - album: str, optional, the album of the song
     - source: str, optional, the source of the song
+    - releaseDate: str, optional, the release date of the song (YYYY-MM-DD)
     
     Returns:
     - None if successful
@@ -98,9 +98,9 @@ def insertSong(title: str,
     # Insert a new song
     try:
         cursor.execute("""
-        INSERT INTO Songs (title, artist, album, filePath, sha256hash, source)
+        INSERT INTO Songs (title, artist, filePath, sha256hash, source, releaseDate)
         VALUES (?, ?, ?, ?, ?, ?)
-        """, (title, artist, album, filePath, sha256hash, source))
+        """, (title, artist, filePath, sha256hash, source, releaseDate))
     except sqlite3.IntegrityError as e:
         return f'Intergrity Error: {e}'
 
@@ -108,8 +108,8 @@ def insertSong(title: str,
     conn.commit()
 
     # Query the database
-    cursor.execute('SELECT * FROM Songs')
-    print(cursor.fetchall())
+    #cursor.execute('SELECT * FROM Songs')
+    #print(cursor.fetchall())
 
     # Close the connection when done
     cursor.close()
@@ -159,6 +159,30 @@ def retrieveSongByTitle(title: str) -> list:
     try:
         cursor, conn = connectToDB()
         cursor.execute('SELECT * FROM Songs WHERE title = ?', (title,))
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
+def retrieveSongByFilePath(filePath: str) -> list:
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM Songs WHERE filePath = ?', (filePath,))
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
+def retrieveSongBySha256hash(sha256hash: str) -> list:
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM Songs WHERE sha256hash = ?', (sha256hash,))
         song = cursor.fetchone()
     except Exception:
         raise

@@ -1,7 +1,7 @@
 from debugWindow import DebugWindow
 
 import musicPlayerSqlHandler as sqlHandler
-import songDataHandler as songDataHandler
+import songDataHandler
 
 from songQueue import SongQueue
 songQueue = SongQueue()
@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
 from PyQt6.QtCore import QTimer
 from PyQt6 import uic
+
 import difflib
 import sys
 
@@ -96,10 +97,12 @@ class MainWindow(QWidget):
         """
         This function handles the search functionality based on the search bar text.
         """
-        allSongs = sqlHandler.retrieveAllSongTitles()
-        simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
-        simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1] for _ in range(3 - len(simmilar))]
-
+        try:
+            allSongs = sqlHandler.retrieveAllSongTitles()
+            simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
+            simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1] for _ in range(3 - len(simmilar))]
+        except Exception:
+            simmilar = ['No results', 'No results', 'No results']
         # Update top results labels
         self.ui.searchTopResult0Name.setText(simmilar[0])
         self.ui.searchTopResult1Name.setText(simmilar[1])
@@ -172,6 +175,7 @@ class MainWindow(QWidget):
         return super().closeEvent(a0)
 
 if __name__ == '__main__':
+    sqlHandler.createDB()
     app = QApplication(sys.argv)
     window = MainWindow()
     sys.exit(app.exec())
