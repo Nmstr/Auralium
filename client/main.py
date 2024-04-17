@@ -89,8 +89,7 @@ class MainWindow(QWidget):
                 self.ui.musicControlsTime.setValue(0)
                 songQueue.goToNextSong()
         except Exception:
-            #print('No song loaded')
-            pass
+            pass #print('No song loaded')
 
 
     def searchBarTextChange(self, text):
@@ -98,11 +97,9 @@ class MainWindow(QWidget):
         This function handles the search functionality based on the search bar text.
         """
         try:
-            #allSongs = sqlHandler.retrieveAllSongTitles()
             allSongs = sqlHandler.retrieveAllSongs()[1:4]
             simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
             simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1:4] for _ in range(3 - len(simmilar))]
-            print(simmilar)
         except Exception:
             simmilar = ['No results', 'No results', 'No results']
         # Update top results labels
