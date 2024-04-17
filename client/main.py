@@ -45,11 +45,10 @@ class MainWindow(QWidget):
         self.ui.musicControlsVolume.valueChanged.connect(songQueue.setVolume)
         self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
-        # Connect play buttons on top results
-        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[4]))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[4]))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[4]))
-
+        # Connect play buttons on top results and set defalt text
+        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[3]))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[3]))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[3]))
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
@@ -100,17 +99,17 @@ class MainWindow(QWidget):
         try:
             allSongs = sqlHandler.retrieveAllSongTitles()
             simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
-            simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1] for _ in range(3 - len(simmilar))]
+            simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1:4] for _ in range(3 - len(simmilar))]
         except Exception:
             simmilar = ['No results', 'No results', 'No results']
         # Update top results labels
-        self.ui.searchTopResult0Name.setText(simmilar[0])
-        self.ui.searchTopResult1Name.setText(simmilar[1])
-        self.ui.searchTopResult2Name.setText(simmilar[2])
+        self.ui.searchTopResult0Name.setText(simmilar[0][0])
+        self.ui.searchTopResult1Name.setText(simmilar[1][0])
+        self.ui.searchTopResult2Name.setText(simmilar[2][0])
         # Update top results images
-        self.setSongImage(simmilar[0], self.ui.searchTopResults0Img)
-        self.setSongImage(simmilar[1], self.ui.searchTopResults1Img)
-        self.setSongImage(simmilar[2], self.ui.searchTopResults2Img)
+        self.setSongImage(simmilar[0][0], self.ui.searchTopResults0Img)
+        self.setSongImage(simmilar[1][0], self.ui.searchTopResults1Img)
+        self.setSongImage(simmilar[2][0], self.ui.searchTopResults2Img)
 
     def setSongImage(self, songTitle: str, graphicsView):
         """
@@ -127,7 +126,7 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[4]))
+            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[3]))
         except Exception:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
