@@ -115,6 +115,9 @@ class MainWindow(QWidget):
         self.ui.searchTopResult0Name.setText(similar[0][1])
         self.ui.searchTopResult1Name.setText(similar[1][1])
         self.ui.searchTopResult2Name.setText(similar[2][1])
+        self.ui.searchTopResult0Artist.setText(similar[0][2])
+        self.ui.searchTopResult1Artist.setText(similar[1][2])
+        self.ui.searchTopResult2Artist.setText(similar[2][2])
         
         # Update top results images
         self.setSongImage(similar[0][1], self.ui.searchTopResults0Img)
