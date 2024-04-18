@@ -97,19 +97,29 @@ class MainWindow(QWidget):
         This function handles the search functionality based on the search bar text.
         """
         try:
-            allSongs = sqlHandler.retrieveAllSongs()[1:4]
-            simmilar = difflib.get_close_matches(text, allSongs, n=3, cutoff=0.05)
-            simmilar = simmilar + [sqlHandler.retrieveRandomSong()[1:4] for _ in range(3 - len(simmilar))]
-        except Exception:
-            simmilar = ['No results', 'No results', 'No results']
+            allSongs = sqlHandler.retrieveAllSongs()
+            # Create a list of concatenated title and artist for matching
+            titlesArtists = [song[1] + " " + song[2] for song in allSongs]
+            similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
+            
+            # Map the similar strings back to the original song tuples
+            similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
+
+            similar = similar + [sqlHandler.retrieveRandomSong() for _ in range(3 - len(similar))]
+        except Exception as e:
+            # If there's an error, fill in with random songs
+            similar = [sqlHandler.retrieveRandomSong() for _ in range(3)]
+            print(e)
+
         # Update top results labels
-        self.ui.searchTopResult0Name.setText(simmilar[0][0])
-        self.ui.searchTopResult1Name.setText(simmilar[1][0])
-        self.ui.searchTopResult2Name.setText(simmilar[2][0])
+        self.ui.searchTopResult0Name.setText(similar[0][1])  # Update to use the song title
+        self.ui.searchTopResult1Name.setText(similar[1][1])
+        self.ui.searchTopResult2Name.setText(similar[2][1])
+        
         # Update top results images
-        self.setSongImage(simmilar[0][0], self.ui.searchTopResults0Img)
-        self.setSongImage(simmilar[1][0], self.ui.searchTopResults1Img)
-        self.setSongImage(simmilar[2][0], self.ui.searchTopResults2Img)
+        self.setSongImage(similar[0][1], self.ui.searchTopResults0Img)  # Update to use the song file path
+        self.setSongImage(similar[1][1], self.ui.searchTopResults1Img)
+        self.setSongImage(similar[2][1], self.ui.searchTopResults2Img)
 
     def setSongImage(self, songTitle: str, graphicsView):
         """
