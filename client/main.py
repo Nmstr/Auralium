@@ -112,12 +112,12 @@ class MainWindow(QWidget):
             print(e)
 
         # Update top results labels
-        self.ui.searchTopResult0Name.setText(similar[0][1])  # Update to use the song title
+        self.ui.searchTopResult0Name.setText(similar[0][1])
         self.ui.searchTopResult1Name.setText(similar[1][1])
         self.ui.searchTopResult2Name.setText(similar[2][1])
         
         # Update top results images
-        self.setSongImage(similar[0][1], self.ui.searchTopResults0Img)  # Update to use the song file path
+        self.setSongImage(similar[0][1], self.ui.searchTopResults0Img)
         self.setSongImage(similar[1][1], self.ui.searchTopResults1Img)
         self.setSongImage(similar[2][1], self.ui.searchTopResults2Img)
 
