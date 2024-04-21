@@ -281,6 +281,32 @@
            <string>Home</string>
           </property>
          </widget>
+         <widget class="QPushButton" name="playlistsCreateBtn">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>260</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>create Playlist</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="playlistsAddSongBtn">
+          <property name="geometry">
+           <rect>
+            <x>180</x>
+            <y>330</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>add Song</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="search">
          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
@@ -742,7 +768,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>28</height>
+                   <height>234</height>
                   </rect>
                  </property>
                  <property name="minimumSize">
@@ -799,7 +825,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>28</height>
+                   <height>234</height>
                   </rect>
                  </property>
                  <property name="minimumSize">

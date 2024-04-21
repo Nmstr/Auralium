@@ -1,5 +1,6 @@
 import hashlib
 import sqlite3
+import json
 import os
 
 def connectToDB():
@@ -10,7 +11,7 @@ def connectToDB():
     cursor = conn.cursor()
     return cursor, conn
 
-def hashFile(filePath):
+def hashFile(filePath: str) -> str:
     """
     A function to hash a file using SHA-256.
 
@@ -31,16 +32,16 @@ def hashFile(filePath):
 
 def createDB() -> None:
     """
-    Connects to the database, creates a table 'Songs' if not exists with specific fields,
+    Connects to the database, creates tables 'songs', 'playlistSongs', and 'playlists' if not exists with specific fields,
     and commits the changes. Closes the connection at the end.
     """
     try:
         # Connect to db
         cursor, conn = connectToDB()
 
-        # Create table
+        # Create tables
         cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Songs (
+        CREATE TABLE IF NOT EXISTS songs (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             artist TEXT,
@@ -48,6 +49,17 @@ def createDB() -> None:
             sha256hash TEXT,
             source TEXT,
             releaseDate TEXT
+        )
+        ''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS playlists (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            creator TEXT,
+            description TEXT,
+            imagePath TEXT,
+            songs TEXT
         )
         ''')
 
@@ -59,11 +71,88 @@ def createDB() -> None:
         cursor.close()
         conn.close()
 
+def createPlaylist(name: str,
+                   creator: str = None,
+                   description: str = None,
+                   imagePath: str = None
+                   ) -> None:
+    """
+    A function to create a playlist in the database.
+
+    Parameters:
+    - name: str, required, the name of the playlist
+    - creator: str, optional, the creator of the playlist
+    - description: str, optional, the description of the playlist
+    - imagePath: str, optional, the image path of the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute("""INSERT INTO playlists (name, creator, description, imagePath)
+                       VALUES (?, ?, ?, ?)
+                       """, (name, creator, description, imagePath)) 
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
+def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
+    """
+    A function to add a song to a playlist in the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+    - songId: int, required, the id of the song
+    - songPosition: int, required, the position of the song in the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        # Check if playlist exists
+        cursor, conn = connectToDB()
+        cursor.execute("SELECT * FROM playlists WHERE id = ?", (playlistId,))
+        playlistData = cursor.fetchone()
+        print(playlistData)
+        if playlistData == None:
+            print("Playlist with id {} does not exist.".format(playlistId))
+            return
+
+        # Check if song exists
+        cursor.execute("SELECT * FROM songs WHERE id = ?", (songId,))
+        songData = cursor.fetchone()
+        print(songData)
+        if songData == None:
+            print("Song with id {} does not exist.".format(songId))
+            return
+        
+
+        # Insert the song
+        songsInPlaylist = json.loads(playlistData[5])
+        if songsInPlaylist == None:
+            songsInPlaylist = []
+        print(songsInPlaylist)
+        songsInPlaylist.insert(songPosition, str(songId))
+        print(songsInPlaylist)
+        cursor.execute("UPDATE playlists SET songs = ? WHERE id = ?", (json.dumps(songsInPlaylist), playlistId))
+
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
 def insertSong(title: str, 
                filePath: str,
                artist: str = None,
                source: str = None,
-               releaseDate: str = None):
+               releaseDate: str = None
+               ) -> None:
     """
     A function to insert a song into the database.
     
@@ -97,10 +186,10 @@ def insertSong(title: str,
 
     # Insert a new song
     try:
-        cursor.execute("""
+        cursor.execute('''
         INSERT INTO Songs (title, artist, filePath, sha256hash, source, releaseDate)
         VALUES (?, ?, ?, ?, ?, ?)
-        """, (title, artist, filePath, sha256hash, source, releaseDate))
+        ''', (title, artist, filePath, sha256hash, source, releaseDate))
     except sqlite3.IntegrityError as e:
         return f'Intergrity Error: {e}'
 

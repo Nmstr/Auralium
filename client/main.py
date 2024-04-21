@@ -58,7 +58,42 @@ class MainWindow(QWidget):
         # Create value for song duration
         self.oldDuration = 0
 
+        # Connect playlist buttons
+        self.ui.playlistsCreateBtn.clicked.connect(self.createPlaylist)
+        self.ui.playlistsAddSongBtn.clicked.connect(lambda: self.addSongToPlaylist(10, 444, 999999))
+
         self.show()
+
+    def createPlaylist(self, name: str, creator: str = None, description: str = None, imagePath: str = None):
+        """
+        A function to create a playlist in the database.
+
+        Parameters:
+        - name: str, required, the name of the playlist
+        - creator: str, optional, the creator of the playlist
+        - description: str, optional, the description of the playlist
+        - imagePath: str, optional, the image path of the playlist
+
+        Returns:
+        - None
+        """
+        name = 'testPlaylist'
+        sqlHandler.createPlaylist(name, creator, description, imagePath)
+
+    def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
+        print(playlistId, songId, songPosition)
+        """
+        A function to add a song to a playlist in the database.
+
+        Parameters:
+        - playlistId: int, required, the id of the playlist
+        - songId: int, required, the id of the song
+        - songPosition: int, required, the position of the song in the playlist
+
+        Returns:
+        - None
+        """
+        sqlHandler.addSongToPlaylist(playlistId, songId, songPosition)
 
     def updateSliderPositionManual(self):
         """
@@ -90,7 +125,6 @@ class MainWindow(QWidget):
                 songQueue.goToNextSong()
         except Exception:
             pass #print('No song loaded')
-
 
     def searchBarTextChange(self, text):
         """
