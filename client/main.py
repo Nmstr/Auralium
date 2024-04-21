@@ -60,7 +60,7 @@ class MainWindow(QWidget):
 
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(self.createPlaylist)
-        self.ui.playlistsAddSongBtn.clicked.connect(lambda: self.addSongToPlaylist(10, 444, 999999))
+        self.ui.playlistsAddSongBtn.clicked.connect(lambda: self.addSongToPlaylist(1, 500, 999999))
 
         self.show()
 
@@ -81,7 +81,6 @@ class MainWindow(QWidget):
         sqlHandler.createPlaylist(name, creator, description, imagePath)
 
     def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
-        print(playlistId, songId, songPosition)
         """
         A function to add a song to a playlist in the database.
 

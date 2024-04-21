@@ -117,7 +117,6 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         cursor, conn = connectToDB()
         cursor.execute("SELECT * FROM playlists WHERE id = ?", (playlistId,))
         playlistData = cursor.fetchone()
-        print(playlistData)
         if playlistData == None:
             print("Playlist with id {} does not exist.".format(playlistId))
             return
@@ -125,7 +124,6 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         # Check if song exists
         cursor.execute("SELECT * FROM songs WHERE id = ?", (songId,))
         songData = cursor.fetchone()
-        print(songData)
         if songData == None:
             print("Song with id {} does not exist.".format(songId))
             return
@@ -135,9 +133,7 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         songsInPlaylist = json.loads(playlistData[5])
         if songsInPlaylist == None:
             songsInPlaylist = []
-        print(songsInPlaylist)
         songsInPlaylist.insert(songPosition, str(songId))
-        print(songsInPlaylist)
         cursor.execute("UPDATE playlists SET songs = ? WHERE id = ?", (json.dumps(songsInPlaylist), playlistId))
 
         conn.commit()
