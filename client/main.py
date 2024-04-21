@@ -1,6 +1,6 @@
 from debugWindow import DebugWindow
 
-import musicPlayerSqlHandler as sqlHandler
+from sqlHandler import sqlHandler
 import songDataHandler
 
 from songQueue import SongQueue
@@ -81,7 +81,7 @@ class MainWindow(QWidget):
         - None
         """
         name = 'testPlaylist'
-        sqlHandler.createPlaylist(name, creator, description, imagePath)
+        sqlHandler.playlists.createPlaylist(name, creator, description, imagePath)
 
     def retrievePlaylist(self, playlistId: int) -> list:
         """
@@ -93,7 +93,7 @@ class MainWindow(QWidget):
         Returns:
         - list: The playlist retrieved
         """
-        print(sqlHandler.retrievePlaylist(playlistId))
+        print(sqlHandler.playlists.retrievePlaylist(playlistId))
 
     def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
         """
@@ -107,7 +107,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.addSongToPlaylist(playlistId, songId, songPosition)
+        sqlHandler.playlists.addSongToPlaylist(playlistId, songId, songPosition)
     
     def removeSongFromPlaylist(self, playlistId: int, songPosition: int):
         """
@@ -120,7 +120,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.removeSongFromPlaylist(playlistId, songPosition)
+        sqlHandler.playlists.removeSongFromPlaylist(playlistId, songPosition)
 
     def moveSongInPlaylist(self, playlistId: int, songPosition: int, destinationPosition: int) -> None:
         """
@@ -134,7 +134,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.moveSongInPlaylist(playlistId, songPosition, destinationPosition)
+        sqlHandler.playlists.moveSongInPlaylist(playlistId, songPosition, destinationPosition)
 
     def updateSliderPositionManual(self):
         """
@@ -172,7 +172,7 @@ class MainWindow(QWidget):
         This function handles the search functionality based on the search bar text.
         """
         try:
-            allSongs = sqlHandler.retrieveAllSongs()
+            allSongs = sqlHandler.songs.retrieveAllSongs()
             # Create a list of concatenated title and artist for matching
             titlesArtists = [song[1] + " " + song[2] for song in allSongs]
             similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
@@ -180,10 +180,10 @@ class MainWindow(QWidget):
             # Map the similar strings back to the original song tuples
             similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
 
-            similar = similar + [sqlHandler.retrieveRandomSong() for _ in range(3 - len(similar))]
+            similar = similar + [sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
         except Exception as e:
             # If there's an error, fill in with random songs
-            similar = [sqlHandler.retrieveRandomSong() for _ in range(3)]
+            similar = [sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
             print(e)
 
         # Update top results labels
@@ -214,7 +214,7 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.retrieveSongByTitle(songTitle)[3]))
+            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveSongByTitle(songTitle)[3]))
         except Exception:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
@@ -262,7 +262,7 @@ class MainWindow(QWidget):
         return super().closeEvent(a0)
 
 if __name__ == '__main__':
-    sqlHandler.createDB()
+    sqlHandler.database.createDB()
     app = QApplication(sys.argv)
     window = MainWindow()
     sys.exit(app.exec())
