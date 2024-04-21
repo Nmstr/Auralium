@@ -59,82 +59,13 @@ class MainWindow(QWidget):
         self.oldDuration = 0
 
         # Connect playlist buttons
-        self.ui.playlistsCreateBtn.clicked.connect(self.createPlaylist)
-        self.ui.playlistsRetrieveBtn.clicked.connect(lambda: self.retrievePlaylist(1))
-        self.ui.playlistsAddSongBtn.clicked.connect(lambda: self.addSongToPlaylist(1, 500, 999999))
-        self.ui.playlistsRemoveSongBtn.clicked.connect(lambda: self.removeSongFromPlaylist(1, 3))
-        self.ui.playlistsMoveSongBtn.clicked.connect(lambda: self.moveSongInPlaylist(1, 3, 1))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('another One', None, None, None))
+        self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
+        self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
+        self.ui.playlistsRemoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.removeSong(1, 3))
+        self.ui.playlistsMoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.moveSong(1, 3, 1))
 
         self.show()
-
-    def createPlaylist(self, name: str, creator: str = None, description: str = None, imagePath: str = None):
-        """
-        A function to create a playlist in the database.
-
-        Parameters:
-        - name: str, required, the name of the playlist
-        - creator: str, optional, the creator of the playlist
-        - description: str, optional, the description of the playlist
-        - imagePath: str, optional, the image path of the playlist
-
-        Returns:
-        - None
-        """
-        name = 'testPlaylist'
-        sqlHandler.playlists.create(name, creator, description, imagePath)
-
-    def retrievePlaylist(self, playlistId: int) -> list:
-        """
-        A function to retrieve a playlist from the database.
-
-        Parameters:
-        - playlistId: int, required, the id of the playlist
-
-        Returns:
-        - list: The playlist retrieved
-        """
-        print(sqlHandler.playlists.retrieve(playlistId))
-
-    def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
-        """
-        A function to add a song to a playlist in the database.
-
-        Parameters:
-        - playlistId: int, required, the id of the playlist
-        - songId: int, required, the id of the song
-        - songPosition: int, required, the position of the song in the playlist
-
-        Returns:
-        - None
-        """
-        sqlHandler.playlists.addSong(playlistId, songId, songPosition)
-    
-    def removeSongFromPlaylist(self, playlistId: int, songPosition: int):
-        """
-        A function to remove a song from a playlist in the database.
-
-        Parameters:
-        - playlistId: int, required, the id of the playlist
-        - songPosition: int, required, the position of the song in the playlist
-
-        Returns:
-        - None
-        """
-        sqlHandler.playlists.removeSong(playlistId, songPosition)
-
-    def moveSongInPlaylist(self, playlistId: int, songPosition: int, destinationPosition: int) -> None:
-        """
-        A function to move a song in a playlist in the database.
-
-        Parameters:
-        - playlistId: int, required, the id of the playlist
-        - songPosition: int, required, the position of the song in the playlist
-        - destinationPosition: int, required, the destination position of the song in the playlist
-
-        Returns:
-        - None
-        """
-        sqlHandler.playlists.moveSong(playlistId, songPosition, destinationPosition)
 
     def updateSliderPositionManual(self):
         """
