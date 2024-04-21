@@ -127,7 +127,6 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         if songData == None:
             print("Song with id {} does not exist.".format(songId))
             return
-        
 
         # Insert the song
         songsInPlaylist = json.loads(playlistData[5])
