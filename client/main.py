@@ -46,9 +46,9 @@ class MainWindow(QWidget):
         self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
         # Connect play buttons on top results and set defalt text
-        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[3]))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[3]))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[3]))
+        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[3]))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[3]))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[3]))
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
