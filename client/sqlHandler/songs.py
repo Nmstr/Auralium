@@ -2,7 +2,7 @@ from .database import connectToDB, hashFile
 import sqlite3
 import os
 
-def insertSong(title: str, 
+def insertSongIntoDB(title: str, 
                filePath: str,
                artist: str = None,
                source: str = None,
@@ -52,7 +52,7 @@ def insertSong(title: str,
     cursor.close()
     conn.close()
 
-def retrieveAllSongs() -> list:
+def retrieveAll() -> list:
     """
     Retrieve all songs from the database
     """
@@ -67,23 +67,7 @@ def retrieveAllSongs() -> list:
         conn.close()
     return allSongs
 
-def retrieveAllSongTitles() -> list:
-    """
-    Retrieve all songs from the database
-    """
-    try:
-        cursor, conn = connectToDB()
-        cursor.execute('SELECT title FROM Songs')
-        allSongTitles = cursor.fetchall()
-    except Exception:
-        raise
-    finally:
-        cursor.close()
-        conn.close()
-
-    return [item[0] for item in allSongTitles]
-
-def retrieveSongByTitle(title: str) -> list:
+def retrieveByTitle(title: str) -> list:
     """
     Retrieve a song from the database based on the provided title.
 
@@ -104,19 +88,7 @@ def retrieveSongByTitle(title: str) -> list:
         conn.close()
     return song
 
-def retrieveSongByFilePath(filePath: str) -> list:
-    try:
-        cursor, conn = connectToDB()
-        cursor.execute('SELECT * FROM Songs WHERE filePath = ?', (filePath,))
-        song = cursor.fetchone()
-    except Exception:
-        raise
-    finally:
-        cursor.close()
-        conn.close()
-    return song
-
-def retrieveSongBySha256hash(sha256hash: str) -> list:
+def retrieveBySha256hash(sha256hash: str) -> list:
     try:
         cursor, conn = connectToDB()
         cursor.execute('SELECT * FROM Songs WHERE sha256hash = ?', (sha256hash,))

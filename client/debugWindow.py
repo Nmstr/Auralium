@@ -19,10 +19,9 @@ class IndexSongsThread(QThread):
         for song in songs:
             processedSongs += 1
             hash = sqlHandler.database.hashFile(os.path.join('music', song))
-            if not sqlHandler.songs.retrieveSongBySha256hash(hash):
-                #sqlHandler.insertSong(song, os.path.join('music', song), source='local')
+            if not sqlHandler.songs.retrieveBySha256hash(hash):
                 songData = songDataHandler.getTag(os.path.join('music', song))
-                sqlHandler.songs.insertSong(
+                sqlHandler.songs.insertSongIntoDB(
                     title=songData.title,
                     filePath=os.path.join('music', song),
                     artist=songData.artist,

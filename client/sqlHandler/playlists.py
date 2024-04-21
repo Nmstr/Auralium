@@ -1,7 +1,7 @@
 from .database import connectToDB
 import json
 
-def createPlaylist(name: str,
+def create(name: str,
                    creator: str = None,
                    description: str = None,
                    imagePath: str = None
@@ -30,7 +30,28 @@ def createPlaylist(name: str,
         cursor.close()
         conn.close()
 
-def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
+def retrieve(playlistId: int) -> list:
+    """
+    A function to retrieve a playlist from the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+
+    Returns:
+    - list: The playlist retrieved
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute("SELECT * FROM playlists WHERE id = ?", (playlistId,))
+        playlist = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return playlist
+
+def addSong(playlistId: int, songId: int, songPosition: int) -> None:
     """
     A function to add a song to a playlist in the database.
 
@@ -72,7 +93,7 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         cursor.close()
         conn.close()
 
-def removeSongFromPlaylist(playlistId: int, songPosition: int) -> None:
+def removeSong(playlistId: int, songPosition: int) -> None:
     """
     A function to remove a song from a playlist in the database.
 
@@ -95,7 +116,7 @@ def removeSongFromPlaylist(playlistId: int, songPosition: int) -> None:
         cursor.close()
         conn.close()
 
-def moveSongInPlaylist(playlistId: int, songPosition: int, destinationPosition: int) -> None:
+def moveSong(playlistId: int, songPosition: int, destinationPosition: int) -> None:
     """
     A function to move a song in a playlist in the database.
 
@@ -118,24 +139,3 @@ def moveSongInPlaylist(playlistId: int, songPosition: int, destinationPosition: 
         raise
     finally:
         cursor.close()
-
-def retrievePlaylist(playlistId: int) -> list:
-    """
-    A function to retrieve a playlist from the database.
-
-    Parameters:
-    - playlistId: int, required, the id of the playlist
-
-    Returns:
-    - list: The playlist retrieved
-    """
-    try:
-        cursor, conn = connectToDB()
-        cursor.execute("SELECT * FROM playlists WHERE id = ?", (playlistId,))
-        playlist = cursor.fetchone()
-    except Exception:
-        raise
-    finally:
-        cursor.close()
-        conn.close()
-    return playlist

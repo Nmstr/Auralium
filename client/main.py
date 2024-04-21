@@ -46,9 +46,9 @@ class MainWindow(QWidget):
         self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
         # Connect play buttons on top results and set defalt text
-        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult0Name.text())[3]))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult1Name.text())[3]))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveSongByTitle(self.ui.searchTopResult2Name.text())[3]))
+        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult1Name.text())[3]))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult2Name.text())[3]))
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
@@ -81,7 +81,7 @@ class MainWindow(QWidget):
         - None
         """
         name = 'testPlaylist'
-        sqlHandler.playlists.createPlaylist(name, creator, description, imagePath)
+        sqlHandler.playlists.create(name, creator, description, imagePath)
 
     def retrievePlaylist(self, playlistId: int) -> list:
         """
@@ -93,7 +93,7 @@ class MainWindow(QWidget):
         Returns:
         - list: The playlist retrieved
         """
-        print(sqlHandler.playlists.retrievePlaylist(playlistId))
+        print(sqlHandler.playlists.retrieve(playlistId))
 
     def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
         """
@@ -107,7 +107,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.playlists.addSongToPlaylist(playlistId, songId, songPosition)
+        sqlHandler.playlists.addSong(playlistId, songId, songPosition)
     
     def removeSongFromPlaylist(self, playlistId: int, songPosition: int):
         """
@@ -120,7 +120,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.playlists.removeSongFromPlaylist(playlistId, songPosition)
+        sqlHandler.playlists.removeSong(playlistId, songPosition)
 
     def moveSongInPlaylist(self, playlistId: int, songPosition: int, destinationPosition: int) -> None:
         """
@@ -134,7 +134,7 @@ class MainWindow(QWidget):
         Returns:
         - None
         """
-        sqlHandler.playlists.moveSongInPlaylist(playlistId, songPosition, destinationPosition)
+        sqlHandler.playlists.moveSong(playlistId, songPosition, destinationPosition)
 
     def updateSliderPositionManual(self):
         """
@@ -172,7 +172,7 @@ class MainWindow(QWidget):
         This function handles the search functionality based on the search bar text.
         """
         try:
-            allSongs = sqlHandler.songs.retrieveAllSongs()
+            allSongs = sqlHandler.songs.retrieveAll()
             # Create a list of concatenated title and artist for matching
             titlesArtists = [song[1] + " " + song[2] for song in allSongs]
             similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
@@ -214,7 +214,7 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveSongByTitle(songTitle)[3]))
+            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveByTitle(songTitle)[3]))
         except Exception:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
