@@ -307,6 +307,45 @@
            <string>add Song</string>
           </property>
          </widget>
+         <widget class="QPushButton" name="playlistsRemoveSongBtn">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>330</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>remove Song</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="playlistsMoveSongBtn">
+          <property name="geometry">
+           <rect>
+            <x>190</x>
+            <y>400</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Move Song</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="playlistsRetrieveBtn">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>260</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Retrieve Playlist</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="search">
          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">

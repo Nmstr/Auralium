@@ -142,6 +142,74 @@ def addSongToPlaylist(playlistId: int, songId: int, songPosition: int) -> None:
         cursor.close()
         conn.close()
 
+def removeSongFromPlaylist(playlistId: int, songPosition: int) -> None:
+    """
+    A function to remove a song from a playlist in the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+    - songPosition: int, required, the position of the song in the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        songsInPlaylist = json.loads(cursor.execute("SELECT songs FROM playlists WHERE id = ?", (playlistId,)).fetchone()[0])
+        songsInPlaylist.pop(songPosition)
+        cursor.execute("UPDATE playlists SET songs = ? WHERE id = ?", (json.dumps(songsInPlaylist), playlistId))
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
+def moveSongInPlaylist(playlistId: int, songPosition: int, destinationPosition: int) -> None:
+    """
+    A function to move a song in a playlist in the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+    - songPosition: int, required, the position of the song in the playlist
+    - destinationPosition: int, required, the destination position of the song in the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        songsInPlaylist = json.loads(cursor.execute("SELECT songs FROM playlists WHERE id = ?", (playlistId,)).fetchone()[0])
+        song = songsInPlaylist.pop(songPosition)
+        songsInPlaylist.insert(destinationPosition, song)
+        cursor.execute("UPDATE playlists SET songs = ? WHERE id = ?", (json.dumps(songsInPlaylist), playlistId))
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+
+def retrievePlaylist(playlistId: int) -> list:
+    """
+    A function to retrieve a playlist from the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+
+    Returns:
+    - list: The playlist retrieved
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute("SELECT * FROM playlists WHERE id = ?", (playlistId,))
+        playlist = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return playlist
+
 def insertSong(title: str, 
                filePath: str,
                artist: str = None,

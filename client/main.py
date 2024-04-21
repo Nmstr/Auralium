@@ -60,7 +60,10 @@ class MainWindow(QWidget):
 
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(self.createPlaylist)
+        self.ui.playlistsRetrieveBtn.clicked.connect(lambda: self.retrievePlaylist(1))
         self.ui.playlistsAddSongBtn.clicked.connect(lambda: self.addSongToPlaylist(1, 500, 999999))
+        self.ui.playlistsRemoveSongBtn.clicked.connect(lambda: self.removeSongFromPlaylist(1, 3))
+        self.ui.playlistsMoveSongBtn.clicked.connect(lambda: self.moveSongInPlaylist(1, 3, 1))
 
         self.show()
 
@@ -80,6 +83,18 @@ class MainWindow(QWidget):
         name = 'testPlaylist'
         sqlHandler.createPlaylist(name, creator, description, imagePath)
 
+    def retrievePlaylist(self, playlistId: int) -> list:
+        """
+        A function to retrieve a playlist from the database.
+
+        Parameters:
+        - playlistId: int, required, the id of the playlist
+
+        Returns:
+        - list: The playlist retrieved
+        """
+        print(sqlHandler.retrievePlaylist(playlistId))
+
     def addSongToPlaylist(self, playlistId: int, songId: int, songPosition: int):
         """
         A function to add a song to a playlist in the database.
@@ -93,6 +108,33 @@ class MainWindow(QWidget):
         - None
         """
         sqlHandler.addSongToPlaylist(playlistId, songId, songPosition)
+    
+    def removeSongFromPlaylist(self, playlistId: int, songPosition: int):
+        """
+        A function to remove a song from a playlist in the database.
+
+        Parameters:
+        - playlistId: int, required, the id of the playlist
+        - songPosition: int, required, the position of the song in the playlist
+
+        Returns:
+        - None
+        """
+        sqlHandler.removeSongFromPlaylist(playlistId, songPosition)
+
+    def moveSongInPlaylist(self, playlistId: int, songPosition: int, destinationPosition: int) -> None:
+        """
+        A function to move a song in a playlist in the database.
+
+        Parameters:
+        - playlistId: int, required, the id of the playlist
+        - songPosition: int, required, the position of the song in the playlist
+        - destinationPosition: int, required, the destination position of the song in the playlist
+
+        Returns:
+        - None
+        """
+        sqlHandler.moveSongInPlaylist(playlistId, songPosition, destinationPosition)
 
     def updateSliderPositionManual(self):
         """
