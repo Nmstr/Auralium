@@ -22,12 +22,12 @@ class MainWindow(QWidget):
         # Create hotkey action
         self.hotkeyAction = QAction(self)
         self.hotkeyAction.setShortcut("F12")
-        self.hotkeyAction.triggered.connect(self.openDebugWindow)
+        self.hotkeyAction.triggered.connect(lambda: DebugWindow())
         self.addAction(self.hotkeyAction)
 
         # Connect buttons for applications
-        self.ui.homeBtn.clicked.connect(self.goHome)
-        self.ui.searchBtn.clicked.connect(self.goSearch)
+        self.ui.homeBtn.clicked.connect(lambda: self.ui.mainContentStack.setCurrentWidget(self.ui.home))
+        self.ui.searchBtn.clicked.connect(lambda: self.ui.mainContentStack.setCurrentWidget(self.ui.search))
 
         # Connect buttons/text fields for search
         self.ui.searchBarTextChange('') # Trigger searchBarTextChange once on startup
@@ -170,18 +170,6 @@ class MainWindow(QWidget):
             self.ui.searchFilterAllBtn.setChecked(True)
             self.ui.searchFilterSongsBtn.setChecked(False)
             self.ui.searchFilterArtistsBtn.setChecked(False)
-    
-    def goHome(self):
-        self.ui.mainContentStack.setCurrentWidget(self.ui.home)
-
-    def goSearch(self):
-        self.ui.mainContentStack.setCurrentWidget(self.ui.search)
-    
-    def openDebugWindow(self):
-        """
-        Openes the debug window.
-        """
-        DebugWindow()
     
     def closeEvent(self, a0: QCloseEvent | None) -> None:
         """
