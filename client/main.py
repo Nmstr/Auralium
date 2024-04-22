@@ -14,6 +14,9 @@ from PyQt6 import uic
 import difflib
 import sys
 
+from PyQt6.QtWidgets import QApplication, QMainWindow, QScrollArea, QVBoxLayout, QWidget, QLabel, QFrame
+import sys
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -59,13 +62,49 @@ class MainWindow(QWidget):
         self.oldDuration = 0
 
         # Connect playlist buttons
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('another One', None, None, None))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('New Playlist', None, None, None))
         self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
+        self.ui.playlistsRetrieveAllBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieveAll()))
         self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
         self.ui.playlistsRemoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.removeSong(1, 3))
         self.ui.playlistsMoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.moveSong(1, 3, 1))
 
+        # Call the method to display playlists at initialization
+        self.displayPlaylists()
+
         self.show()
+
+    def displayPlaylists(self):
+        # Retrieve all playlists from the database
+        playlists = sqlHandler.playlists.retrieveAll()
+
+        # Get the container widget and its layout
+        container = self.ui.playlistsScrollAreaWidgetContents
+        layout = QVBoxLayout(container)
+
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())): 
+            widget = layout.itemAt(i).widget()
+            if widget is not None:
+                widget.deleteLater()
+
+        # Dynamically add frames and labels for each playlist
+        for playlist in playlists:
+            # Create a frame for each playlist item
+            frame = QFrame()
+            frame.setFrameShape(QFrame.Shape.StyledPanel)
+            frame.setFixedHeight(50)
+            frameLayout = QVBoxLayout(frame)
+
+            # Create a label with the playlist name
+            label = QLabel(playlist[1])
+            frameLayout.addWidget(label)
+            
+            # Add the frame to the container widget's layout
+            layout.addWidget(frame)
+        
+        # Update the layout of the container
+        container.setLayout(layout)
 
     def updateSliderPositionManual(self):
         """

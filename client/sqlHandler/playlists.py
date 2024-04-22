@@ -51,6 +51,21 @@ def retrieve(playlistId: int) -> list:
         conn.close()
     return playlist
 
+def retrieveAll() -> list:
+    """
+    Retrieve all playlists from the database
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM playlists')
+        allPlaylists = cursor.fetchall()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return allPlaylists
+
 def addSong(playlistId: int, songId: int, songPosition: int) -> None:
     """
     A function to add a song to a playlist in the database.

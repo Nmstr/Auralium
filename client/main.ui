@@ -157,13 +157,13 @@
     <widget class="QFrame" name="sidebar">
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>250</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>16777215</width>
+       <width>200</width>
        <height>16777215</height>
       </size>
      </property>
@@ -176,6 +176,12 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QFrame" name="applications">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -212,12 +218,84 @@
       </item>
       <item>
        <widget class="QFrame" name="playlists">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QFrame" name="playlistsTop">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <widget class="QPushButton" name="playlistsCreateBtn">
+            <property name="geometry">
+             <rect>
+              <x>100</x>
+              <y>10</y>
+              <width>91</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>create Playlist</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QScrollArea" name="playlistsScrollArea">
+           <property name="maximumSize">
+            <size>
+             <width>250</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="playlistsScrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>208</width>
+              <height>322</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -281,24 +359,11 @@
            <string>Home</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="playlistsCreateBtn">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>260</y>
-            <width>161</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>create Playlist</string>
-          </property>
-         </widget>
          <widget class="QPushButton" name="playlistsAddSongBtn">
           <property name="geometry">
            <rect>
-            <x>180</x>
-            <y>330</y>
+            <x>190</x>
+            <y>260</y>
             <width>161</width>
             <height>31</height>
            </rect>
@@ -324,7 +389,7 @@
           <property name="geometry">
            <rect>
             <x>190</x>
-            <y>400</y>
+            <y>330</y>
             <width>161</width>
             <height>31</height>
            </rect>
@@ -344,6 +409,19 @@
           </property>
           <property name="text">
            <string>Retrieve Playlist</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="playlistsRetrieveAllBtn">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>260</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Retrieve All Playlists</string>
           </property>
          </widget>
         </widget>
