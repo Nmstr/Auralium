@@ -157,7 +157,7 @@
     <widget class="QFrame" name="sidebar">
      <property name="minimumSize">
       <size>
-       <width>250</width>
+       <width>300</width>
        <height>0</height>
       </size>
      </property>
@@ -226,17 +226,29 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>300</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_8">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QFrame" name="playlistsTop">
            <property name="minimumSize">
@@ -270,7 +282,7 @@
           <widget class="QScrollArea" name="playlistsScrollArea">
            <property name="maximumSize">
             <size>
-             <width>250</width>
+             <width>300</width>
              <height>16777215</height>
             </size>
            </property>
@@ -282,8 +294,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>208</width>
-              <height>322</height>
+              <width>278</width>
+              <height>342</height>
              </rect>
             </property>
             <property name="minimumSize">
@@ -885,7 +897,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>234</height>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="minimumSize">
@@ -942,7 +954,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>234</height>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="minimumSize">

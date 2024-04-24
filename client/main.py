@@ -1,20 +1,18 @@
 from debugWindow import DebugWindow
 
+from playlistItem import PlaylistItemWidget
 from sqlHandler import sqlHandler
 import songDataHandler
 
 from songQueue import SongQueue
 songQueue = SongQueue()
 
-from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene
+from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
 from PyQt6.QtCore import QTimer
 from PyQt6 import uic
 
 import difflib
-import sys
-
-from PyQt6.QtWidgets import QApplication, QMainWindow, QScrollArea, QVBoxLayout, QWidget, QLabel, QFrame
 import sys
 
 class MainWindow(QWidget):
@@ -63,7 +61,7 @@ class MainWindow(QWidget):
 
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: PlaylistItemWidget.displayPlaylists(self))
         self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
         self.ui.playlistsRetrieveAllBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieveAll()))
         self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
@@ -71,42 +69,9 @@ class MainWindow(QWidget):
         self.ui.playlistsMoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.moveSong(1, 3, 1))
 
         # Call the method to display playlists at initialization
-        self.displayPlaylists()
+        PlaylistItemWidget.displayPlaylists(self)
 
         self.show()
-
-    def displayPlaylists(self):
-        # Retrieve all playlists from the database
-        playlists = sqlHandler.playlists.retrieveAll()
-
-        # Get the container widget
-        container = self.ui.playlistsScrollAreaWidgetContents
-        # Check if the container has a layout, if not, set a new QVBoxLayout
-        layout = container.layout()
-        if layout is None:
-            layout = QVBoxLayout()
-            container.setLayout(layout)
-
-        # Clear existing content in the layout
-        for i in reversed(range(layout.count())): 
-            layoutItem = layout.itemAt(i)
-            if layoutItem.widget() is not None:
-                layoutItem.widget().deleteLater()
-
-        # Dynamically add frames and labels for each playlist
-        for playlist in playlists:
-            # Create a frame for each playlist item
-            frame = QFrame()
-            frame.setFrameShape(QFrame.Shape.StyledPanel)
-            frame.setFixedHeight(50)
-            frameLayout = QVBoxLayout(frame)
-
-            # Create a label with the playlist name
-            label = QLabel(playlist[1])
-            frameLayout.addWidget(label)
-            
-            # Add the frame to the container widget's layout
-            layout.addWidget(frame)
 
     def updateSliderPositionManual(self):
         """
