@@ -62,7 +62,8 @@ class MainWindow(QWidget):
         self.oldDuration = 0
 
         # Connect playlist buttons
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('New Playlist', None, None, None))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
         self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
         self.ui.playlistsRetrieveAllBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieveAll()))
         self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
@@ -78,15 +79,19 @@ class MainWindow(QWidget):
         # Retrieve all playlists from the database
         playlists = sqlHandler.playlists.retrieveAll()
 
-        # Get the container widget and its layout
+        # Get the container widget
         container = self.ui.playlistsScrollAreaWidgetContents
-        layout = QVBoxLayout(container)
+        # Check if the container has a layout, if not, set a new QVBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
 
         # Clear existing content in the layout
         for i in reversed(range(layout.count())): 
-            widget = layout.itemAt(i).widget()
-            if widget is not None:
-                widget.deleteLater()
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
 
         # Dynamically add frames and labels for each playlist
         for playlist in playlists:
@@ -102,9 +107,6 @@ class MainWindow(QWidget):
             
             # Add the frame to the container widget's layout
             layout.addWidget(frame)
-        
-        # Update the layout of the container
-        container.setLayout(layout)
 
     def updateSliderPositionManual(self):
         """
