@@ -91,5 +91,5 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
             print("No songs in playlist")
         else:
             for song in json.loads(self.playlist[5]):
-                playlistWidget = SongItemWidget(song)
+                playlistWidget = SongItemWidget(song, self.mainWindow)
                 layout.addWidget(playlistWidget)

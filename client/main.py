@@ -170,7 +170,7 @@ class MainWindow(QWidget):
         self.setSongImage(similar[1][1], self.ui.searchTopResults1Img)
         self.setSongImage(similar[2][1], self.ui.searchTopResults2Img)
 
-    def setSongImage(self, songTitle: str, graphicsView):
+    def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]):
         """
         A function that sets the image of a song in a graphics view.
 
@@ -185,7 +185,7 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveByTitle(songTitle)[3]))
+            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution))
         except Exception:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
