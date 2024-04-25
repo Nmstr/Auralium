@@ -89,9 +89,39 @@ def retrieveByTitle(title: str) -> list:
     return song
 
 def retrieveBySha256hash(sha256hash: str) -> list:
+    """
+    Retrieves a song from the database based on the provided SHA-256 hash.
+
+    Parameters:
+    - sha256hash: str, the SHA-256 hash of the song to retrieve
+
+    Returns:
+    - list: The song retrieved based on the SHA-256 hash
+    """
     try:
         cursor, conn = connectToDB()
         cursor.execute('SELECT * FROM Songs WHERE sha256hash = ?', (sha256hash,))
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
+def retrieveById(id: int) -> list:
+    """
+    Retrieve a song from the database based on the provided ID.
+
+    Parameters:
+    - id: int, the ID of the song to retrieve
+
+    Returns:
+    - list: The song retrieved based on the ID
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM songs WHERE id = ?', (id,))
         song = cursor.fetchone()
     except Exception:
         raise

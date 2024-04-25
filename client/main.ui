@@ -355,7 +355,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="home">
          <widget class="QLabel" name="homeLabel">
@@ -897,7 +897,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>28</height>
+                   <height>234</height>
                   </rect>
                  </property>
                  <property name="minimumSize">
@@ -954,7 +954,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>1000</width>
-                   <height>28</height>
+                   <height>234</height>
                   </rect>
                  </property>
                  <property name="minimumSize">
@@ -964,6 +964,122 @@
                   </size>
                  </property>
                 </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="playlistView">
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="playlistViewScrollArea">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="playlistViewScrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>662</width>
+               <height>682</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="leftMargin">
+               <number>9</number>
+              </property>
+              <property name="topMargin">
+               <number>9</number>
+              </property>
+              <property name="rightMargin">
+               <number>9</number>
+              </property>
+              <property name="bottomMargin">
+               <number>9</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="playlistsTopper">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>300</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_2">
+                 <item row="0" column="5">
+                  <widget class="QLabel" name="playlistIdLabel">
+                   <property name="text">
+                    <string>Playlist Id</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLabel" name="playlistNameLabel">
+                   <property name="text">
+                    <string>Playlist Name</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" rowspan="6" colspan="3">
+                  <widget class="QGraphicsView" name="playlistImg"/>
+                 </item>
+                 <item row="5" column="3">
+                  <widget class="QLabel" name="playlistCreatorLabel">
+                   <property name="text">
+                    <string>Playlist Creator</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0" colspan="6">
+                  <widget class="QLabel" name="playlistDescriptionLabel">
+                   <property name="text">
+                    <string>Playlist Description</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="5">
+                  <widget class="QLabel" name="playlistLengthLabel">
+                   <property name="text">
+                    <string>Playlist Length</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="playlistSongs">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
                </widget>
               </item>
              </layout>

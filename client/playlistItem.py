@@ -1,15 +1,19 @@
+from songItem import SongItemWidget
 from sqlHandler import sqlHandler
 
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
+import json
+
 # Load the .ui file and get the base class and form class
 Ui_PlaylistItem, BaseClass = uic.loadUiType('playlistsEntry.ui')
 
 class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
-    def __init__(self, playlist):
+    def __init__(self, playlist, mainWindow):
         self.playlist = playlist # Assign playlist to self.playlist to make it accessible in other functions
+        self.mainWindow = mainWindow
 
         super().__init__()
         self.setupUi(self)
@@ -35,7 +39,14 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
         if event.button() == Qt.MouseButton.LeftButton:
             print("Frame clicked!")
             print(self.playlist)
-    
+            self.mainWindow.ui.mainContentStack.setCurrentWidget(self.mainWindow.ui.playlistView)
+            self.mainWindow.ui.playlistIdLabel.setText(str(self.playlist[0]))
+            self.mainWindow.ui.playlistNameLabel.setText(self.playlist[1])
+            self.mainWindow.ui.playlistCreatorLabel.setText(self.playlist[2])
+            self.mainWindow.ui.playlistDescriptionLabel.setText(self.playlist[3])
+            self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.ui.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
+            self.displaySongsInPlaylist()
+
     def enterEvent(self, event):
         """
         Handle the mouse enter event.
@@ -60,25 +71,9 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
         """
         self.setStyleSheet("")
 
-
-
-    def displayPlaylists(self) -> None:
-        """
-        Display the playlists in the UI.
-
-        This function retrieves all playlists from the database and dynamically adds custom widgets for each playlist in the UI.
-
-        Parameters:
-        - self: The instance of the class.
-
-        Return:
-        - None
-        """
-        # Retrieve all playlists from the database
-        playlists = sqlHandler.playlists.retrieveAll()
-
+    def displaySongsInPlaylist(self) -> None:
         # Get the container widget
-        container = self.ui.playlistsScrollAreaWidgetContents
+        container = self.mainWindow.ui.playlistSongs
         # Check if the container has a layout, if not, set a new QVBoxLayout
         layout = container.layout()
         if layout is None:
@@ -92,6 +87,9 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
                 layoutItem.widget().deleteLater()
 
         # Dynamically add custom widgets for each playlist
-        for playlist in playlists:
-            playlistWidget = PlaylistItemWidget(playlist)
-            layout.addWidget(playlistWidget)
+        if self.playlist[5] is None:
+            print("No songs in playlist")
+        else:
+            for song in json.loads(self.playlist[5]):
+                playlistWidget = SongItemWidget(song)
+                layout.addWidget(playlistWidget)

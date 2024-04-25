@@ -61,7 +61,7 @@ class MainWindow(QWidget):
 
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: PlaylistItemWidget.displayPlaylists(self))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
         self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
         self.ui.playlistsRetrieveAllBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieveAll()))
         self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
@@ -69,9 +69,43 @@ class MainWindow(QWidget):
         self.ui.playlistsMoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.moveSong(1, 3, 1))
 
         # Call the method to display playlists at initialization
-        PlaylistItemWidget.displayPlaylists(self)
+        self.displayPlaylists()
 
         self.show()
+
+    def displayPlaylists(self) -> None:
+        """
+        Display the playlists in the UI.
+
+        This function retrieves all playlists from the database and dynamically adds custom widgets for each playlist in the UI.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
+        # Retrieve all playlists from the database
+        playlists = sqlHandler.playlists.retrieveAll()
+
+        # Get the container widget
+        container = self.ui.playlistsScrollAreaWidgetContents
+        # Check if the container has a layout, if not, set a new QVBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
+
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())): 
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
+
+        # Dynamically add custom widgets for each playlist
+        for playlist in playlists:
+            playlistWidget = PlaylistItemWidget(playlist, self)
+            layout.addWidget(playlistWidget)
 
     def updateSliderPositionManual(self):
         """
