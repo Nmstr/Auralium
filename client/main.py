@@ -1,8 +1,8 @@
 from debugWindow import DebugWindow
 
-from contentPlaylist import contentPlaylistWidget
-from contentSearch import contentSearchWidget
-from contentHome import contentHomeWidget
+from content.contentPlaylist import contentPlaylistWidget
+from content.contentSearch import contentSearchWidget
+from content.contentHome import contentHomeWidget
 
 from playlistItem import PlaylistItemWidget
 from sqlHandler import sqlHandler
