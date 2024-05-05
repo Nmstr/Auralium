@@ -1,5 +1,4 @@
 from songItem import SongItemWidget
-from sqlHandler import sqlHandler
 
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtCore import Qt

@@ -2,10 +2,8 @@ from debugWindow import DebugWindow
 
 from playlistItem import PlaylistItemWidget
 from sqlHandler import sqlHandler
-import songDataHandler
-
 from songQueue import SongQueue
-songQueue = SongQueue()
+import songDataHandler
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
@@ -19,6 +17,9 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
+
+        # Create song queue
+        self.songQueue = SongQueue()
 
         # Create hotkey action
         self.hotkeyAction = QAction(self)
@@ -38,18 +39,18 @@ class MainWindow(QWidget):
         self.ui.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
 
         # Connect buttons for music controls
-        self.ui.musicControlsNext.clicked.connect(songQueue.goToNextSong)
-        self.ui.musicControlsLast.clicked.connect(songQueue.goToPreviousSong)
-        self.ui.musicControlsGetQueue.clicked.connect(songQueue.getQueue)
-        self.ui.musicControlsPlay.clicked.connect(songQueue.play)
-        self.ui.musicControlsPause.clicked.connect(songQueue.pause)
-        self.ui.musicControlsVolume.valueChanged.connect(songQueue.setVolume)
+        self.ui.musicControlsNext.clicked.connect(self.songQueue.goToNextSong)
+        self.ui.musicControlsLast.clicked.connect(self.songQueue.goToPreviousSong)
+        self.ui.musicControlsGetQueue.clicked.connect(self.songQueue.getQueue)
+        self.ui.musicControlsPlay.clicked.connect(self.songQueue.play)
+        self.ui.musicControlsPause.clicked.connect(self.songQueue.pause)
+        self.ui.musicControlsVolume.valueChanged.connect(self.songQueue.setVolume)
         self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
         # Connect play buttons on top results and set defalt text
-        self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult1Name.text())[3]))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult2Name.text())[3]))
+        self.ui.searchTopResults0Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
+        self.ui.searchTopResults1Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult1Name.text())[3]))
+        self.ui.searchTopResults2Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult2Name.text())[3]))
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
@@ -113,7 +114,7 @@ class MainWindow(QWidget):
         Changes the position in the song.
         """
         timeInSeconds = self.ui.musicControlsTime.value()
-        songQueue.setTime(timeInSeconds)
+        self.songQueue.setTime(timeInSeconds)
 
     def updateTimeSliderAuto(self):
         """
@@ -121,12 +122,12 @@ class MainWindow(QWidget):
         Adjusts the slider value and triggers actions based on song progress.
         """
         newValue = self.ui.musicControlsTime.value()
-        if songQueue.playing:
+        if self.songQueue.playing:
             newValue += 1
             self.ui.musicControlsTime.setValue(newValue)
 
         try:
-            newDuration = songDataHandler.getTag(songQueue.getCurrentSong()).duration
+            newDuration = songDataHandler.getTag(self.songQueue.getCurrentSong()).duration
             if self.oldDuration != newDuration:
                 self.ui.musicControlsTime.setValue(0)
                 self.ui.musicControlsTime.setRange(0, int(newDuration))
@@ -134,7 +135,7 @@ class MainWindow(QWidget):
 
             if newValue >= int(newDuration):
                 self.ui.musicControlsTime.setValue(0)
-                songQueue.goToNextSong()
+                self.songQueue.goToNextSong()
         except Exception:
             pass #print('No song loaded')
 

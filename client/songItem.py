@@ -18,3 +18,46 @@ class SongItemWidget(BaseClass, Ui_PlaylistItem):
         self.nameLabel.setText(self.song[1])
         self.artistLabel.setText(self.song[2])
         self.mainWindow.setSongImage(self.song[1], self.coverImg, [100, 100])
+
+    def mousePressEvent(self, event) -> None:
+        """
+        Handle the mouse press event.
+
+        This function is called when a mouse button is pressed. It checks if the left mouse button was pressed and if so, executes the function.
+
+        Parameters:
+            event (QMouseEvent): The mouse event that triggered the function.
+
+        Returns:
+            None
+        """
+        if event.button() == Qt.MouseButton.LeftButton:
+            print("Frame clicked!")
+            print(self.song[3])
+            self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3])
+        #self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
+
+
+    def enterEvent(self, event):
+        """
+        Handle the mouse enter event.
+
+        Parameters:
+            event (QEnterEvent): The enter event that triggered the function.
+
+        Returns:
+            None
+        """
+        self.setStyleSheet("background-color: #333;")
+
+    def leaveEvent(self, event):
+        """
+        Handle the mouse leave event.
+
+        Parameters:
+            event (QEvent): The leave event that triggered the function.
+
+        Returns:
+            None
+        """
+        self.setStyleSheet("")
