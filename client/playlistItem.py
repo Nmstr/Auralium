@@ -36,12 +36,12 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
             None
         """
         if event.button() == Qt.MouseButton.LeftButton:
-            self.mainWindow.ui.mainContentStack.setCurrentWidget(self.mainWindow.ui.playlistView)
-            self.mainWindow.ui.playlistIdLabel.setText(str(self.playlist[0]))
-            self.mainWindow.ui.playlistNameLabel.setText(self.playlist[1])
-            self.mainWindow.ui.playlistCreatorLabel.setText(self.playlist[2])
-            self.mainWindow.ui.playlistDescriptionLabel.setText(self.playlist[3])
-            self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.ui.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
+            self.mainWindow.setMainContentDisplay('playlist')
+            self.mainWindow.playlistDisplay.playlistIdLabel.setText(str(self.playlist[0]))
+            self.mainWindow.playlistDisplay.playlistNameLabel.setText(self.playlist[1])
+            self.mainWindow.playlistDisplay.playlistCreatorLabel.setText(self.playlist[2])
+            self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
+            self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
             self.displaySongsInPlaylist()
 
     def enterEvent(self, event):
@@ -70,7 +70,8 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
 
     def displaySongsInPlaylist(self) -> None:
         # Get the container widget
-        container = self.mainWindow.ui.playlistSongs
+        container = self.mainWindow.playlistDisplay.playlistSongs
+
         # Check if the container has a layout, if not, set a new QVBoxLayout
         layout = container.layout()
         if layout is None:

@@ -10,13 +10,15 @@ from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
 from PyQt6.QtCore import QTimer
 from PyQt6 import uic
 
-import difflib
 import sys
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
+
+        # Set the main content
+        self.setMainContentDisplay("home")
 
         # Create song queue
         self.songQueue = SongQueue()
@@ -28,15 +30,8 @@ class MainWindow(QWidget):
         self.addAction(self.hotkeyAction)
 
         # Connect buttons for applications
-        self.ui.homeBtn.clicked.connect(lambda: self.ui.mainContentStack.setCurrentWidget(self.ui.home))
-        self.ui.searchBtn.clicked.connect(lambda: self.ui.mainContentStack.setCurrentWidget(self.ui.search))
-
-        # Connect buttons/text fields for search
-        self.ui.searchBarTextChange('') # Trigger searchBarTextChange once on startup
-        self.ui.searchBar.textChanged.connect(self.searchBarTextChange)
-        self.ui.searchFilterAllBtn.clicked.connect(self.switchSearchFilter)
-        self.ui.searchFilterSongsBtn.clicked.connect(self.switchSearchFilter)
-        self.ui.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
+        self.ui.homeBtn.clicked.connect(lambda: self.setMainContentDisplay('home'))
+        self.ui.searchBtn.clicked.connect(lambda: self.setMainContentDisplay('search'))
 
         # Connect buttons for music controls
         self.ui.musicControlsNext.clicked.connect(self.songQueue.goToNextSong)
@@ -46,11 +41,6 @@ class MainWindow(QWidget):
         self.ui.musicControlsPause.clicked.connect(self.songQueue.pause)
         self.ui.musicControlsVolume.valueChanged.connect(self.songQueue.setVolume)
         self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
-
-        # Connect play buttons on top results and set defalt text
-        self.ui.searchTopResults0Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
-        self.ui.searchTopResults1Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult1Name.text())[3]))
-        self.ui.searchTopResults2Play.clicked.connect(lambda: self.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult2Name.text())[3]))
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
@@ -63,11 +53,6 @@ class MainWindow(QWidget):
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
         self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
-        self.ui.playlistsRetrieveBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieve(1)))
-        self.ui.playlistsRetrieveAllBtn.clicked.connect(lambda: print(sqlHandler.playlists.retrieveAll()))
-        self.ui.playlistsAddSongBtn.clicked.connect(lambda: sqlHandler.playlists.addSong(1, 500, 999999))
-        self.ui.playlistsRemoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.removeSong(1, 3))
-        self.ui.playlistsMoveSongBtn.clicked.connect(lambda: sqlHandler.playlists.moveSong(1, 3, 1))
 
         # Call the method to display playlists at initialization
         self.displayPlaylists()
@@ -139,38 +124,6 @@ class MainWindow(QWidget):
         except Exception:
             pass #print('No song loaded')
 
-    def searchBarTextChange(self, text):
-        """
-        This function handles the search functionality based on the search bar text.
-        """
-        try:
-            allSongs = sqlHandler.songs.retrieveAll()
-            # Create a list of concatenated title and artist for matching
-            titlesArtists = [song[1] + " " + song[2] for song in allSongs]
-            similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
-            
-            # Map the similar strings back to the original song tuples
-            similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
-
-            similar = similar + [sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
-        except Exception as e:
-            # If there's an error, fill in with random songs
-            similar = [sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
-            print(e)
-
-        # Update top results labels
-        self.ui.searchTopResult0Name.setText(similar[0][1])
-        self.ui.searchTopResult1Name.setText(similar[1][1])
-        self.ui.searchTopResult2Name.setText(similar[2][1])
-        self.ui.searchTopResult0Artist.setText(similar[0][2])
-        self.ui.searchTopResult1Artist.setText(similar[1][2])
-        self.ui.searchTopResult2Artist.setText(similar[2][2])
-        
-        # Update top results images
-        self.setSongImage(similar[0][1], self.ui.searchTopResults0Img)
-        self.setSongImage(similar[1][1], self.ui.searchTopResults1Img)
-        self.setSongImage(similar[2][1], self.ui.searchTopResults2Img)
-
     def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]):
         """
         A function that sets the image of a song in a graphics view.
@@ -192,26 +145,49 @@ class MainWindow(QWidget):
         graphicsScene.addPixmap(pixmap)
         graphicsView.setScene(graphicsScene)
 
-    def switchSearchFilter(self, filter):
-        """
-        This function handles the switching of search filters based on the senderName and the filter value.
-        """
-        senderName = self.sender().objectName()
+    def setMainContentDisplay(self, content) -> None:
+        container = self.ui.mainContent
+        def clearContent(layout) -> None:
+            # Clear existing content in the layout
+            for i in reversed(range(layout.count())): 
+                layoutItem = layout.itemAt(i)
+                if layoutItem.widget() is not None:
+                    layoutItem.widget().deleteLater()
 
-        if senderName == 'searchFilterAllBtn' and filter == True:
-            self.ui.searchFilterSongsBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
-        elif senderName == 'searchFilterSongsBtn' and filter == True:
-            self.ui.searchFilterAllBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
-        elif senderName == 'searchFilterArtistsBtn' and filter == True:
-            self.ui.searchFilterAllBtn.setChecked(False)
-            self.ui.searchFilterSongsBtn.setChecked(False)
-        else:
-            self.ui.searchFilterAllBtn.setChecked(True)
-            self.ui.searchFilterSongsBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
-    
+        self.currentDisplayContent = content
+        if content == "home":
+            layout = container.layout()
+            if layout is None:
+                layout = QVBoxLayout()
+                container.setLayout(layout)
+            clearContent(layout)
+
+            from contentHome import contentHomeWidget
+            self.homeDisplay = contentHomeWidget(self)
+            layout.addWidget(self.homeDisplay)
+
+        elif content == "search":
+            layout = self.ui.mainContent.layout()
+            if layout is None:
+                layout = QVBoxLayout()
+                container.setLayout(layout)
+            clearContent(layout)
+
+            from contentSearch import contentSearchWidget
+            self.searchDisplay = contentSearchWidget(self)
+            layout.addWidget(self.searchDisplay)
+
+        elif content == "playlist":
+            layout = self.ui.mainContent.layout()
+            if layout is None:
+                layout = QVBoxLayout()
+                container.setLayout(layout)
+            clearContent(layout)
+
+            from contentPlaylist import contentPlaylistWidget
+            self.playlistDisplay = contentPlaylistWidget(self)
+            layout.addWidget(self.playlistDisplay)
+
     def closeEvent(self, a0: QCloseEvent | None) -> None:
         """
         A function that handles the close event. Closes all top-level widgets except itself.
