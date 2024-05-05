@@ -32,11 +32,7 @@ class SongItemWidget(BaseClass, Ui_PlaylistItem):
             None
         """
         if event.button() == Qt.MouseButton.LeftButton:
-            print("Frame clicked!")
-            print(self.song[3])
             self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3])
-        #self.ui.searchTopResults0Play.clicked.connect(lambda: songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.ui.searchTopResult0Name.text())[3]))
-
 
     def enterEvent(self, event):
         """

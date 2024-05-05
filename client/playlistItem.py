@@ -36,8 +36,6 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
             None
         """
         if event.button() == Qt.MouseButton.LeftButton:
-            print("Frame clicked!")
-            print(self.playlist)
             self.mainWindow.ui.mainContentStack.setCurrentWidget(self.mainWindow.ui.playlistView)
             self.mainWindow.ui.playlistIdLabel.setText(str(self.playlist[0]))
             self.mainWindow.ui.playlistNameLabel.setText(self.playlist[1])
@@ -86,9 +84,7 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
                 layoutItem.widget().deleteLater()
 
         # Dynamically add custom widgets for each playlist
-        if self.playlist[5] is None:
-            print("No songs in playlist")
-        else:
+        if not self.playlist[5] is None:
             for song in json.loads(self.playlist[5]):
                 playlistWidget = SongItemWidget(song, self.mainWindow)
                 layout.addWidget(playlistWidget)
