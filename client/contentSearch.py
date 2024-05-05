@@ -32,6 +32,9 @@ class contentSearchWidget(BaseClass, Ui_PlaylistItem):
     def searchBarTextChange(self, text):
         """
         This function handles the search functionality based on the search bar text.
+        
+        Parameters:
+            text (str): The text entered in the search bar.
         """
         try:
             allSongs = sqlHandler.songs.retrieveAll()

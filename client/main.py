@@ -1,5 +1,9 @@
 from debugWindow import DebugWindow
 
+from contentPlaylist import contentPlaylistWidget
+from contentSearch import contentSearchWidget
+from contentHome import contentHomeWidget
+
 from playlistItem import PlaylistItemWidget
 from sqlHandler import sqlHandler
 from songQueue import SongQueue
@@ -146,45 +150,33 @@ class MainWindow(QWidget):
         graphicsView.setScene(graphicsScene)
 
     def setMainContentDisplay(self, content) -> None:
+        """
+        A function that sets the main content display based on the content parameter.
+
+        Parameters:
+        - content: the type of content to display
+        """
         container = self.ui.mainContent
-        def clearContent(layout) -> None:
-            # Clear existing content in the layout
-            for i in reversed(range(layout.count())): 
-                layoutItem = layout.itemAt(i)
-                if layoutItem.widget() is not None:
-                    layoutItem.widget().deleteLater()
+        layout = container.layout()
+        # Create a new layout if it doesn't exist
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
 
-        self.currentDisplayContent = content
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())): 
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
+
+        # Change the mainContent widget
         if content == "home":
-            layout = container.layout()
-            if layout is None:
-                layout = QVBoxLayout()
-                container.setLayout(layout)
-            clearContent(layout)
-
-            from contentHome import contentHomeWidget
             self.homeDisplay = contentHomeWidget(self)
             layout.addWidget(self.homeDisplay)
-
         elif content == "search":
-            layout = self.ui.mainContent.layout()
-            if layout is None:
-                layout = QVBoxLayout()
-                container.setLayout(layout)
-            clearContent(layout)
-
-            from contentSearch import contentSearchWidget
             self.searchDisplay = contentSearchWidget(self)
             layout.addWidget(self.searchDisplay)
-
         elif content == "playlist":
-            layout = self.ui.mainContent.layout()
-            if layout is None:
-                layout = QVBoxLayout()
-                container.setLayout(layout)
-            clearContent(layout)
-
-            from contentPlaylist import contentPlaylistWidget
             self.playlistDisplay = contentPlaylistWidget(self)
             layout.addWidget(self.playlistDisplay)
 
