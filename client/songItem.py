@@ -48,7 +48,6 @@ class SongItemWidget(BaseClass, Ui_PlaylistItem):
         addSongToQueue.triggered.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
         removeSongFromPlaylist.triggered.connect(self.removeSong)
 
-
     def addSongToPlaylist(self, playlist, song):
         # Add the song to the in database playlist
         sqlHandler.playlists.addSong(playlist[0], song[0], 1)
