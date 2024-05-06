@@ -80,6 +80,7 @@ class SongItemWidget(BaseClass, Ui_PlaylistItem):
         """
         if event.button() == Qt.MouseButton.LeftButton:
             self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3])
+            self.mainWindow.songQueue.playingPlaylist = [self.parent.playlist, self.songIndex]
 
     def enterEvent(self, event):
         """

@@ -1,9 +1,9 @@
+from sqlHandler import sqlHandler
+
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
-
-class QueueEndReached(Exception):
-    pass
+import json
 
 class SongQueue():
     def __init__(self):
@@ -12,6 +12,7 @@ class SongQueue():
         self.queue = []
         self.currentSongIndex = 0
         self.playing = False
+        self.playingPlaylist = None
 
     def play(self):
         self.playing = True
@@ -42,9 +43,6 @@ class SongQueue():
 
         Parameters:
         - song: str, the song to be added to the queue
-
-        Returns:
-        - None
         """
         self.queue.append(song)
 
@@ -54,10 +52,8 @@ class SongQueue():
 
         Parameters:
         - song: str, the song to be added to the queue
-
-        Returns:
-        - None
         """
+        self.playingPlaylist = None
         self.addSong(song)
         self.currentSongIndex = len(self.queue) - 1
 
@@ -71,25 +67,26 @@ class SongQueue():
 
         Returns:
         - The current song from the queue if available
-        - Raises QueueEndReached exception if no more songs in the queue
         """
         if self.currentSongIndex < len(self.queue):
             return self.queue[self.currentSongIndex]
         else:
-            raise QueueEndReached('No more songs in the queue')
+            print('No more songs in the queue')
 
     def goToNextSong(self):
         """
         A function that advances to the next song in the queue.
-
-        Returns:
-        - None
         """
+        if self.playingPlaylist is not None:
+            if len(json.loads(self.playingPlaylist[0][5])) > self.playingPlaylist[1]: # If there are more songs in the playlist
+                self.playingPlaylist[1] += 1 # Advance to the next song in the playlist
+                self.addSong(sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])[3]) # Add the next song to the queue
+
         if self.currentSongIndex < len(self.queue) - 1:
             self.currentSongIndex += 1
         else:
             self.playing = False
-            raise QueueEndReached('No more songs in the queue')
+
         if self.playing:
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
@@ -97,16 +94,12 @@ class SongQueue():
     def goToPreviousSong(self):
         """
         A function that goes to the previous song in the queue if available.
-
-        Returns:
-        - None
-        - Raises QueueEndReached exception if no more songs in the queue
         """
         if self.currentSongIndex > 0:
             self.currentSongIndex -= 1
         else:
             self.playing = False
-            raise QueueEndReached('No more songs in the queue')
+            print('No more songs in the queue')
         if self.playing:
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
@@ -115,7 +108,11 @@ class SongQueue():
         """
         A function that returns the current song queue along with its current index in the queue.
         """
+        print('-----')
         print(self.queue)
         print(self.currentSongIndex)
         print(self.getCurrentSong())
+        print(self.playing)
+        print(self.playingPlaylist)
+        print('-----')
         return self.queue, self.currentSongIndex
