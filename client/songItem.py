@@ -14,7 +14,7 @@ Ui_PlaylistItem, BaseClass = uic.loadUiType('playlistSongEntry.ui')
 
 class SongItemWidget(BaseClass, Ui_PlaylistItem):
     def __init__(self, song, songIndex, mainWindow, parent):
-        self.song = sqlHandler.songs.retrieveById(song[0])
+        self.song = sqlHandler.songs.retrieveById(song)
         self.mainWindow = mainWindow
         self.songIndex = songIndex
         self.parent = parent
