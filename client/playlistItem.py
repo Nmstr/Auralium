@@ -1,3 +1,5 @@
+from sqlHandler import sqlHandler
+
 from songItem import SongItemWidget
 
 from PyQt6.QtWidgets import QVBoxLayout
@@ -42,6 +44,7 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
             self.mainWindow.playlistDisplay.playlistCreatorLabel.setText(self.playlist[2])
             self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
             self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
+            self.playlist = sqlHandler.playlists.retrieve(self.playlist[0])
             self.displaySongsInPlaylist()
 
     def enterEvent(self, event):
@@ -79,13 +82,13 @@ class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
             container.setLayout(layout)
 
         # Clear existing content in the layout
-        for i in reversed(range(layout.count())): 
+        for i in reversed(range(layout.count())):
             layoutItem = layout.itemAt(i)
             if layoutItem.widget() is not None:
                 layoutItem.widget().deleteLater()
 
         # Dynamically add custom widgets for each playlist
         if not self.playlist[5] is None:
-            for song in json.loads(self.playlist[5]):
-                playlistWidget = SongItemWidget(song, self.mainWindow)
+            for songIndex, song in enumerate(json.loads(self.playlist[5])):
+                playlistWidget = SongItemWidget(song, songIndex, self.mainWindow, self)
                 layout.addWidget(playlistWidget)

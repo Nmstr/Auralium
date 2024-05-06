@@ -95,9 +95,9 @@ def addSong(playlistId: int, songId: int, songPosition: int) -> None:
             return
 
         # Insert the song
-        songsInPlaylist = json.loads(playlistData[5])
-        if songsInPlaylist == None:
-            songsInPlaylist = []
+        songsInPlaylist = []
+        if playlistData[5] is not None:
+            songsInPlaylist = json.loads(playlistData[5])
         songsInPlaylist.insert(songPosition, str(songId))
         cursor.execute("UPDATE playlists SET songs = ? WHERE id = ?", (json.dumps(songsInPlaylist), playlistId))
 

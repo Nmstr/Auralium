@@ -16,6 +16,9 @@ class SongQueue():
     def play(self):
         self.playing = True
         pygame.mixer.music.unpause()
+        if pygame.mixer.music.get_busy() == False:
+            pygame.mixer.music.load(self.queue[self.currentSongIndex])
+            pygame.mixer.music.play()
     
     def pause(self):
         self.playing = False

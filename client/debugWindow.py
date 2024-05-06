@@ -45,4 +45,3 @@ class DebugWindow(QWidget):
     def startIndexing(self):
         if not self.indexSongsThread.isRunning():
             self.indexSongsThread.start()
-

@@ -59,10 +59,10 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="0" column="5">
-           <widget class="QLabel" name="playlistIdLabel">
+          <item row="5" column="5">
+           <widget class="QLabel" name="playlistLengthLabel">
             <property name="text">
-             <string>Playlist Id</string>
+             <string>Playlist Length</string>
             </property>
            </widget>
           </item>
@@ -73,9 +73,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0" rowspan="6" colspan="3">
-           <widget class="QGraphicsView" name="playlistImg"/>
-          </item>
           <item row="5" column="3">
            <widget class="QLabel" name="playlistCreatorLabel">
             <property name="text">
@@ -83,17 +80,55 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0" colspan="6">
+          <item row="0" column="5">
+           <widget class="QLabel" name="playlistIdLabel">
+            <property name="text">
+             <string>Playlist Id</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" rowspan="6" colspan="3">
+           <widget class="QGraphicsView" name="playlistImg"/>
+          </item>
+          <item row="6" column="0">
            <widget class="QLabel" name="playlistDescriptionLabel">
             <property name="text">
              <string>Playlist Description</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="5">
-           <widget class="QLabel" name="playlistLengthLabel">
+          <item row="7" column="1">
+           <widget class="QPushButton" name="pushButton_2">
             <property name="text">
-             <string>Playlist Length</string>
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QPushButton" name="pushButton_4">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="5">
+           <widget class="QPushButton" name="pushButton_5">
+            <property name="text">
+             <string>PushButton</string>
             </property>
            </widget>
           </item>
