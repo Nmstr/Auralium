@@ -50,7 +50,7 @@ class SongItemWidget(BaseClass, Ui_PlaylistItem):
 
     def addSongToPlaylist(self, playlist, song):
         # Add the song to the in database playlist
-        sqlHandler.playlists.addSong(playlist[0], song[0], 1)
+        sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
 
     def removeSong(self):
         # Remove the song from the in database playlist
