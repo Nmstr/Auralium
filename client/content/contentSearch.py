@@ -5,9 +5,9 @@ from PyQt6 import uic
 import difflib
 
 # Load the .ui file and get the base class and form class
-Ui_PlaylistItem, BaseClass = uic.loadUiType('content/contentSearch.ui')
+UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 
-class contentSearchWidget(BaseClass, Ui_PlaylistItem):
+class contentSearchWidget(BaseClass, UiContentSearch):
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
 

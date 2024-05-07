@@ -9,9 +9,9 @@ from PyQt6 import uic
 import json
 
 # Load the .ui file and get the base class and form class
-Ui_PlaylistItem, BaseClass = uic.loadUiType('playlistsEntry.ui')
+UiPlaylistItem, BaseClass = uic.loadUiType('playlistsEntry.ui')
 
-class PlaylistItemWidget(BaseClass, Ui_PlaylistItem):
+class PlaylistItemWidget(BaseClass, UiPlaylistItem):
     def __init__(self, playlist, mainWindow):
         self.playlist = playlist # Assign playlist to self.playlist to make it accessible in other functions
         self.mainWindow = mainWindow

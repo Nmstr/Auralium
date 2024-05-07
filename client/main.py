@@ -11,7 +11,6 @@ import songDataHandler
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
-from PyQt6.QtCore import QTimer
 from PyQt6 import uic
 
 import sys
@@ -21,11 +20,22 @@ class MainWindow(QWidget):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
 
+        # Create song queue
+        self.songQueue = SongQueue()
+
         # Set the main content
         self.setMainContentDisplay("home")
 
-        # Create song queue
-        self.songQueue = SongQueue()
+        from bottomBar import bottomBarWidget
+        # Get the container widget
+        container = self.ui.bottomBar
+        # Check if the container has a layout, if not, set a new QVBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
+        self.bottomBar = bottomBarWidget(self)
+        layout.addWidget(self.bottomBar)
 
         # Create hotkey action
         self.hotkeyAction = QAction(self)
@@ -36,23 +46,6 @@ class MainWindow(QWidget):
         # Connect buttons for applications
         self.ui.homeBtn.clicked.connect(lambda: self.setMainContentDisplay('home'))
         self.ui.searchBtn.clicked.connect(lambda: self.setMainContentDisplay('search'))
-
-        # Connect buttons for music controls
-        self.ui.musicControlsNext.clicked.connect(self.songQueue.goToNextSong)
-        self.ui.musicControlsLast.clicked.connect(self.songQueue.goToPreviousSong)
-        self.ui.musicControlsGetQueue.clicked.connect(self.songQueue.getQueue)
-        self.ui.musicControlsPlay.clicked.connect(self.songQueue.play)
-        self.ui.musicControlsPause.clicked.connect(self.songQueue.pause)
-        self.ui.musicControlsVolume.valueChanged.connect(self.songQueue.setVolume)
-        self.ui.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
-
-        # Create a QTimer to update the time slider automatically every second
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.updateTimeSliderAuto)
-        self.timer.start(1000)
-
-        # Create value for song duration
-        self.oldDuration = 0
 
         # Connect playlist buttons
         self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
@@ -96,37 +89,6 @@ class MainWindow(QWidget):
         for playlist in playlists:
             playlistWidget = PlaylistItemWidget(playlist, self)
             layout.addWidget(playlistWidget)
-
-    def updateSliderPositionManual(self):
-        """
-        Updates the slider position manually based on the value of musicControlsTime.
-        Changes the position in the song.
-        """
-        timeInSeconds = self.ui.musicControlsTime.value()
-        self.songQueue.setTime(timeInSeconds)
-
-    def updateTimeSliderAuto(self):
-        """
-        Updates the time slider automatically based on the current song's duration.
-        Adjusts the slider value and triggers actions based on song progress.
-        """
-        newValue = self.ui.musicControlsTime.value()
-        if self.songQueue.playing:
-            newValue += 1
-            self.ui.musicControlsTime.setValue(newValue)
-
-        try:
-            newDuration = songDataHandler.getTag(self.songQueue.getCurrentSong()).duration
-            if self.oldDuration != newDuration:
-                self.ui.musicControlsTime.setValue(0)
-                self.ui.musicControlsTime.setRange(0, int(newDuration))
-            self.oldDuration = newDuration
-
-            if newValue >= int(newDuration):
-                self.ui.musicControlsTime.setValue(0)
-                self.songQueue.goToNextSong()
-        except Exception:
-            pass #print('No song loaded')
 
     def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]):
         """

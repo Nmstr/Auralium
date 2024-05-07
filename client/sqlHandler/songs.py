@@ -130,6 +130,27 @@ def retrieveById(id: int) -> list:
         conn.close()
     return song
 
+def retrieveByPath(filePath: str) -> list:
+    """
+    Retrieve a song from the database based on the provided file path.
+
+    Parameters:
+    - filePath: str, the file path of the song to retrieve
+
+    Returns:
+    - list: The song retrieved based on the file path
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('SELECT * FROM songs WHERE filePath = ?', (filePath,))
+        song = cursor.fetchone()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return song
+
 def retrieveRandomSong() -> list:
     """
     Retrieve a random song from the database.

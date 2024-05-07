@@ -71,16 +71,17 @@ class SongQueue():
         if self.currentSongIndex < len(self.queue):
             return self.queue[self.currentSongIndex]
         else:
-            print('No more songs in the queue')
+            pass #print('No more songs in the queue')
 
     def goToNextSong(self):
         """
         A function that advances to the next song in the queue.
         """
         if self.playingPlaylist is not None:
-            if len(json.loads(self.playingPlaylist[0][5])) > self.playingPlaylist[1]: # If there are more songs in the playlist
-                self.playingPlaylist[1] += 1 # Advance to the next song in the playlist
-                self.addSong(sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])[3]) # Add the next song to the queue
+            if not self.queue[self.currentSongIndex+1:]:
+                if len(json.loads(self.playingPlaylist[0][5])) > self.playingPlaylist[1] + 1: # If there are more songs in the playlist
+                    self.playingPlaylist[1] += 1 # Advance to the next song in the playlist
+                    self.addSong(sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])[3]) # Add the next song to the queue
 
         if self.currentSongIndex < len(self.queue) - 1:
             self.currentSongIndex += 1
@@ -95,8 +96,12 @@ class SongQueue():
         """
         A function that goes to the previous song in the queue if available.
         """
+        if self.playingPlaylist is not None:
+            if self.playingPlaylist[1] > 0:
+                self.playingPlaylist[1] -= 1 # Go to the previous song in the playlist
         if self.currentSongIndex > 0:
             self.currentSongIndex -= 1
+            self.queue.pop(self.currentSongIndex + 1)
         else:
             self.playing = False
             print('No more songs in the queue')

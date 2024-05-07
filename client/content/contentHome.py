@@ -3,9 +3,9 @@ from sqlHandler import sqlHandler
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-Ui_PlaylistItem, BaseClass = uic.loadUiType('content/contentHome.ui')
+UiContentHome, BaseClass = uic.loadUiType('content/contentHome.ui')
 
-class contentHomeWidget(BaseClass, Ui_PlaylistItem):
+class contentHomeWidget(BaseClass, UiContentHome):
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
 

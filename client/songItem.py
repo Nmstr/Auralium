@@ -10,9 +10,9 @@ import json
 import sys
 
 # Load the .ui file and get the base class and form class
-Ui_PlaylistItem, BaseClass = uic.loadUiType('playlistSongEntry.ui')
+UiSongItem, BaseClass = uic.loadUiType('playlistSongEntry.ui')
 
-class SongItemWidget(BaseClass, Ui_PlaylistItem):
+class SongItemWidget(BaseClass, UiSongItem):
     def __init__(self, song, songIndex, mainWindow, parent):
         self.song = sqlHandler.songs.retrieveById(song)
         self.mainWindow = mainWindow
