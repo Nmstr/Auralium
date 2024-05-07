@@ -23,8 +23,11 @@ class contentSearchWidget(BaseClass, Ui_PlaylistItem):
 
         # Connect play buttons on top results and set defalt text
         self.searchTopResults0Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult0Name.text())[3]))
+        self.searchTopResults0AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult0Name.text())[3]))
         self.searchTopResults1Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult1Name.text())[3]))
+        self.searchTopResults1AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult1Name.text())[3]))
         self.searchTopResults2Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult2Name.text())[3]))
+        self.searchTopResults2AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult2Name.text())[3]))
 
         # Enable mouse tracking
         self.setMouseTracking(True)
