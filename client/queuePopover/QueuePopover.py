@@ -36,7 +36,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the song
         if currentSong is not None:
-            self.nowPlayingQueue = QueueEntryWidget(sqlHandler.songs.retrieveByPath(currentSong))
+            self.nowPlayingQueue = QueueEntryWidget(sqlHandler.songs.retrieveByPath(currentSong), self.mainWindow)
             layout.addWidget(self.nowPlayingQueue)
 
     def addNextInQueueItem(self):
@@ -54,7 +54,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the next songs from queue
         for song in songsNextInQueue:
-            self.nextInQueue = QueueEntryWidget(sqlHandler.songs.retrieveByPath(song))
+            self.nextInQueue = QueueEntryWidget(sqlHandler.songs.retrieveByPath(song), self.mainWindow)
             layout.addWidget(self.nextInQueue)
 
     def addNextInPlaylistItem(self):
@@ -75,7 +75,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the next songs from playlist
         for song in songsNextInPlaylist:
-            self.nextInPlaylist = QueueEntryWidget(sqlHandler.songs.retrieveById(song))
+            self.nextInPlaylist = QueueEntryWidget(sqlHandler.songs.retrieveById(song), self.mainWindow)
             layout.addWidget(self.nextInPlaylist)
 
     def focusOutEvent(self, event):

@@ -101,9 +101,9 @@ class MainWindow(QWidget):
         A function that sets the image of a song in a graphics view.
 
         Parameters:
-        - self: the object instance
         - songTitle: str, the title of the song to set the image for
         - graphicsView: the graphics view where the image will be set
+        - resolution: list, the resolution of the image
 
         Returns:
         - None

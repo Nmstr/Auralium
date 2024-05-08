@@ -4,8 +4,12 @@ from PyQt6 import uic
 UiNowPlayingQueue, BaseClass = uic.loadUiType('queuePopover/queueEntry.ui')
 
 class QueueEntryWidget(BaseClass, UiNowPlayingQueue):
-    def __init__(self, song):
+    def __init__(self, song, mainWindow):
+        self.mainWindow = mainWindow
+
         super().__init__()
         self.setupUi(self)
 
         self.nameLabel.setText(song[1])
+
+        self.mainWindow.setSongImage(song[1], self.coverImg, [100, 100])
