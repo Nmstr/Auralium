@@ -91,19 +91,6 @@
     <string>remove Song</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="test">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>400</y>
-     <width>80</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -5,6 +5,7 @@ from content.contentSearch import contentSearchWidget
 from content.contentHome import contentHomeWidget
 
 from playlistItem import PlaylistItemWidget
+from bottomBar import bottomBarWidget
 from sqlHandler import sqlHandler
 from songQueue import SongQueue
 import songDataHandler
@@ -23,19 +24,9 @@ class MainWindow(QWidget):
         # Create song queue
         self.songQueue = SongQueue()
 
-        # Set the main content
+        # Set the main content and add the bottom bar
         self.setMainContentDisplay("home")
-
-        from bottomBar import bottomBarWidget
-        # Get the container widget
-        container = self.ui.bottomBar
-        # Check if the container has a layout, if not, set a new QVBoxLayout
-        layout = container.layout()
-        if layout is None:
-            layout = QVBoxLayout()
-            container.setLayout(layout)
-        self.bottomBar = bottomBarWidget(self)
-        layout.addWidget(self.bottomBar)
+        self.addBottomBarWidget()
 
         # Create hotkey action
         self.hotkeyAction = QAction(self)
@@ -55,6 +46,21 @@ class MainWindow(QWidget):
         self.displayPlaylists()
 
         self.show()
+
+    def addBottomBarWidget(self) -> None:
+        """
+        Add bnottom bar widget to the UI.
+        - None
+        """
+        container = self.ui.bottomBar
+        # Check if the container has a layout, if not, set a new QVBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
+        # Create the bottom bar
+        self.bottomBar = bottomBarWidget(self)
+        layout.addWidget(self.bottomBar)
 
     def displayPlaylists(self) -> None:
         """

@@ -143,15 +143,19 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">slider.setStyleSheet(&quot;QSlider::groove:horizontal { background: #ddd; height: 8px; }&quot;
-                    &quot;QSlider::handle:horizontal { background: #1db954; width: 12px; }&quot;)
-</string>
+       <string notr="true"/>
       </property>
       <property name="singleStep">
        <number>0</number>
       </property>
       <property name="pageStep">
        <number>1</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="sliderPosition">
+       <number>0</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
