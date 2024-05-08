@@ -8,7 +8,7 @@ from PyQt6 import uic
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiBottomBar, BaseClass = uic.loadUiType('bottomBar.ui')
+UiBottomBar, BaseClass = uic.loadUiType('bottomBar/bottomBar.ui')
 
 class bottomBarWidget(BaseClass, UiBottomBar):
     def __init__(self, mainWindow):

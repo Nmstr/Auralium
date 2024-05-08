@@ -1,16 +1,13 @@
 from sqlHandler import sqlHandler
 
-from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtWidgets import QMenu
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
-from PyQt6.QtWidgets import QWidget, QMenu, QApplication
-
 import json
-import sys
 
 # Load the .ui file and get the base class and form class
-UiSongItem, BaseClass = uic.loadUiType('playlistSongEntry.ui')
+UiSongItem, BaseClass = uic.loadUiType('content/playlists/playlistSongEntry.ui')
 
 class SongItemWidget(BaseClass, UiSongItem):
     def __init__(self, song, songIndex, mainWindow, parent):

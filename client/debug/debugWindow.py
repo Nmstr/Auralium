@@ -7,7 +7,6 @@ from PyQt6 import uic
 
 import os
 
-
 class IndexSongsThread(QThread):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -34,7 +33,7 @@ class IndexSongsThread(QThread):
 class DebugWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.ui = uic.loadUi('debug.ui', self)
+        self.ui = uic.loadUi('debug/debug.ui', self)
 
         self.indexSongsThread = IndexSongsThread()
         self.ui.debugIndexSongs.clicked.connect(self.startIndexing)

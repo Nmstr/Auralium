@@ -1,6 +1,6 @@
 from sqlHandler import sqlHandler
 
-from songItem import SongItemWidget
+from content.playlists.songItem import SongItemWidget
 
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtCore import Qt
@@ -9,7 +9,7 @@ from PyQt6 import uic
 import json
 
 # Load the .ui file and get the base class and form class
-UiPlaylistItem, BaseClass = uic.loadUiType('playlistsEntry.ui')
+UiPlaylistItem, BaseClass = uic.loadUiType('content/playlists/playlistsEntry.ui')
 
 class PlaylistItemWidget(BaseClass, UiPlaylistItem):
     def __init__(self, playlist, mainWindow):

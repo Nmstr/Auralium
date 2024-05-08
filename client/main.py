@@ -1,11 +1,11 @@
-from debugWindow import DebugWindow
+from debug.debugWindow import DebugWindow
 
 from content.contentPlaylist import contentPlaylistWidget
 from content.contentSearch import contentSearchWidget
 from content.contentHome import contentHomeWidget
 
-from playlistItem import PlaylistItemWidget
-from bottomBar import bottomBarWidget
+from content.playlists.playlistItem import PlaylistItemWidget
+from bottomBar.bottomBar import bottomBarWidget
 from sqlHandler import sqlHandler
 from songQueue import SongQueue
 import songDataHandler
