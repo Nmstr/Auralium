@@ -17,6 +17,20 @@
    <enum>QFrame::StyledPanel</enum>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="5" column="0">
+    <widget class="QPushButton" name="playBtn">
+     <property name="text">
+      <string>Play</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QLabel" name="typeLabel">
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QGraphicsView" name="coverImg">
      <property name="minimumSize">
@@ -48,38 +62,24 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="5">
     <widget class="QLabel" name="nameLabel">
      <property name="text">
       <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item row="1" column="1" colspan="3">
     <widget class="QLabel" name="artistLabel">
      <property name="text">
       <string>Artist</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
-    <widget class="QLabel" name="typeLabel">
-     <property name="text">
-      <string>Type</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2" colspan="3">
+   <item row="5" column="1" colspan="4">
     <widget class="QPushButton" name="addToQueueBtn">
      <property name="text">
       <string>Add to Queue</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QPushButton" name="playBtn">
-     <property name="text">
-      <string>Play</string>
      </property>
     </widget>
    </item>
