@@ -114,7 +114,6 @@ class DebugIndexSongsWindow(QWidget):
 
         # Add widgets to the new layout
         if errors:
-            print('Errors: ', len(errors))
             label = QLabel(f'Errors: {len(errors)}')
             newLayout.addWidget(label)
             for error in errors:
