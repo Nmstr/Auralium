@@ -1,8 +1,8 @@
 from debug.debugWindow import DebugWindow
 
-from content.contentPlaylist import contentPlaylistWidget
-from content.contentSearch import contentSearchWidget
-from content.contentHome import contentHomeWidget
+from content.contentPlaylist import ContentPlaylistWidget
+from content.contentSearch import ContentSearchWidget
+from content.contentHome import ContentHomeWidget
 
 from content.playlists.playlistItem import PlaylistItemWidget
 from bottomBar.bottomBar import bottomBarWidget
@@ -139,13 +139,13 @@ class MainWindow(QWidget):
 
         # Change the mainContent widget
         if content == "home":
-            self.homeDisplay = contentHomeWidget(self)
+            self.homeDisplay = ContentHomeWidget(self)
             layout.addWidget(self.homeDisplay)
         elif content == "search":
-            self.searchDisplay = contentSearchWidget(self)
+            self.searchDisplay = ContentSearchWidget(self)
             layout.addWidget(self.searchDisplay)
         elif content == "playlist":
-            self.playlistDisplay = contentPlaylistWidget(self)
+            self.playlistDisplay = ContentPlaylistWidget(self)
             layout.addWidget(self.playlistDisplay)
 
     def closeEvent(self, a0: QCloseEvent | None) -> None:

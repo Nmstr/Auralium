@@ -1,5 +1,8 @@
+from content.search.topResult import SearchTopResultWidget
+
 from sqlHandler import sqlHandler
 
+from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6 import uic
 
 import difflib
@@ -7,7 +10,7 @@ import difflib
 # Load the .ui file and get the base class and form class
 UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 
-class contentSearchWidget(BaseClass, UiContentSearch):
+class ContentSearchWidget(BaseClass, UiContentSearch):
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
 
@@ -20,17 +23,6 @@ class contentSearchWidget(BaseClass, UiContentSearch):
         self.searchFilterAllBtn.clicked.connect(self.switchSearchFilter)
         self.searchFilterSongsBtn.clicked.connect(self.switchSearchFilter)
         self.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
-
-        # Connect play buttons on top results and set defalt text
-        self.searchTopResults0Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult0Name.text())[3]))
-        self.searchTopResults0AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult0Name.text())[3]))
-        self.searchTopResults1Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult1Name.text())[3]))
-        self.searchTopResults1AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult1Name.text())[3]))
-        self.searchTopResults2Play.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult2Name.text())[3]))
-        self.searchTopResults2AddToQueue.clicked.connect(lambda: self.mainWindow.songQueue.addSong(sqlHandler.songs.retrieveByTitle(self.searchTopResult2Name.text())[3]))
-
-        # Enable mouse tracking
-        self.setMouseTracking(True)
 
     def searchBarTextChange(self, text):
         """
@@ -54,18 +46,8 @@ class contentSearchWidget(BaseClass, UiContentSearch):
             similar = [sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
             print(e)
 
-        # Update top results labels
-        self.searchTopResult0Name.setText(similar[0][1])
-        self.searchTopResult1Name.setText(similar[1][1])
-        self.searchTopResult2Name.setText(similar[2][1])
-        self.searchTopResult0Artist.setText(similar[0][2])
-        self.searchTopResult1Artist.setText(similar[1][2])
-        self.searchTopResult2Artist.setText(similar[2][2])
-        
-        # Update top results images
-        self.mainWindow.setSongImage(similar[0][1], self.searchTopResults0Img)
-        self.mainWindow.setSongImage(similar[1][1], self.searchTopResults1Img)
-        self.mainWindow.setSongImage(similar[2][1], self.searchTopResults2Img)
+        #print(similar)
+        self.displaySearchResults(similar)
 
     def switchSearchFilter(self, filter):
         """
@@ -86,3 +68,22 @@ class contentSearchWidget(BaseClass, UiContentSearch):
             self.ui.searchFilterAllBtn.setChecked(True)
             self.ui.searchFilterSongsBtn.setChecked(False)
             self.ui.searchFilterArtistsBtn.setChecked(False)
+
+    def displaySearchResults(self, similar) -> None:
+        container = self.searchTopResults
+        # Check if the container has a layout, if not, set a new QHBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QHBoxLayout()
+            container.setLayout(layout)
+
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())):
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
+
+        # Dynamically add custom widgets for each song
+        for song in similar:
+            searchTopResultWidget = SearchTopResultWidget(self.mainWindow, song)
+            layout.addWidget(searchTopResultWidget)
