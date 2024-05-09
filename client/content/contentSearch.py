@@ -1,3 +1,4 @@
+from content.search.songResult import SearchSongResultWidget
 from content.search.topResult import SearchTopResultWidget
 
 from sqlHandler import sqlHandler
@@ -36,9 +37,11 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             # Create a list of concatenated title and artist for matching
             titlesArtists = [song[1] + " " + song[2] for song in allSongs]
             similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
+            similarSongs = difflib.get_close_matches(text, titlesArtists, n=20, cutoff=0.05)
             
             # Map the similar strings back to the original song tuples
             similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
+            similarSongs = [song for song in allSongs if (song[1] + " " + song[2]) in similarSongs]
 
             similar = similar + [sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
         except Exception as e:
@@ -46,8 +49,8 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             similar = [sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
             print(e)
 
-        #print(similar)
-        self.displaySearchResults(similar)
+        self.displaySearchResultsTop(similar)
+        self.displaySearchResultsSongs(similarSongs)
 
     def switchSearchFilter(self, filter):
         """
@@ -69,7 +72,7 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             self.ui.searchFilterSongsBtn.setChecked(False)
             self.ui.searchFilterArtistsBtn.setChecked(False)
 
-    def displaySearchResults(self, similar) -> None:
+    def displaySearchResultsTop(self, similar) -> None:
         container = self.searchTopResults
         # Check if the container has a layout, if not, set a new QHBoxLayout
         layout = container.layout()
@@ -87,3 +90,22 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         for song in similar:
             searchTopResultWidget = SearchTopResultWidget(self.mainWindow, song)
             layout.addWidget(searchTopResultWidget)
+
+    def displaySearchResultsSongs(self, similarSongs) -> None:
+        container = self.searchSongsArea
+        # Check if the container has a layout, if not, set a new QHBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QHBoxLayout()
+            container.setLayout(layout)
+
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())):
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
+
+        # Dynamically add custom widgets for each song
+        for song in similarSongs:
+            searchSongResultWidget = SearchSongResultWidget(self.mainWindow, song)
+            layout.addWidget(searchSongResultWidget)
