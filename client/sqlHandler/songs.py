@@ -25,13 +25,13 @@ def insertSongIntoDB(title: str,
     
     # Early returns
     if not title:
-        return 'Error: Title is required'
+        return 'error', 'Error: Title is required'
     if not filePath:
-        return 'Error: File path is required'
+        return 'error', 'Error: File path is required'
     if not filePath.endswith('.mp3') or filePath.endswith('.wav') or filePath.endswith('.ogg'):
-        return 'Error: Invalid file type (must be .mp3, .wav or .ogg)'
+        return 'error', 'Error: Invalid file type (must be .mp3, .wav or .ogg)'
     if not os.path.exists(filePath):
-        return 'Error: File not found'
+        return 'error', 'Error: File not found'
     
     sha256hash = hashFile(filePath) # Hash the file
 
@@ -51,6 +51,8 @@ def insertSongIntoDB(title: str,
     # Close the connection when done
     cursor.close()
     conn.close()
+
+    return 'success', 'Song inserted successfully'
 
 def retrieveAll() -> list:
     """
