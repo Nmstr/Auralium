@@ -75,8 +75,10 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the next songs from playlist
         for song in songsNextInPlaylist:
-            self.nextInPlaylist = QueueEntryWidget(sqlHandler.songs.retrieveById(song), self.mainWindow)
-            layout.addWidget(self.nextInPlaylist)
+            songData = sqlHandler.songs.retrieveById(song)
+            if songData[7] == 0: # Only add enabled songs
+                self.nextInPlaylist = QueueEntryWidget(songData, self.mainWindow)
+                layout.addWidget(self.nextInPlaylist)
 
     def focusOutEvent(self, event):
         # Close the popover when it loses focus

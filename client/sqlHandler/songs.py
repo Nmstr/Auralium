@@ -54,6 +54,26 @@ def insertSongIntoDB(title: str,
 
     return 'success', 'Song inserted successfully'
 
+def markAsDeleted(id: int) -> None:
+    """
+    A function to mark a song as deleted in the database.
+
+    Parameters:
+    - id: int, required, the id of the song to mark as deleted
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute('UPDATE songs SET deleted = 1 WHERE id = ?', (id,))
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
 def retrieveAll() -> list:
     """
     Retrieve all songs from the database
@@ -159,7 +179,7 @@ def retrieveRandomSong() -> list:
     """
     try:
         cursor, conn = connectToDB()
-        cursor.execute('SELECT * FROM Songs ORDER BY RANDOM() LIMIT 1')
+        cursor.execute('SELECT * FROM songs WHERE deleted = 0 ORDER BY RANDOM() LIMIT 1')
         song = cursor.fetchone()
     except Exception:
         raise

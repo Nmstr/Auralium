@@ -81,7 +81,11 @@ class SongQueue():
             if not self.queue[self.currentSongIndex+1:]:
                 if len(json.loads(self.playingPlaylist[0][5])) > self.playingPlaylist[1] + 1: # If there are more songs in the playlist
                     self.playingPlaylist[1] += 1 # Advance to the next song in the playlist
-                    self.addSong(sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])[3]) # Add the next song to the queue
+                    nextSong = sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])
+                    if nextSong[7] == 1: # If the song is disabled, skip it
+                        self.goToNextSong()
+                    else:
+                        self.addSong(nextSong[3]) # Add the next song to the queue
 
         if self.currentSongIndex < len(self.queue) - 1:
             self.currentSongIndex += 1

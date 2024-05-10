@@ -47,7 +47,8 @@ def createDB() -> None:
             filePath TEXT NOT NULL UNIQUE,
             sha256hash TEXT,
             source TEXT,
-            releaseDate TEXT
+            releaseDate TEXT,
+            deleted INTEGER DEFAULT 0
         )
         ''')
 

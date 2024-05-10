@@ -19,9 +19,14 @@ class SongItemWidget(BaseClass, UiSongItem):
         super().__init__()
         self.setupUi(self)
 
+        # Set song info
         self.nameLabel.setText(self.song[1])
         self.artistLabel.setText(self.song[2])
         self.mainWindow.setSongImage(self.song[1], self.coverImg, [100, 100])
+
+        # Grey out if disabled
+        if self.song[7] == 1:
+            self.setEnabled(False)
 
         # Create the context menu
         self.mainContextMenu = QMenu(self)
