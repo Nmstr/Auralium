@@ -45,6 +45,10 @@ class MainWindow(QWidget):
         # Call the method to display playlists at initialization
         self.displayPlaylists()
 
+        # Load stylesheet from file
+        with open('style.qss', 'r') as f:
+            app.setStyleSheet(f.read())
+
         self.show()
 
     def addBottomBarWidget(self) -> None:
