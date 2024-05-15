@@ -1,0 +1,24 @@
+app-id: com.example.musicPlayer
+runtime: org.kde.Platform
+runtime-version: 6.7
+sdk: org.kde.Sdk
+command: run.sh
+build-options:
+  build-args:
+    - --share=network
+modules:
+  - name: musicPlayer
+    buildsystem: simple
+    sources:
+      - type: dir
+        path: /mnt/nvme/projects/musicPlayer/client/src
+    build-commands:
+      - pip3 install -r requirements.txt --prefix=/app
+      - find ./ -type f -exec install -D "{}" "/app/bin/{}" \;
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=x11
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=dri

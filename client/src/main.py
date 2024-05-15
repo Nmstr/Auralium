@@ -116,7 +116,7 @@ class MainWindow(QWidget):
         pixmap = QPixmap()
         try:
             pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution))
-        except Exception:
+        except Exception as e:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
         graphicsView.setScene(graphicsScene)
