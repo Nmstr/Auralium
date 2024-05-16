@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=
+Icon=/app/bin/assets/icon.png
+Terminal=false
+Name=musicPlayer
+Comment=Application that plays music
+Categories=Qt;KDE;
+X-Flatpak=com.example.musicPlayer

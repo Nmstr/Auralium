@@ -3,9 +3,11 @@ runtime: org.kde.Platform
 runtime-version: 6.7
 sdk: org.kde.Sdk
 command: run.sh
+
 build-options:
   build-args:
     - --share=network
+
 modules:
   - name: musicPlayer
     buildsystem: simple
@@ -15,6 +17,13 @@ modules:
     build-commands:
       - pip3 install -r requirements.txt --prefix=/app
       - find ./ -type f -exec install -D "{}" "/app/bin/{}" \;
+  - name: desktop
+    buildsystem: simple
+    sources:
+      - type: dir
+        path: /mnt/nvme/projects/musicPlayer/client/src/assets
+    build-commands:
+      - desktop-file-install --dir=/app/share/applications/ com.example.musicPlayer.desktop
 finish-args:
   - --share=network
   - --socket=wayland
