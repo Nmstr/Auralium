@@ -27,9 +27,7 @@ def getImgData(file_path: str, resolution: list = [150, 150]) -> bytes:
     Returns:
     - bytes, the image data
     """
-    cacheDir = os.getenv('XDG_CACHE_HOME')
-    if cacheDir is None:
-        cacheDir = '.'
+    cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
     baseName = os.path.splitext(os.path.basename(file_path))[0]
     imgPath = f'{cacheDir}/covers/{baseName}-{resolution[0]}x{resolution[1]}.png'
     if not os.path.exists(os.path.dirname(imgPath)):
@@ -53,9 +51,9 @@ def getImgData(file_path: str, resolution: list = [150, 150]) -> bytes:
         with open(imgPath, 'rb') as f:
             return f.read()
     except Exception as e:
-        defaultImgPath = 'covers/default.png'
+        defaultImgPath = 'assets/defaultCover.png'
         if not os.path.exists(defaultImgPath):
             with open(defaultImgPath, 'wb') as f:
-                f.write(Image.open('covers/default.png').resize(resolution).tobytes())
+                f.write(Image.open('assets/defaultCover.png').resize(resolution).tobytes())
 
         return open(defaultImgPath, 'rb').read()

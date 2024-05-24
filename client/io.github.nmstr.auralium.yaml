@@ -1,4 +1,4 @@
-app-id: com.example.musicPlayer
+app-id: io.github.nmstr.auralium
 runtime: org.kde.Platform
 runtime-version: 6.7
 sdk: org.kde.Sdk
@@ -9,7 +9,7 @@ build-options:
     - --share=network
 
 modules:
-  - name: musicPlayer
+  - name: auralium
     buildsystem: simple
     sources:
       - type: dir
@@ -17,13 +17,15 @@ modules:
     build-commands:
       - pip3 install -r requirements.txt --prefix=/app
       - find ./ -type f -exec install -D "{}" "/app/bin/{}" \;
+
   - name: desktop
     buildsystem: simple
     sources:
       - type: dir
         path: /mnt/nvme/projects/musicPlayer/client/src/assets
     build-commands:
-      - desktop-file-install --dir=/app/share/applications/ com.example.musicPlayer.desktop
+      - desktop-file-install --dir=/app/share/applications/ io.github.nmstr.auralium.desktop
+
 finish-args:
   - --share=network
   - --socket=wayland
@@ -31,3 +33,4 @@ finish-args:
   - --socket=fallback-x11
   - --socket=pulseaudio
   - --device=dri
+  - --filesystem=xdg-music

@@ -1,7 +1,6 @@
 [Desktop Entry]
 Type=Application
 Exec=
-Icon=/app/bin/assets/icon.png
 Terminal=false
 Name=musicPlayer
 Comment=Application that plays music

@@ -17,3 +17,4 @@ covers
 a
 client/build-dir
 client/.flatpak-builder
+run2.sh

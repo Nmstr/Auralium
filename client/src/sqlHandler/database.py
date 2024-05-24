@@ -6,7 +6,8 @@ def connectToDB() -> tuple[sqlite3.Cursor, sqlite3.Connection]:
     """
     Connects to the database and returns a cursor and connection object.
     """
-    conn = sqlite3.connect('musicPlayer.db')
+    dbPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/musicPlayer.db'
+    conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     return cursor, conn
 
@@ -70,3 +71,4 @@ def createDB() -> None:
         # Close connection
         cursor.close()
         conn.close()
+

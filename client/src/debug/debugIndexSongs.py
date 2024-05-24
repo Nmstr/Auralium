@@ -17,7 +17,8 @@ class IndexSongsThread(QThread):
     
     def run(self):
         # Setup indexing
-        songs = os.listdir('music')
+        musicDir = os.getenv('XDG_MUSIC_DIR', default=os.path.expanduser('~/Music') + '/auralium')
+        songs = os.listdir(musicDir)
         numberOfSongs = len(songs)
         processedSongs = 0
         self.stopFlag = False
@@ -28,16 +29,16 @@ class IndexSongsThread(QThread):
         # Index songs
         for song in songs:
             if self.stopFlag: break # If the indexing thread is stopped, break the loop
-            self.parent().pathToFileLabel.setText(os.path.join('music', song)) # Update the displayed path to the file
+            self.parent().pathToFileLabel.setText(os.path.join(musicDir, song)) # Update the displayed path to the file
 
             processedSongs += 1
-            hash = sqlHandler.database.hashFile(os.path.join('music', song))
+            hash = sqlHandler.database.hashFile(os.path.join(musicDir, song))
             if not sqlHandler.songs.retrieveBySha256hash(hash):
-                songData = songDataHandler.getTag(os.path.join('music', song))
+                songData = songDataHandler.getTag(os.path.join(musicDir, song))
                 songData = self.checkValidData(songData)
                 result = sqlHandler.songs.insertSongIntoDB(
                     title=songData.title,
-                    filePath=os.path.join('music', song),
+                    filePath=os.path.join(musicDir, song),
                     artist=songData.artist,
                     source='local',
                     releaseDate=songData.year

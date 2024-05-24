@@ -46,7 +46,8 @@ class MainWindow(QWidget):
         self.displayPlaylists()
 
         # Load stylesheet from file
-        with open('style.qss', 'r') as f:
+        stylesheetPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/style.qss'
+        with open(stylesheetPath, 'r') as f:
             app.setStyleSheet(f.read())
 
         self.show()
@@ -162,6 +163,27 @@ class MainWindow(QWidget):
         return super().closeEvent(a0)
 
 if __name__ == '__main__':
+    import configparser, os, shutil
+    configPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/config.ini'
+    # Copy template config if none exists
+    if not os.path.exists(configPath):
+        os.makedirs(os.path.dirname(configPath), exist_ok=True)
+        shutil.copy('assets/templateConfig.ini', configPath)
+
+    # Read the config file
+    config = configparser.ConfigParser()
+    config.read(configPath)
+
+    # Print all config values
+    for section in config.sections():
+        for option in config.options(section):
+            print(f'{option} = {config.get(section, option)}')
+
+    # Create stylesheet if none exists
+    stylesheetPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/style.qss'
+    if not os.path.exists(stylesheetPath):
+        shutil.copy('assets/style.qss', stylesheetPath)
+
     sqlHandler.database.createDB()
     app = QApplication(sys.argv)
     window = MainWindow()
