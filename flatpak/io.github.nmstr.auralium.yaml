@@ -1,0 +1,56 @@
+app-id: io.github.nmstr.auralium
+runtime: org.kde.Platform
+runtime-version: 6.7
+sdk: org.kde.Sdk
+command: run.sh
+
+modules:
+  - name: auralium
+    buildsystem: simple
+    builddir: true
+    build-commands:
+      - rm -r .venv
+      - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} PyQt6-*.whl
+      - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} tinytag-*.whl
+      - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} pillow-*.whl
+      - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} pygame-*.whl
+      - cp -r . /app/bin
+    sources:
+      - type: dir
+        path: ../src
+      - type: file # PyQt6
+        url: "https://files.pythonhosted.org/packages/ae/32/5686814686c02a3883354b8f3668b33d926b91452cca4fc312024ef4b676/PyQt6-6.7.0-cp38-abi3-manylinux_2_28_x86_64.whl"
+        sha256: "e294f025f94493ee12b66efd6893fab309c9063172bb8a5b184f84dfc1ebcc49"
+      - type: file # PyQt6_sip
+        url: "https://files.pythonhosted.org/packages/97/50/cab92a609b0da9740b0c12071bc3c31315cc87db45db8095665a22ced266/PyQt6_sip-13.6.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.whl"
+        sha256: "86a7b67c64436e32bffa9c28c9f21bf14a9faa54991520b12c3f6f435f24df7f"
+      - type: file # PyQt6_Qt6
+        url: "https://files.pythonhosted.org/packages/50/99/c1051726c0a046f18bb8911cedffaf2187daa924e95b052cb2d8c9469144/PyQt6_Qt6-6.7.0-py3-none-manylinux_2_28_x86_64.whl"
+        sha256: "383842a058b3fd0546df59fbd7f593dd609761d28a0185eb1a8983dee2a5f5d0"
+      - type: file # tinytag
+        url: "https://files.pythonhosted.org/packages/2f/04/ef783cbc4aa3a5ed75969e300b3e3929daf3d1b52fe80e950c63e0d66d95/tinytag-1.10.1-py3-none-any.whl"
+        sha256: "e437654d04c966fbbbdbf807af61eb9759f1d80e4173a7d26202506b37cfdaf0"
+      - type: file # pillow
+        url: "https://files.pythonhosted.org/packages/81/ff/ad3c942d865f9e45ce84eeb31795e6d4d94e1f1eea51026d5154028510d7/pillow-10.3.0-cp311-cp311-manylinux_2_28_x86_64.whl"
+        sha256: "1b87bd9d81d179bd8ab871603bd80d8645729939f90b71e62914e816a76fc6bd"
+      - type: file # pygame
+        url: "https://files.pythonhosted.org/packages/5f/0d/64b84142b477c0d7041bd93a91d4dc6d7901dad4f58323f69779c86757f5/pygame-2.5.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+        sha256: "0e24d05184e4195fe5ebcdce8b18ecb086f00182b9ae460a86682d312ce8d31f"
+
+  - name: desktop
+    buildsystem: simple
+    sources:
+      - type: dir
+        path: .
+    build-commands:
+      - desktop-file-install --dir=/app/share/applications/ io.github.nmstr.auralium.desktop
+      - cp run.sh /app/bin
+
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=x11
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --filesystem=xdg-music
