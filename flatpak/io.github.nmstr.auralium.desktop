@@ -5,4 +5,4 @@ Terminal=false
 Name=musicPlayer
 Comment=Application that plays music
 Categories=Qt;KDE;
-X-Flatpak=com.example.musicPlayer
+X-Flatpak=io.github.nmstr.auralium
