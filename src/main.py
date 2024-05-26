@@ -3,9 +3,12 @@ from debug.debugWindow import DebugWindow
 from content.contentPlaylist import ContentPlaylistWidget
 from content.contentSearch import ContentSearchWidget
 from content.contentHome import ContentHomeWidget
+from settings.settings import SettingsWidget
 
 from content.playlists.playlistItem import PlaylistItemWidget
 from bottomBar.bottomBar import bottomBarWidget
+
+from preferenceHandler import PreferenceHandler
 from sqlHandler import sqlHandler
 from songQueue import SongQueue
 import songDataHandler
@@ -23,6 +26,9 @@ class MainWindow(QWidget):
 
         # Create song queue
         self.songQueue = SongQueue()
+
+        # Add preference handler to self
+        self.preferenceHandler = preferenceHandler
 
         # Set the main content and add the bottom bar
         self.setMainContentDisplay("home")
@@ -44,11 +50,6 @@ class MainWindow(QWidget):
 
         # Call the method to display playlists at initialization
         self.displayPlaylists()
-
-        # Load stylesheet from file
-        stylesheetPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/style.qss'
-        with open(stylesheetPath, 'r') as f:
-            app.setStyleSheet(f.read())
 
         self.show()
 
@@ -152,6 +153,9 @@ class MainWindow(QWidget):
         elif content == "playlist":
             self.playlistDisplay = ContentPlaylistWidget(self)
             layout.addWidget(self.playlistDisplay)
+        elif content == "settings":
+            self.settingsDisplay = SettingsWidget(self)
+            layout.addWidget(self.settingsDisplay)
 
     def closeEvent(self, a0: QCloseEvent | None) -> None:
         """
@@ -163,28 +167,8 @@ class MainWindow(QWidget):
         return super().closeEvent(a0)
 
 if __name__ == '__main__':
-    import configparser, os, shutil
-    configPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/config.ini'
-    # Copy template config if none exists
-    if not os.path.exists(configPath):
-        os.makedirs(os.path.dirname(configPath), exist_ok=True)
-        shutil.copy('assets/templateConfig.ini', configPath)
-
-    # Read the config file
-    config = configparser.ConfigParser()
-    config.read(configPath)
-
-    # Print all config values
-    for section in config.sections():
-        for option in config.options(section):
-            print(f'{option} = {config.get(section, option)}')
-
-    # Create stylesheet if none exists
-    stylesheetPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/style.qss'
-    if not os.path.exists(stylesheetPath):
-        shutil.copy('assets/style.qss', stylesheetPath)
-
     sqlHandler.database.createDB()
     app = QApplication(sys.argv)
+    preferenceHandler = PreferenceHandler(QApplication=QApplication, app=app)
     window = MainWindow()
     sys.exit(app.exec())
