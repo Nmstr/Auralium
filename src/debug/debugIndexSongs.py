@@ -54,7 +54,11 @@ class IndexSongsThread(QThread):
         # Check if the song data is valid
         self.parent().titleInput.setText(songData.title or '')
         self.parent().artistInput.setText(songData.artist or '')
-        self.parent().releaseDateInput.setText(songData.year or '')
+        if songData.year is not None:
+            formattedYear = songData.year[:4] + '/' + songData.year[4:6] + '/' + songData.year[6:]
+            self.parent().releaseDateInput.setText(formattedYear)
+        else:
+            self.parent().releaseDateInput.setText('')
 
         # If the song data is valid and submitAllFlag is True, return the song data
         if self.submitAllFlag:
