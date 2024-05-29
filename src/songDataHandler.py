@@ -3,6 +3,9 @@ from PIL import Image
 
 import os
 
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3, TIT2, TPE1, TALB, TRCK, TDRC, TCON
+
 def getTag(filePath: str) -> tinyTag:
     """
     A function to get the tag of the specified file path.
@@ -15,6 +18,18 @@ def getTag(filePath: str) -> tinyTag:
     """
     tag = tinyTag.get(filePath, image=True)
     return tag
+
+def modifyTag(filePath: str, title: str, artist: str, releaseDate: str) -> None:
+    audio = MP3(filePath, ID3=ID3) # Load the MP3 file
+
+    if title:
+        audio.tags.add(TIT2(encoding=3, text=title))
+    if artist:
+        audio.tags.add(TPE1(encoding=3, text=artist))
+    if releaseDate:
+        audio.tags.add(TDRC(encoding=3, text=releaseDate))
+
+    audio.save() # Save the MP3 file
 
 def getImgData(file_path: str, resolution: list = [150, 150]) -> bytes:
     """

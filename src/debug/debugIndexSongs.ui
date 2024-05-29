@@ -35,10 +35,10 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="processedSongsLabel">
+      <item row="6" column="2">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Processed Songs: ???/???</string>
+         <string>Update Metadata:</string>
         </property>
        </widget>
       </item>
@@ -52,6 +52,30 @@
         </property>
         <property name="text">
          <string>File Path:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPushButton" name="submitAllBtn">
+        <property name="toolTip">
+         <string>Submits all songs to the database unless missing data is found</string>
+        </property>
+        <property name="text">
+         <string>Submit All</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Artist:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="processedSongsLabel">
+        <property name="text">
+         <string>Processed Songs: ???/???</string>
         </property>
        </widget>
       </item>
@@ -81,7 +105,51 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Release Date:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QPushButton" name="submitBtn">
+        <property name="toolTip">
+         <string>Submits this song to the database</string>
+        </property>
+        <property name="text">
+         <string>Submit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QCheckBox" name="metadataCheckBox">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="3">
+       <widget class="QLineEdit" name="releaseDateInput">
+        <property name="toolTip">
+         <string>Input the release date of the song in the format: &quot;yyyy-mm-dd&quot;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Release Date of the song (e.g. 2022-07-08)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="3">
+       <widget class="QLineEdit" name="artistInput">
+        <property name="toolTip">
+         <string>Input artists seperated by a forward slash (&quot;/&quot;)</string>
+        </property>
+        <property name="placeholderText">
+         <string>Name of the artist (e.g. artist1/artist2)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3">
        <widget class="QLineEdit" name="titleInput">
         <property name="toolTip">
          <string>Input the title of the song</string>
@@ -94,60 +162,6 @@
         </property>
         <property name="placeholderText">
          <string>Title of the song (e.g. My Song)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Artist:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="artistInput">
-        <property name="toolTip">
-         <string>Input artists seperated by a forward slash (&quot;/&quot;)</string>
-        </property>
-        <property name="placeholderText">
-         <string>Name of the artist (e.g. artist1/artist2)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Release Date:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="releaseDateInput">
-        <property name="toolTip">
-         <string>Input the release date of the song in the format: &quot;yyyy-mm-dd&quot;</string>
-        </property>
-        <property name="placeholderText">
-         <string>Release Date of the song (e.g. 2022-07-08)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="submitBtn">
-        <property name="toolTip">
-         <string>Submits this song to the database</string>
-        </property>
-        <property name="text">
-         <string>Submit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="submitAllBtn">
-        <property name="toolTip">
-         <string>Submits all songs to the database unless missing data is found</string>
-        </property>
-        <property name="text">
-         <string>Submit All</string>
         </property>
        </widget>
       </item>
