@@ -6,8 +6,31 @@ from PyQt6.QtCore import QThread, pyqtSlot, pyqtSignal
 
 from PyQt6 import uic
 
+import datetime
 import time
 import os
+
+def formatDate(dateString):
+    """
+    Converts a date string from one format to another.
+
+    Args:
+        dateString (str): The date string to be converted.
+
+    Returns:
+        str: The converted date string in the format 'YYYY/MM/DD'.
+    """
+    if not dateString:
+        return None
+    if '-' in dateString:
+        # Date is in the format "2001-01-30"
+        date = datetime.datetime.strptime(dateString, '%Y-%m-%d').date()
+    else:
+        # Date is in the format "20010130"
+        date = datetime.datetime.strptime(dateString, '%Y%m%d').date()
+    
+    formattedDate = date.strftime('%Y/%m/%d')
+    return formattedDate
 
 class IndexSongsThread(QThread):
     updateToErrorsSignal = pyqtSignal(list)
@@ -29,20 +52,30 @@ class IndexSongsThread(QThread):
         # Index songs
         for song in songs:
             if self.stopFlag: break # If the indexing thread is stopped, break the loop
-            self.parent().pathToFileLabel.setText(os.path.join(musicDir, song)) # Update the displayed path to the file
+            fullFilePath = os.path.join(musicDir, song)
+            self.parent().pathToFileLabel.setText(fullFilePath) # Update the displayed path to the file
 
             processedSongs += 1
-            hash = sqlHandler.database.hashFile(os.path.join(musicDir, song))
+            hash = sqlHandler.database.hashFile(fullFilePath)
             if not sqlHandler.songs.retrieveBySha256hash(hash):
-                songData = songDataHandler.getTag(os.path.join(musicDir, song))
+                songData = songDataHandler.getTag(fullFilePath)
                 songData = self.checkValidData(songData)
+
+                if self.parent().metadataCheckBox.isChecked():
+                    songDataHandler.modifyTag(
+                        filePath=fullFilePath,
+                        title=songData.title,
+                        artist=songData.artist,
+                        releaseDate=songData.year
+                    ) # Modify the song's tag
                 result = sqlHandler.songs.insertSongIntoDB(
                     title=songData.title,
-                    filePath=os.path.join(musicDir, song),
+                    filePath=fullFilePath,
                     artist=songData.artist,
                     source='local',
                     releaseDate=songData.year
-                )
+                ) # Add the song to the database
+
                 if result[0] == 'error':
                     self.errors.append([song, result[1]])
 
@@ -54,11 +87,7 @@ class IndexSongsThread(QThread):
         # Check if the song data is valid
         self.parent().titleInput.setText(songData.title or '')
         self.parent().artistInput.setText(songData.artist or '')
-        if songData.year is not None:
-            formattedYear = songData.year[:4] + '/' + songData.year[4:6] + '/' + songData.year[6:]
-            self.parent().releaseDateInput.setText(formattedYear)
-        else:
-            self.parent().releaseDateInput.setText('')
+        self.parent().releaseDateInput.setText(formatDate(songData.year) or '')
 
         # If the song data is valid and submitAllFlag is True, return the song data
         if self.submitAllFlag:

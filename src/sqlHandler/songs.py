@@ -32,6 +32,8 @@ def insertSongIntoDB(title: str,
         return 'error', 'Error: Invalid file type (must be .mp3, .wav or .ogg)'
     if not os.path.exists(filePath):
         return 'error', 'Error: File not found'
+    if retrieveByPath(filePath):
+        return 'error', 'Error: File path already found in database'
     
     sha256hash = hashFile(filePath) # Hash the file
 
