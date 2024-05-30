@@ -9,9 +9,9 @@ from content.playlists.playlistItem import PlaylistItemWidget
 from bottomBar.bottomBar import bottomBarWidget
 
 from preferenceHandler import PreferenceHandler
-from sqlHandler import sqlHandler
 from songQueue import SongQueue
 import songDataHandler
+import sqlHandler
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
 from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
@@ -25,7 +25,8 @@ class MainWindow(QWidget):
         self.ui = uic.loadUi('main.ui', self)
 
         # Create song queue
-        self.songQueue = SongQueue()
+        self.songQueue = SongQueue(sqlHandler)
+        self.sqlHandler = sqlHandler
 
         # Add preference handler to self
         self.preferenceHandler = preferenceHandler
@@ -37,7 +38,7 @@ class MainWindow(QWidget):
         # Create hotkey action
         self.hotkeyAction = QAction(self)
         self.hotkeyAction.setShortcut("F12")
-        self.hotkeyAction.triggered.connect(lambda: DebugWindow())
+        self.hotkeyAction.triggered.connect(lambda: DebugWindow(self.sqlHandler))
         self.addAction(self.hotkeyAction)
 
         # Connect buttons for applications
@@ -45,7 +46,7 @@ class MainWindow(QWidget):
         self.ui.searchBtn.clicked.connect(lambda: self.setMainContentDisplay('search'))
 
         # Connect playlist buttons
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
+        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
         self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
 
         # Call the method to display playlists at initialization
@@ -65,7 +66,7 @@ class MainWindow(QWidget):
             layout = QVBoxLayout()
             container.setLayout(layout)
         # Create the bottom bar
-        self.bottomBar = bottomBarWidget(self)
+        self.bottomBar = bottomBarWidget(self, self.sqlHandler)
         layout.addWidget(self.bottomBar)
 
     def displayPlaylists(self) -> None:
@@ -81,7 +82,7 @@ class MainWindow(QWidget):
         - None
         """
         # Retrieve all playlists from the database
-        playlists = sqlHandler.playlists.retrieveAll()
+        playlists = self.sqlHandler.playlists.retrieveAll()
 
         # Get the container widget
         container = self.ui.playlistsScrollAreaWidgetContents
@@ -99,7 +100,7 @@ class MainWindow(QWidget):
 
         # Dynamically add custom widgets for each playlist
         for playlist in playlists:
-            playlistWidget = PlaylistItemWidget(playlist, self)
+            playlistWidget = PlaylistItemWidget(playlist, self, self.sqlHandler)
             layout.addWidget(playlistWidget)
 
     def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]):
@@ -117,7 +118,7 @@ class MainWindow(QWidget):
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
         try:
-            pixmap.loadFromData(songDataHandler.getImgData(sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution))
+            pixmap.loadFromData(songDataHandler.getImgData(self.sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution))
         except Exception as e:
             pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
         graphicsScene.addPixmap(pixmap)
@@ -145,10 +146,10 @@ class MainWindow(QWidget):
 
         # Change the mainContent widget
         if content == "home":
-            self.homeDisplay = ContentHomeWidget(self)
+            self.homeDisplay = ContentHomeWidget(self, self.sqlHandler)
             layout.addWidget(self.homeDisplay)
         elif content == "search":
-            self.searchDisplay = ContentSearchWidget(self)
+            self.searchDisplay = ContentSearchWidget(self, self.sqlHandler)
             layout.addWidget(self.searchDisplay)
         elif content == "playlist":
             self.playlistDisplay = ContentPlaylistWidget(self)

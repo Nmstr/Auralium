@@ -1,12 +1,11 @@
-from sqlHandler import sqlHandler
-
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import json
 
 class SongQueue():
-    def __init__(self):
+    def __init__(self, sqlHandler):
+        self.sqlHandler = sqlHandler
         pygame.mixer.init()
         pygame.mixer.music.set_volume(0.1) # Temp
         self.queue = []
@@ -81,7 +80,7 @@ class SongQueue():
             if not self.queue[self.currentSongIndex+1:]:
                 if len(json.loads(self.playingPlaylist[0][5])) > self.playingPlaylist[1] + 1: # If there are more songs in the playlist
                     self.playingPlaylist[1] += 1 # Advance to the next song in the playlist
-                    nextSong = sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])
+                    nextSong = self.sqlHandler.songs.retrieveById(json.loads(self.playingPlaylist[0][5])[self.playingPlaylist[1]])
                     if nextSong[7] == 1: # If the song is disabled, skip it
                         self.goToNextSong()
                     else:

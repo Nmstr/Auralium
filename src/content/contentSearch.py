@@ -1,8 +1,6 @@
 from content.search.songResult import SearchSongResultWidget
 from content.search.topResult import SearchTopResultWidget
 
-from sqlHandler import sqlHandler
-
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6 import uic
 
@@ -12,8 +10,9 @@ import difflib
 UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 
 class ContentSearchWidget(BaseClass, UiContentSearch):
-    def __init__(self, mainWindow):
+    def __init__(self, mainWindow, sqlHandler):
         self.mainWindow = mainWindow
+        self.sqlHandler = sqlHandler
 
         super().__init__()
         self.setupUi(self)
@@ -33,7 +32,7 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             text (str): The text entered in the search bar.
         """
         try:
-            allSongs = sqlHandler.songs.retrieveAll()
+            allSongs = self.sqlHandler.songs.retrieveAll()
             # Create a list of concatenated title and artist for matching
             titlesArtists = [song[1] + " " + song[2] for song in allSongs]
             similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
@@ -43,10 +42,10 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
             similarSongs = [song for song in allSongs if (song[1] + " " + song[2]) in similarSongs]
 
-            similar = similar + [sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
+            similar = similar + [self.sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
         except Exception as e:
             # If there's an error, fill in with random songs
-            similar = [sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
+            similar = [self.sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
             print(e)
 
         self.displaySearchResultsTop(similar)

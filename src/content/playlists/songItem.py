@@ -1,5 +1,3 @@
-from sqlHandler import sqlHandler
-
 from PyQt6.QtWidgets import QMenu
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
@@ -10,8 +8,9 @@ import json
 UiSongItem, BaseClass = uic.loadUiType('content/playlists/playlistSongEntry.ui')
 
 class SongItemWidget(BaseClass, UiSongItem):
-    def __init__(self, song, songIndex, mainWindow, parent):
-        self.song = sqlHandler.songs.retrieveById(song)
+    def __init__(self, song, songIndex, mainWindow, parent, sqlHandler):
+        self.sqlHandler = sqlHandler
+        self.song = self.sqlHandler.songs.retrieveById(song)
         self.mainWindow = mainWindow
         self.songIndex = songIndex
         self.parent = parent
@@ -36,7 +35,7 @@ class SongItemWidget(BaseClass, UiSongItem):
         removeSongFromPlaylist = self.mainContextMenu.addAction("Remove from this playlist")
         addSongToPlaylist = self.mainContextMenu.addMenu("Add to playlist")
 
-        playlists = sqlHandler.playlists.retrieveAll()
+        playlists = self.sqlHandler.playlists.retrieveAll()
         # Clear existing actions from the submenu
         self.addSongToPlaylistContextMenu.clear()
 
@@ -52,11 +51,11 @@ class SongItemWidget(BaseClass, UiSongItem):
 
     def addSongToPlaylist(self, playlist, song):
         # Add the song to the in database playlist
-        sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
+        self.sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
 
     def removeSong(self):
         # Remove the song from the in database playlist
-        sqlHandler.playlists.removeSong(self.parent.playlist[0], self.songIndex) # Remove the song from the database playlist
+        self.sqlHandler.playlists.removeSong(self.parent.playlist[0], self.songIndex) # Remove the song from the database playlist
         
         # Remove the song from the in memory playlist
         playlist = list(self.parent.playlist) # Convert the tuple to a list
