@@ -1,13 +1,11 @@
-from whoosh.fields import Schema, TEXT
-from whoosh.index import create_in
-import os
-from whoosh.index import open_dir
-from whoosh.writing import AsyncWriter
-
-from whoosh.qparser import MultifieldParser
 from whoosh.qparser import MultifieldParser, FuzzyTermPlugin, WildcardPlugin
+from whoosh.index import create_in, open_dir
+from whoosh.writing import AsyncWriter
+from whoosh.fields import Schema, TEXT
 
 import sqlHandler
+
+import os
 
 class SearchEngine():
     def __init__(self, sqlHandler):

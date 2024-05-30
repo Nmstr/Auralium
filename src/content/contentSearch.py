@@ -6,8 +6,6 @@ from content.search.topResult import SearchTopResultWidget
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6 import uic
 
-import difflib
-
 # Load the .ui file and get the base class and form class
 UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 
