@@ -1,10 +1,10 @@
+from mutagen.id3 import ID3, TIT2, TPE1, TDRC
+from mutagen.mp3 import MP3
 from tinytag import TinyTag as tinyTag
 from PIL import Image
 
 import os
 
-from mutagen.mp3 import MP3
-from mutagen.id3 import ID3, TIT2, TPE1, TALB, TRCK, TDRC, TCON
 
 def getTag(filePath: str) -> tinyTag:
     """
