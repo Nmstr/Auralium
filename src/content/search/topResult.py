@@ -28,8 +28,6 @@ class SearchTopResultWidget(BaseClass, UiSearchTopResult):
         if self.song[7] == 1:
             self.setEnabled(False)
 
-        #self.test.clicked.connect(self.contextPopover)
-
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.RightButton:
             self.showContextPopover()
