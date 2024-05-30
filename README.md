@@ -1,11 +1,7 @@
 # Auralium
 
 Auralium is a free and open source music player for Linux!
-<<<<<<< HEAD
-```                                                                   
-=======
 ```
->>>>>>> 07034497b7993b0893bdc13b930829b5fd243dc3
     // | |                                                         
    //__| |              __      ___     // ( )           _   __    
   / ___  |   //   / / //  ) ) //   ) ) // / / //   / / // ) )  ) ) 
