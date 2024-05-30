@@ -1,3 +1,7 @@
+from contextPopover.contextPopover import ContextPopover
+
+from PyQt6.QtCore import Qt, QPoint
+
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
@@ -6,15 +10,41 @@ UiSearchTopResult, BaseClass = uic.loadUiType('content/search/topResult.ui')
 class SearchTopResultWidget(BaseClass, UiSearchTopResult):
     def __init__(self, mainWindow, song):
         self.mainWindow = mainWindow
+        self.song = song
 
         super().__init__()
         self.setupUi(self)
 
         # Set song info
-        self.nameLabel.setText(song[1])
-        self.artistLabel.setText(song[2])
-        self.mainWindow.setSongImage(song[1], self.coverImg, [150, 150])
+        self.nameLabel.setText(self.song[1])
+        self.artistLabel.setText(self.song[2])
+        self.mainWindow.setSongImage(self.song[1], self.coverImg, [150, 150])
 
         # Connect control buttons
-        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(song[3]))
-        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(song[3]))
+        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3]))
+        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
+
+        # Grey out if disabled
+        if self.song[7] == 1:
+            self.setEnabled(False)
+
+        #self.test.clicked.connect(self.contextPopover)
+
+    def mousePressEvent(self, event) -> None:
+        if event.button() == Qt.MouseButton.RightButton:
+            self.showContextPopover()
+
+    def enterEvent(self, event):
+        self.setStyleSheet("background-color: #333;")
+
+    def leaveEvent(self, event):
+        self.setStyleSheet("")
+ 
+    def showContextPopover(self):
+        popover = ContextPopover(self.mainWindow, self.song)
+
+        buttonPos = self.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
+        
+        # Set the position and size of the popover
+        popover.setGeometry(buttonPos.x(), buttonPos.y(), self.width(), self.height())
+        popover.show()
