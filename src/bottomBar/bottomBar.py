@@ -1,4 +1,4 @@
-from queuePopover.QueuePopover import QueuePopover
+from queuePopover.queuePopover import QueuePopover
 
 import songDataHandler
 
@@ -34,7 +34,7 @@ class bottomBarWidget(BaseClass, UiBottomBar):
         # Create value for song duration
         self.oldDuration = 0
 
-        self.test.clicked.connect(self.show_popover)
+        self.test.clicked.connect(self.showQueuePopover)
 
     def updateSliderPositionManual(self):
         """
@@ -67,7 +67,7 @@ class bottomBarWidget(BaseClass, UiBottomBar):
         except Exception:
             pass #print('No song loaded')
 
-    def show_popover(self):
+    def showQueuePopover(self):
         popover = QueuePopover(self.mainWindow)
 
         buttonPos = self.test.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
