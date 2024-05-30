@@ -39,7 +39,7 @@ class SearchTopResultWidget(BaseClass, UiSearchTopResult):
         self.setStyleSheet("")
  
     def showContextPopover(self):
-        popover = ContextPopover(self.mainWindow, self.song)
+        popover = ContextPopover(self.mainWindow, self.song, self.mainWindow.sqlHandler)
 
         buttonPos = self.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
         

@@ -15,6 +15,7 @@ modules:
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} pillow-*.whl
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} pygame-*.whl
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} mutagen-*.whl
+      - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} Whoosh-*.whl
       - cp -r . /app/bin
     sources:
       - type: dir
@@ -40,6 +41,9 @@ modules:
       - type: file # mutagen
         url: "https://files.pythonhosted.org/packages/b0/7a/620f945b96be1f6ee357d211d5bf74ab1b7fe72a9f1525aafbfe3aee6875/mutagen-1.47.0-py3-none-any.whl"
         sha256: "edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719"
+      - type: file # whoosh
+        url: "https://files.pythonhosted.org/packages/ba/19/24d0f1f454a2c1eb689ca28d2f178db81e5024f42d82729a4ff6771155cf/Whoosh-2.7.4-py2.py3-none-any.whl"
+        sha256: "aa39c3c3426e3fd107dcb4bde64ca1e276a65a889d9085a6e4b54ba82420a852"
 
   - name: desktop
     buildsystem: simple

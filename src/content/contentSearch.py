@@ -1,3 +1,5 @@
+from content.search.searchEngine.searchEngine import SearchEngine
+
 from content.search.songResult import SearchSongResultWidget
 from content.search.topResult import SearchTopResultWidget
 
@@ -13,6 +15,10 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
     def __init__(self, mainWindow, sqlHandler):
         self.mainWindow = mainWindow
         self.sqlHandler = sqlHandler
+        
+        self.searchEngine = SearchEngine(self.sqlHandler)
+        self.searchEngine.createIndex()
+        self.searchEngine.addToIndex()
 
         super().__init__()
         self.setupUi(self)
@@ -31,22 +37,10 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         Parameters:
             text (str): The text entered in the search bar.
         """
-        try:
-            allSongs = self.sqlHandler.songs.retrieveAll()
-            # Create a list of concatenated title and artist for matching
-            titlesArtists = [song[1] + " " + song[2] for song in allSongs]
-            similarTitlesArtists = difflib.get_close_matches(text, titlesArtists, n=3, cutoff=0.05)
-            similarSongs = difflib.get_close_matches(text, titlesArtists, n=20, cutoff=0.05)
-            
-            # Map the similar strings back to the original song tuples
-            similar = [song for song in allSongs if (song[1] + " " + song[2]) in similarTitlesArtists]
-            similarSongs = [song for song in allSongs if (song[1] + " " + song[2]) in similarSongs]
+        searchResults = self.searchEngine.search(text)
 
-            similar = similar + [self.sqlHandler.songs.retrieveRandomSong() for _ in range(3 - len(similar))]
-        except Exception as e:
-            # If there's an error, fill in with random songs
-            similar = [self.sqlHandler.songs.retrieveRandomSong() for _ in range(3)]
-            print(e)
+        similar = searchResults[:3]
+        similarSongs = searchResults
 
         self.displaySearchResultsTop(similar)
         self.displaySearchResultsSongs(similarSongs)
