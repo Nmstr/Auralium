@@ -1,4 +1,3 @@
-from sqlHandler import sqlHandler
 import songDataHandler
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame
@@ -35,7 +34,8 @@ def formatDate(dateString):
 class IndexSongsThread(QThread):
     updateToErrorsSignal = pyqtSignal(list)
     
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, sqlHandler=None):
+        self.sqlHandler = sqlHandler
         super().__init__(parent)
     
     def run(self):
@@ -56,8 +56,8 @@ class IndexSongsThread(QThread):
             self.parent().pathToFileLabel.setText(fullFilePath) # Update the displayed path to the file
 
             processedSongs += 1
-            hash = sqlHandler.database.hashFile(fullFilePath)
-            if not sqlHandler.songs.retrieveBySha256hash(hash):
+            hash = self.sqlHandler.database.hashFile(fullFilePath)
+            if not self.sqlHandler.songs.retrieveBySha256hash(hash):
                 songData = songDataHandler.getTag(fullFilePath)
                 songData = self.checkValidData(songData)
 
@@ -68,7 +68,7 @@ class IndexSongsThread(QThread):
                         artist=songData.artist,
                         releaseDate=songData.year
                     ) # Modify the song's tag
-                result = sqlHandler.songs.insertSongIntoDB(
+                result = self.sqlHandler.songs.insertSongIntoDB(
                     title=songData.title,
                     filePath=fullFilePath,
                     artist=songData.artist,
@@ -127,11 +127,13 @@ class IndexSongsThread(QThread):
             pass
 
 class DebugIndexSongsWindow(QWidget):
-    def __init__(self):
+    def __init__(self, sqlHandler):
+        self.sqlHandler = sqlHandler
+
         super().__init__()
         self.ui = uic.loadUi('debug/debugIndexSongs.ui', self)
 
-        self.indexSongsThread = IndexSongsThread(self)
+        self.indexSongsThread = IndexSongsThread(self, sqlHandler)
         self.indexSongsThread.updateToErrorsSignal.connect(self.updateToErrors)
         self.startIndexing()
 

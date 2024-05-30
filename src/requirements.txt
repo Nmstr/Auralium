@@ -3,3 +3,4 @@ tinytag
 Pillow
 pygame
 mutagen
+whoosh

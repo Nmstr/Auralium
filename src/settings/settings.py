@@ -1,5 +1,3 @@
-from sqlHandler import sqlHandler
-
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
