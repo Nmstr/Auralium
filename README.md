@@ -53,5 +53,6 @@ Namester (Nmstr)
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPLv3)
+
 See LICENSE.md for more information
 
