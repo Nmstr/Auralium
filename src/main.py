@@ -72,7 +72,7 @@ class MainWindow(QWidget):
         Add sidebar widget to the UI.
         - None
         """
-        container = self.ui.sidebar
+        container = self.ui.sidebarContainer
         # Check if the container has a layout, if not, set a new QVBoxLayout
         layout = container.layout()
         if layout is None:

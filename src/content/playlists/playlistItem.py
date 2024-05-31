@@ -21,9 +21,6 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         self.nameLabel.setText(playlist[1])
         self.creatorLabel.setText(playlist[2])
 
-        # Enable mouse tracking
-        self.setMouseTracking(True)
-    
     def mousePressEvent(self, event) -> None:
         """
         Handle the mouse press event.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Frame</class>
- <widget class="QFrame" name="Frame">
+ <class>base</class>
+ <widget class="QFrame" name="base">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -39,7 +39,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>300</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -95,7 +95,7 @@
        <widget class="QScrollArea" name="playlistsScrollArea">
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
