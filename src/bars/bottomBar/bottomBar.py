@@ -8,9 +8,9 @@ from PyQt6 import uic
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiBottomBar, BaseClass = uic.loadUiType('bottomBar/bottomBar.ui')
+UiBottomBar, BaseClass = uic.loadUiType('bars/bottomBar/bottomBar.ui')
 
-class bottomBarWidget(BaseClass, UiBottomBar):
+class BottomBarWidget(BaseClass, UiBottomBar):
     def __init__(self, mainWindow, sqlHandler):
         self.mainWindow = mainWindow
         self.sqlHandler = sqlHandler

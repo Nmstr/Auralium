@@ -63,3 +63,4 @@ class SearchEngine():
             results = searcher.search(query, limit=limit)
             
             return [self.sqlHandler.songs.retrieveById(hit["id"]) for hit in results]
+        

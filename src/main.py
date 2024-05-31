@@ -6,7 +6,8 @@ from content.contentHome import ContentHomeWidget
 from settings.settings import SettingsWidget
 
 from content.playlists.playlistItem import PlaylistItemWidget
-from bottomBar.bottomBar import bottomBarWidget
+from bars.bottomBar.bottomBar import BottomBarWidget
+from bars.sidebar.sidebar import SidebarWidget
 
 from preferenceHandler import PreferenceHandler
 from songQueue import SongQueue
@@ -31,9 +32,10 @@ class MainWindow(QWidget):
         # Add preference handler to self
         self.preferenceHandler = preferenceHandler
 
-        # Set the main content and add the bottom bar
+        # Set the main content and add the bars
         self.setMainContentDisplay("home")
         self.addBottomBarWidget()
+        self.addSidebarWidget()
 
         # Create hotkey action
         self.hotkeyAction = QAction(self)
@@ -45,10 +47,6 @@ class MainWindow(QWidget):
         self.ui.homeBtn.clicked.connect(lambda: self.setMainContentDisplay('home'))
         self.ui.searchBtn.clicked.connect(lambda: self.setMainContentDisplay('search'))
 
-        # Connect playlist buttons
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.sqlHandler.playlists.create('dadwdaddawkuuhku', None, None, None))
-        self.ui.playlistsCreateBtn.clicked.connect(lambda: self.displayPlaylists())
-
         # Call the method to display playlists at initialization
         self.displayPlaylists()
 
@@ -56,7 +54,7 @@ class MainWindow(QWidget):
 
     def addBottomBarWidget(self) -> None:
         """
-        Add bnottom bar widget to the UI.
+        Add bottom bar widget to the UI.
         - None
         """
         container = self.ui.bottomBar
@@ -66,8 +64,23 @@ class MainWindow(QWidget):
             layout = QVBoxLayout()
             container.setLayout(layout)
         # Create the bottom bar
-        self.bottomBar = bottomBarWidget(self, self.sqlHandler)
+        self.bottomBar = BottomBarWidget(self, self.sqlHandler)
         layout.addWidget(self.bottomBar)
+
+    def addSidebarWidget(self) -> None:
+        """
+        Add sidebar widget to the UI.
+        - None
+        """
+        container = self.ui.sidebar
+        # Check if the container has a layout, if not, set a new QVBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QVBoxLayout()
+            container.setLayout(layout)
+        # Create the sidebar
+        self.sidebar = SidebarWidget(self, self.sqlHandler)
+        layout.addWidget(self.sidebar)
 
     def displayPlaylists(self) -> None:
         """
@@ -85,7 +98,7 @@ class MainWindow(QWidget):
         playlists = self.sqlHandler.playlists.retrieveAll()
 
         # Get the container widget
-        container = self.ui.playlistsScrollAreaWidgetContents
+        container = self.sidebar.playlistsScrollAreaWidgetContents
         # Check if the container has a layout, if not, set a new QVBoxLayout
         layout = container.layout()
         if layout is None:
