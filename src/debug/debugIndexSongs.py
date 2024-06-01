@@ -183,3 +183,4 @@ class DebugIndexSongsWindow(QWidget):
 
     def closeEvent(self, event):
         self.indexSongsThread.stop()
+        return super().closeEvent(event)

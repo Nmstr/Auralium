@@ -48,6 +48,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
             
             self.displaySongsInPlaylist()
+            return super().mousePressEvent(event)
 
     def playPlaylist(self) -> None:
         """
@@ -70,6 +71,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             None
         """
         self.setStyleSheet("background-color: #333;")
+        return super().enterEvent(event)
 
     def leaveEvent(self, event) -> None:
         """
@@ -82,6 +84,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             None
         """
         self.setStyleSheet("")
+        return super().leaveEvent(event)
 
     def displaySongsInPlaylist(self) -> None:
         """

@@ -34,4 +34,4 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
         This method is called when the popover loses focus. It closes the popover and calls the parent's focus out event.
         """
         self.close()
-        super().focusOutEvent(event)
+        return super().focusOutEvent(event)

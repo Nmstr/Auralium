@@ -87,6 +87,7 @@ class SongItemWidget(BaseClass, UiSongItem):
         if event.button() == Qt.MouseButton.LeftButton:
             self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3])
             self.mainWindow.songQueue.playingPlaylist = [self.parent.playlist, self.songIndex]
+            return super().mousePressEvent(event)
 
     def enterEvent(self, event) -> None:
         """
@@ -99,6 +100,7 @@ class SongItemWidget(BaseClass, UiSongItem):
             None
         """
         self.setStyleSheet("background-color: #333;")
+        return super().enterEvent(event)
 
     def leaveEvent(self, event) -> None:
         """
@@ -111,7 +113,8 @@ class SongItemWidget(BaseClass, UiSongItem):
             None
         """
         self.setStyleSheet("")
+        return super().leaveEvent(event)
  
     def contextMenuEvent(self, event) -> None:
         self.mainContextMenu.exec(event.globalPos())
- 
+        return super().contextMenuEvent(event)

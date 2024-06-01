@@ -31,12 +31,15 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.RightButton:
             self.showContextPopover()
+            return super().mousePressEvent(event)
 
     def enterEvent(self, event) -> None:
         self.setStyleSheet("background-color: #333;")
+        return super().enterEvent(event)
 
     def leaveEvent(self, event) -> None:
         self.setStyleSheet("")
+        return super().leaveEvent(event)
  
     def showContextPopover(self) -> None:
         """

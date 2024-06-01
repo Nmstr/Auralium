@@ -60,6 +60,6 @@ class SidebarWidget(BaseClass, UiSidebar):
 
         Resizes the sidebar, if self.resizeBar is True.
         """
-        super().mouseMoveEvent(event)
         if self.resizeBar:
             self.mainWindow.ui.sidebarContainer.setFixedWidth(event.pos().x() + 20)
+            return super().mouseMoveEvent(event)

@@ -41,11 +41,11 @@ class ContextPopover(BaseClass, UiContextPopover):
         """
         if event.button() == Qt.MouseButton.RightButton:
             self.close()
-        super().mousePressEvent(event)
+        return super().mousePressEvent(event)
 
     def focusOutEvent(self, event):
         """
         Close the context popover when the user clicks outside of it
         """
         self.close()
-        super().focusOutEvent(event)
+        return super().focusOutEvent(event)
