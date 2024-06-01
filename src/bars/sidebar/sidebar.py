@@ -36,4 +36,3 @@ class SidebarWidget(BaseClass, UiSidebar):
     def mouseMoveEvent(self, event) -> None:
         if self.resizeBar:
             self.mainWindow.ui.sidebarContainer.setFixedWidth(event.pos().x() + 20)
-            self.mainWindow.ui.sidebar.setFixedWidth(event.pos().x())
