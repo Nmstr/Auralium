@@ -53,10 +53,11 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         """
         Play the playlist
         """
-        playlist = json.loads(self.playlist[-1])
-        song = self.sqlHandler.songs.retrieveById(playlist[0])
-        self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
-        self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
+        if self.playlist[5]:
+            playlist = json.loads(self.playlist[-1])
+            song = self.sqlHandler.songs.retrieveById(playlist[0])
+            self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
+            self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
 
     def enterEvent(self, event) -> None:
         """
