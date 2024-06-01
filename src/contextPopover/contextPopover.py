@@ -36,6 +36,9 @@ class ContextPopover(BaseClass, UiContextPopover):
             self.sqlHandler.playlists.addSong(playlist[0], self.song[0], len(playlist[5]))
 
     def mousePressEvent(self, event) -> None:
+        """
+        Close the context popover when the user right clicks
+        """
         if event.button() == Qt.MouseButton.RightButton:
             self.close()
         super().mousePressEvent(event)

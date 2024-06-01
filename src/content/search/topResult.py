@@ -44,8 +44,8 @@ class SearchTopResultWidget(BaseClass, UiSearchTopResult):
         """
         popover = ContextPopover(self.mainWindow, self.song, self.mainWindow.sqlHandler)
 
-        buttonPos = self.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
+        popoverPos = self.mapToGlobal(QPoint(0, 0))
         
         # Set the position and size of the popover
-        popover.setGeometry(buttonPos.x(), buttonPos.y(), self.width(), self.height())
+        popover.setGeometry(popoverPos.x(), popoverPos.y(), self.width(), self.height())
         popover.show()

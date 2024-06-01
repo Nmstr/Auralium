@@ -105,6 +105,9 @@
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -113,7 +116,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>300</width>
+           <width>286</width>
            <height>600</height>
           </rect>
          </property>
