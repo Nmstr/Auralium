@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiContextPopover, BaseClass = uic.loadUiType('contextPopover/contextPopover.ui')
+UiContextPopover, BaseClass = uic.loadUiType('popovers/contextPopover/contextPopover.ui')
 
 class ContextPopover(BaseClass, UiContextPopover):
     def __init__(self, mainWindow, song, sqlHandler):

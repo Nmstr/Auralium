@@ -1,4 +1,4 @@
-from createPlaylistPopover.createPlaylistPopover import CreatePlaylistPopover
+from popovers.createPlaylistPopover.createPlaylistPopover import CreatePlaylistPopover
 
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtCore import QPoint

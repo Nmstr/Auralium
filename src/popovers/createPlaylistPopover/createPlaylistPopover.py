@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiCreatePlaylistPopover, BaseClass = uic.loadUiType('createPlaylistPopover/createPlaylistPopover.ui')
+UiCreatePlaylistPopover, BaseClass = uic.loadUiType('popovers/createPlaylistPopover/createPlaylistPopover.ui')
 
 class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
     def __init__(self, mainWindow, sqlHandler):

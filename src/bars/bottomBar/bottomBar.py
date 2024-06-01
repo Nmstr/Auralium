@@ -1,4 +1,4 @@
-from queuePopover.queuePopover import QueuePopover
+from popovers.queuePopover.queuePopover import QueuePopover
 
 import songDataHandler
 

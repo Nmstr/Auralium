@@ -1,4 +1,4 @@
-from contextPopover.contextPopover import ContextPopover
+from popovers.contextPopover.contextPopover import ContextPopover
 
 from PyQt6.QtCore import Qt, QPoint
 

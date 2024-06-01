@@ -1,4 +1,4 @@
-from queuePopover.queueEntry import QueueEntryWidget
+from popovers.queuePopover.queueEntry import QueueEntryWidget
 
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtCore import Qt
@@ -8,7 +8,7 @@ from PyQt6 import uic
 import json
 
 # Load the .ui file and get the base class and form class
-UiQueuePopover, BaseClass = uic.loadUiType('queuePopover/queuePopover.ui')
+UiQueuePopover, BaseClass = uic.loadUiType('popovers/queuePopover/queuePopover.ui')
 
 class QueuePopover(BaseClass, UiQueuePopover):
     def __init__(self, mainWindow, sqlHandler):
