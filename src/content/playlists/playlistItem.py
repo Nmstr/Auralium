@@ -39,7 +39,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.mainWindow.playlistDisplay.playlistNameLabel.setText(self.playlist[1])
             self.mainWindow.playlistDisplay.playlistCreatorLabel.setText(self.playlist[2])
             self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
-            self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
+            self.mainWindow.songDataHandler.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
             self.playlist = self.sqlHandler.playlists.retrieve(self.playlist[0])
             if self.playlist[5]:
                 self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: ' + str(len(json.loads(self.playlist[-1]))))
@@ -48,6 +48,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
             
             self.displaySongsInPlaylist()
+            return super().mousePressEvent(event)
 
     def playPlaylist(self) -> None:
         """
@@ -70,6 +71,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             None
         """
         self.setStyleSheet("background-color: #333;")
+        return super().enterEvent(event)
 
     def leaveEvent(self, event) -> None:
         """
@@ -82,6 +84,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             None
         """
         self.setStyleSheet("")
+        return super().leaveEvent(event)
 
     def displaySongsInPlaylist(self) -> None:
         """

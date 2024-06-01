@@ -12,4 +12,4 @@ class QueueEntryWidget(BaseClass, UiNowPlayingQueue):
 
         self.nameLabel.setText(song[1])
 
-        self.mainWindow.setSongImage(song[1], self.coverImg, [100, 100])
+        self.mainWindow.songDataHandler.setSongImage(song[1], self.coverImg, [100, 100])

@@ -18,7 +18,7 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
         # Set song info
         self.nameLabel.setText(self.song[1])
         self.artistLabel.setText(self.song[2])
-        self.mainWindow.setSongImage(self.song[1], self.coverImg, [150, 150])
+        self.mainWindow.songDataHandler.setSongImage(self.song[1], self.coverImg, [150, 150])
 
         # Connect control buttons
         self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3]))
@@ -31,12 +31,15 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.RightButton:
             self.showContextPopover()
+            return super().mousePressEvent(event)
 
     def enterEvent(self, event) -> None:
         self.setStyleSheet("background-color: #333;")
+        return super().enterEvent(event)
 
     def leaveEvent(self, event) -> None:
         self.setStyleSheet("")
+        return super().leaveEvent(event)
  
     def showContextPopover(self) -> None:
         """
