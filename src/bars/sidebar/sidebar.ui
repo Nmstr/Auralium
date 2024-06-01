@@ -79,19 +79,15 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QPushButton" name="playlistsCreateBtn">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>10</y>
-           <width>91</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>create Playlist</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="playlistsCreateBtn">
+           <property name="text">
+            <string>create Playlist</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
