@@ -18,7 +18,7 @@ class SearchTopResultWidget(BaseClass, UiSearchTopResult):
         # Set song info
         self.nameLabel.setText(self.song[1])
         self.artistLabel.setText(self.song[2])
-        self.mainWindow.setSongImage(self.song[1], self.coverImg, [150, 150])
+        self.mainWindow.songDataHandler.setSongImage(self.song[1], self.coverImg, [150, 150])
 
         # Connect control buttons
         self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3]))

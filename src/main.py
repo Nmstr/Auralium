@@ -10,8 +10,8 @@ from bars.bottomBar.bottomBar import BottomBarWidget
 from bars.sidebar.sidebar import SidebarWidget
 
 from preferenceHandler import PreferenceHandler
+from songDataHandler import SongDataHandler
 from songQueue import SongQueue
-import songDataHandler
 import sqlHandler
 
 from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
@@ -26,8 +26,9 @@ class MainWindow(QWidget):
         self.ui = uic.loadUi('main.ui', self)
 
         # Create song queue
-        self.songQueue = SongQueue(sqlHandler)
         self.sqlHandler = sqlHandler
+        self.songQueue = SongQueue(self.sqlHandler)
+        self.songDataHandler = SongDataHandler(self.sqlHandler)
 
         # Add preference handler to self
         self.preferenceHandler = preferenceHandler
@@ -116,27 +117,6 @@ class MainWindow(QWidget):
         for playlist in playlists:
             playlistWidget = PlaylistItemWidget(playlist, self, self.sqlHandler)
             layout.addWidget(playlistWidget)
-
-    def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]) -> None:
-        """
-        A function that sets the image of a song in a graphics view.
-
-        Parameters:
-        - songTitle: str, the title of the song to set the image for
-        - graphicsView: the graphics view where the image will be set
-        - resolution: list, the resolution of the image
-
-        Returns:
-        - None
-        """
-        graphicsScene = QGraphicsScene()
-        pixmap = QPixmap()
-        try:
-            pixmap.loadFromData(songDataHandler.getImgData(self.sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution))
-        except Exception as e:
-            pixmap.loadFromData(songDataHandler.getImgData('covers/default.png'))
-        graphicsScene.addPixmap(pixmap)
-        graphicsView.setScene(graphicsScene)
 
     def setMainContentDisplay(self, content: str) -> None:
         """

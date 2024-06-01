@@ -56,7 +56,7 @@ class BottomBarWidget(BaseClass, UiBottomBar):
             self.musicControlsTime.setValue(newValue)
 
         try:
-            newDuration = songDataHandler.getTag(self.mainWindow.songQueue.getCurrentSong()).duration
+            newDuration = self.mainWindow.songDataHandler.getTag(self.mainWindow.songQueue.getCurrentSong()).duration
             if self.oldDuration != newDuration:
                 self.musicControlsTime.setValue(0)
                 self.musicControlsTime.setRange(0, int(newDuration))
