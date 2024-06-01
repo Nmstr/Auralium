@@ -28,9 +28,10 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         self.searchFilterSongsBtn.clicked.connect(self.switchSearchFilter)
         self.searchFilterArtistsBtn.clicked.connect(self.switchSearchFilter)
 
-    def searchBarTextChange(self, text):
+    def searchBarTextChange(self, text: str) -> None:
         """
         This function handles the search functionality based on the search bar text.
+        It uses woosh to search for the text in the index and displays the results.
         
         Parameters:
             text (str): The text entered in the search bar.
@@ -43,7 +44,7 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         self.displaySearchResultsTop(similar)
         self.displaySearchResultsSongs(similarSongs)
 
-    def switchSearchFilter(self, filter):
+    def switchSearchFilter(self, filter: bool) -> None:
         """
         This function handles the switching of search filters based on the senderName and the filter value.
         """
@@ -63,7 +64,14 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             self.ui.searchFilterSongsBtn.setChecked(False)
             self.ui.searchFilterArtistsBtn.setChecked(False)
 
-    def displaySearchResultsTop(self, similar) -> None:
+    def displaySearchResultsTop(self, similar: list) -> None:
+        """
+        Dynamically add custom widgets for each song in the search results.
+        This adds to the top search results
+
+        Parameters:
+            similar (list): The list of songs to display in the search results.
+        """
         container = self.searchTopResults
         # Check if the container has a layout, if not, set a new QHBoxLayout
         layout = container.layout()
@@ -82,7 +90,14 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             searchTopResultWidget = SearchTopResultWidget(self.mainWindow, song)
             layout.addWidget(searchTopResultWidget)
 
-    def displaySearchResultsSongs(self, similarSongs) -> None:
+    def displaySearchResultsSongs(self, similarSongs: list) -> None:
+        """
+        Dynamically add custom widgets for each song in the search results.
+        This adds to the general search results
+
+        Parameters:
+            similarSongs (list): The list of songs to display in the search results.
+        """
         container = self.searchSongsArea
         # Check if the container has a layout, if not, set a new QHBoxLayout
         layout = container.layout()

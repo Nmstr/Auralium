@@ -23,7 +23,10 @@ class ContextPopover(BaseClass, UiContextPopover):
         self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
         self.addToPlaylistBtn.clicked.connect(lambda: self.addSongToPlaylist())
 
-    def addSongToPlaylist(self):
+    def addSongToPlaylist(self) -> None:
+        """
+        A function to add a song to a playlist in the database.
+        """
         playlistId = self.playlistInputComboBox.currentData()
         playlist = self.sqlHandler.playlists.retrieve(playlistId)
         # Add the song to the in database playlist
@@ -38,6 +41,8 @@ class ContextPopover(BaseClass, UiContextPopover):
         super().mousePressEvent(event)
 
     def focusOutEvent(self, event):
-        # Close the popover when it loses focus
+        """
+        Close the context popover when the user clicks outside of it
+        """
         self.close()
         super().focusOutEvent(event)

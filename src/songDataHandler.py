@@ -20,6 +20,15 @@ def getTag(filePath: str) -> tinyTag:
     return tag
 
 def modifyTag(filePath: str, title: str, artist: str, releaseDate: str) -> None:
+    """
+    A function to modify the tag of the specified file path.
+    
+    Parameters:
+    - filePath: str, the path to the file
+    - title: (optional) str, the new title
+    - artist: (optional) str, the new artist
+    - releaseDate: (optional) str, the new release date
+    """
     audio = MP3(filePath, ID3=ID3) # Load the MP3 file
 
     if title:

@@ -22,7 +22,10 @@ class QueuePopover(BaseClass, UiQueuePopover):
         self.addNextInQueueItem()
         self.addNextInPlaylistItem()
 
-    def addNowPlayingQueueItem(self):
+    def addNowPlayingQueueItem(self) -> None:
+        """
+        Adds the current song to the queue.
+        """
         # Get the current song
         currentSong = self.mainWindow.songQueue.getCurrentSong()
 
@@ -38,7 +41,10 @@ class QueuePopover(BaseClass, UiQueuePopover):
             self.nowPlayingQueue = QueueEntryWidget(self.sqlHandler.songs.retrieveByPath(currentSong), self.mainWindow)
             layout.addWidget(self.nowPlayingQueue)
 
-    def addNextInQueueItem(self):
+    def addNextInQueueItem(self) -> None:
+        """
+        Adds the next song in the queue to the queue.
+        """
         # Get the next songs in the queue
         songsInQueue = self.mainWindow.songQueue.queue
         index = self.mainWindow.songQueue.currentSongIndex
@@ -56,7 +62,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
             self.nextInQueue = QueueEntryWidget(self.sqlHandler.songs.retrieveByPath(song), self.mainWindow)
             layout.addWidget(self.nextInQueue)
 
-    def addNextInPlaylistItem(self):
+    def addNextInPlaylistItem(self) -> None:
         # Get the next songs in the playlist
         songsInPlaylist = self.mainWindow.songQueue.playingPlaylist
         if songsInPlaylist is None: # If there are no songs in the playlist return
@@ -79,7 +85,11 @@ class QueuePopover(BaseClass, UiQueuePopover):
                 self.nextInPlaylist = QueueEntryWidget(songData, self.mainWindow)
                 layout.addWidget(self.nextInPlaylist)
 
-    def focusOutEvent(self, event):
-        # Close the popover when it loses focus
+    def focusOutEvent(self, event) -> None:
+        """
+        Handle the focus out event.
+
+        This method is called when the popover loses focus. It closes the popover and calls the parent's focus out event.
+        """
         self.close()
         super().focusOutEvent(event)

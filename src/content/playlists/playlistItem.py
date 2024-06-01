@@ -50,12 +50,15 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.displaySongsInPlaylist()
 
     def playPlaylist(self) -> None:
+        """
+        Play the playlist
+        """
         playlist = json.loads(self.playlist[-1])
         song = self.sqlHandler.songs.retrieveById(playlist[0])
         self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
         self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
 
-    def enterEvent(self, event):
+    def enterEvent(self, event) -> None:
         """
         Handle the mouse enter event.
 
@@ -67,7 +70,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         """
         self.setStyleSheet("background-color: #333;")
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event) -> None:
         """
         Handle the mouse leave event.
 
@@ -80,7 +83,13 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         self.setStyleSheet("")
 
     def displaySongsInPlaylist(self) -> None:
-        # Get the container widget
+        """
+        Displays the songs in the playlist in the playlist display widget.
+
+        This function retrieves the container widget for the playlist display and checks if it has a layout. If not, a new QVBoxLayout is set.
+        Existing content in the layout is cleared.
+        Then, custom widgets are dynamically added to the layout for each song in the playlist.
+        """
         container = self.mainWindow.playlistDisplay.playlistSongs
 
         # Check if the container has a layout, if not, set a new QVBoxLayout

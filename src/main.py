@@ -117,7 +117,7 @@ class MainWindow(QWidget):
             playlistWidget = PlaylistItemWidget(playlist, self, self.sqlHandler)
             layout.addWidget(playlistWidget)
 
-    def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]):
+    def setSongImage(self, songTitle: str, graphicsView, resolution: list = [150, 150]) -> None:
         """
         A function that sets the image of a song in a graphics view.
 
@@ -138,12 +138,12 @@ class MainWindow(QWidget):
         graphicsScene.addPixmap(pixmap)
         graphicsView.setScene(graphicsScene)
 
-    def setMainContentDisplay(self, content) -> None:
+    def setMainContentDisplay(self, content: str) -> None:
         """
         A function that sets the main content display based on the content parameter.
 
         Parameters:
-        - content: the type of content to display
+        - content: (str) the type of content to display
         """
         container = self.ui.mainContent
         layout = container.layout()

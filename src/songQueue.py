@@ -13,30 +13,48 @@ class SongQueue():
         self.playing = False
         self.playingPlaylist = None
 
-    def play(self):
+    def play(self) -> None:
+        """
+        Plays the current song in the queue.
+        """
         self.playing = True
         pygame.mixer.music.unpause()
         if pygame.mixer.music.get_busy() == False:
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
     
-    def pause(self):
+    def pause(self) -> None:
+        """
+        Pauses the current song in the queue.
+        """
         self.playing = False
         pygame.mixer.music.pause()
     
-    def getTime(self):
+    def getTime(self) -> int:
+        """
+        Returns the current position of the song in the queue.
+        """
         return pygame.mixer.music.get_pos()
     
-    def setTime(self, time):
+    def setTime(self, time: int) -> None:
+        """
+        Sets the current position of the song in the queue.
+        """
         pygame.mixer.music.set_pos(time)
     
-    def getVolume(self):
+    def getVolume(self) -> float:
+        """
+        Returns the current volume of the song in the queue.
+        """
         return pygame.mixer.music.get_volume()
     
-    def setVolume(self, volume):
+    def setVolume(self, volume: float) -> None:
+        """
+        Sets the current volume of the song in the queue.
+        """
         pygame.mixer.music.set_volume(volume / 100)
 
-    def addSong(self, song: str):
+    def addSong(self, song: str) -> None:
         """
         A function that adds a song to the song queue.
 
@@ -45,7 +63,7 @@ class SongQueue():
         """
         self.queue.append(song)
 
-    def addAndSetCurrentSong(self, song: str):
+    def addAndSetCurrentSong(self, song: str) -> None:
         """
         A function that adds a song to the song queue and sets it as the current song.
 
@@ -60,7 +78,7 @@ class SongQueue():
         pygame.mixer.music.play()
         self.playing = True
 
-    def getCurrentSong(self):
+    def getCurrentSong(self) -> str:
         """
         A function that returns the current song from the queue.
 
@@ -72,7 +90,7 @@ class SongQueue():
         else:
             pass #print('No more songs in the queue')
 
-    def goToNextSong(self):
+    def goToNextSong(self) -> None:
         """
         A function that advances to the next song in the queue.
         """
@@ -95,7 +113,7 @@ class SongQueue():
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
     
-    def goToPreviousSong(self):
+    def goToPreviousSong(self) -> None:
         """
         A function that goes to the previous song in the queue if available.
         """
@@ -112,7 +130,7 @@ class SongQueue():
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
     
-    def getQueue(self):
+    def getQueue(self) -> list:
         """
         A function that returns the current song queue along with its current index in the queue.
         """

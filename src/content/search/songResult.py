@@ -32,13 +32,16 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
         if event.button() == Qt.MouseButton.RightButton:
             self.showContextPopover()
 
-    def enterEvent(self, event):
+    def enterEvent(self, event) -> None:
         self.setStyleSheet("background-color: #333;")
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event) -> None:
         self.setStyleSheet("")
  
-    def showContextPopover(self):
+    def showContextPopover(self) -> None:
+        """
+        Show the context popover.
+        """
         popover = ContextPopover(self.mainWindow, self.song, self.mainWindow.sqlHandler)
 
         buttonPos = self.mapToGlobal(QPoint(0, 0)) # Get the position of the butto

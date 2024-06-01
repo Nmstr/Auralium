@@ -9,7 +9,7 @@ import datetime
 import time
 import os
 
-def formatDate(dateString):
+def formatDate(dateString: str) -> str:
     """
     Converts a date string from one format to another.
 
@@ -38,7 +38,7 @@ class IndexSongsThread(QThread):
         self.sqlHandler = sqlHandler
         super().__init__(parent)
     
-    def run(self):
+    def run(self) -> None:
         # Setup indexing
         musicDir = os.getenv('XDG_MUSIC_DIR', default=os.path.expanduser('~/Music') + '/auralium')
         songs = os.listdir(musicDir)

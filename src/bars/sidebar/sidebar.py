@@ -23,7 +23,10 @@ class SidebarWidget(BaseClass, UiSidebar):
         self.timer.timeout.connect(self.setCursorShape)
         self.timer.start(10)
 
-    def setCursorShape(self):
+    def setCursorShape(self) -> None:
+        """
+        Sets the cursor shape based on the position of the mouse.
+        """
         global_pos = QCursor.pos()
         local_pos = self.mapFromGlobal(global_pos)
         if abs(local_pos.x() - self.width()) <= 25:
@@ -34,5 +37,11 @@ class SidebarWidget(BaseClass, UiSidebar):
             self.setCursor(Qt.CursorShape.ArrowCursor)
         
     def mouseMoveEvent(self, event) -> None:
+        """
+        Handles the mouse move event.
+
+        Resizes the sidebar, if self.resizeBar is True.
+        """
+        super().mouseMoveEvent(event)
         if self.resizeBar:
             self.mainWindow.ui.sidebarContainer.setFixedWidth(event.pos().x() + 20)
