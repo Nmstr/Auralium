@@ -1,4 +1,4 @@
-from queuePopover.queuePopover import QueuePopover
+from popovers.queuePopover.queuePopover import QueuePopover
 
 import songDataHandler
 
@@ -8,9 +8,9 @@ from PyQt6 import uic
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiBottomBar, BaseClass = uic.loadUiType('bottomBar/bottomBar.ui')
+UiBottomBar, BaseClass = uic.loadUiType('bars/bottomBar/bottomBar.ui')
 
-class bottomBarWidget(BaseClass, UiBottomBar):
+class BottomBarWidget(BaseClass, UiBottomBar):
     def __init__(self, mainWindow, sqlHandler):
         self.mainWindow = mainWindow
         self.sqlHandler = sqlHandler
@@ -37,7 +37,7 @@ class bottomBarWidget(BaseClass, UiBottomBar):
 
         self.test.clicked.connect(self.showQueuePopover)
 
-    def updateSliderPositionManual(self):
+    def updateSliderPositionManual(self) -> None:
         """
         Updates the slider position manually based on the value of musicControlsTime.
         Changes the position in the song.
@@ -45,7 +45,7 @@ class bottomBarWidget(BaseClass, UiBottomBar):
         timeInSeconds = self.musicControlsTime.value()
         self.mainWindow.songQueue.setTime(timeInSeconds)
 
-    def updateTimeSliderAuto(self):
+    def updateTimeSliderAuto(self) -> None:
         """
         Updates the time slider automatically based on the current song's duration.
         Adjusts the slider value and triggers actions based on song progress.
@@ -68,7 +68,10 @@ class bottomBarWidget(BaseClass, UiBottomBar):
         except Exception:
             pass #print('No song loaded')
 
-    def showQueuePopover(self):
+    def showQueuePopover(self) -> None:
+        """
+        Shows the queue popover.
+        """
         popover = QueuePopover(self.mainWindow, self.sqlHandler)
 
         buttonPos = self.test.mapToGlobal(QPoint(0, 0)) # Get the position of the butto

@@ -91,19 +91,6 @@
     <string>remove Song</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="settingsBtn">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>40</y>
-     <width>80</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Settings</string>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>

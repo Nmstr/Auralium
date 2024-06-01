@@ -12,7 +12,10 @@ class SettingsWidget(BaseClass, UiSettings):
 
         self.fontApplyBtn.clicked.connect(self.applyFont)
     
-    def applyFont(self):
+    def applyFont(self) -> None:
+        """
+        Applies the new font.
+        """
         newFont = self.fontInput.text()
         self.mainWindow.preferenceHandler.writeConfig(section = 'APPEARANCE', option = 'font', value = newFont)
         self.mainWindow.preferenceHandler.loadFont()

@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiContextPopover, BaseClass = uic.loadUiType('contextPopover/contextPopover.ui')
+UiContextPopover, BaseClass = uic.loadUiType('popovers/contextPopover/contextPopover.ui')
 
 class ContextPopover(BaseClass, UiContextPopover):
     def __init__(self, mainWindow, song, sqlHandler):
@@ -23,7 +23,10 @@ class ContextPopover(BaseClass, UiContextPopover):
         self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
         self.addToPlaylistBtn.clicked.connect(lambda: self.addSongToPlaylist())
 
-    def addSongToPlaylist(self):
+    def addSongToPlaylist(self) -> None:
+        """
+        A function to add a song to a playlist in the database.
+        """
         playlistId = self.playlistInputComboBox.currentData()
         playlist = self.sqlHandler.playlists.retrieve(playlistId)
         # Add the song to the in database playlist
@@ -33,11 +36,16 @@ class ContextPopover(BaseClass, UiContextPopover):
             self.sqlHandler.playlists.addSong(playlist[0], self.song[0], len(playlist[5]))
 
     def mousePressEvent(self, event) -> None:
+        """
+        Close the context popover when the user right clicks
+        """
         if event.button() == Qt.MouseButton.RightButton:
             self.close()
         super().mousePressEvent(event)
 
     def focusOutEvent(self, event):
-        # Close the popover when it loses focus
+        """
+        Close the context popover when the user clicks outside of it
+        """
         self.close()
         super().focusOutEvent(event)

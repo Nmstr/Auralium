@@ -1,4 +1,4 @@
-from contextPopover.contextPopover import ContextPopover
+from popovers.contextPopover.contextPopover import ContextPopover
 
 from PyQt6.QtCore import Qt, QPoint
 
@@ -32,17 +32,20 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
         if event.button() == Qt.MouseButton.RightButton:
             self.showContextPopover()
 
-    def enterEvent(self, event):
+    def enterEvent(self, event) -> None:
         self.setStyleSheet("background-color: #333;")
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event) -> None:
         self.setStyleSheet("")
  
-    def showContextPopover(self):
+    def showContextPopover(self) -> None:
+        """
+        Show the context popover.
+        """
         popover = ContextPopover(self.mainWindow, self.song, self.mainWindow.sqlHandler)
 
-        buttonPos = self.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
+        popoverPos = self.mapToGlobal(QPoint(0, 0))
         
         # Set the position and size of the popover
-        popover.setGeometry(buttonPos.x(), buttonPos.y(), self.width(), self.height())
+        popover.setGeometry(popoverPos.x(), popoverPos.y(), self.width(), self.height())
         popover.show()

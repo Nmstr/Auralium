@@ -49,12 +49,17 @@ class SongItemWidget(BaseClass, UiSongItem):
         addSongToQueue.triggered.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
         removeSongFromPlaylist.triggered.connect(self.removeSong)
 
-    def addSongToPlaylist(self, playlist, song):
+    def addSongToPlaylist(self, playlist: tuple, song: tuple) -> None:
+        """
+        Add the song to the playlist.
+        """
         # Add the song to the in database playlist
         self.sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
 
-    def removeSong(self):
-        # Remove the song from the in database playlist
+    def removeSong(self) -> None:
+        """
+        Remove the song from the playlist.
+        """
         self.sqlHandler.playlists.removeSong(self.parent.playlist[0], self.songIndex) # Remove the song from the database playlist
         
         # Remove the song from the in memory playlist
@@ -83,7 +88,7 @@ class SongItemWidget(BaseClass, UiSongItem):
             self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3])
             self.mainWindow.songQueue.playingPlaylist = [self.parent.playlist, self.songIndex]
 
-    def enterEvent(self, event):
+    def enterEvent(self, event) -> None:
         """
         Handle the mouse enter event.
 
@@ -95,7 +100,7 @@ class SongItemWidget(BaseClass, UiSongItem):
         """
         self.setStyleSheet("background-color: #333;")
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event) -> None:
         """
         Handle the mouse leave event.
 
@@ -107,7 +112,6 @@ class SongItemWidget(BaseClass, UiSongItem):
         """
         self.setStyleSheet("")
  
-    def contextMenuEvent(self, event):
-        # Show the context menu
+    def contextMenuEvent(self, event) -> None:
         self.mainContextMenu.exec(event.globalPos())
  
