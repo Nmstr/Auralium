@@ -41,7 +41,19 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
             self.mainWindow.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
             self.playlist = self.sqlHandler.playlists.retrieve(self.playlist[0])
+            if self.playlist[5]:
+                self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: ' + str(len(json.loads(self.playlist[-1]))))
+            else:
+                self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: 0')
+            self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
+            
             self.displaySongsInPlaylist()
+
+    def playPlaylist(self) -> None:
+        playlist = json.loads(self.playlist[-1])
+        song = self.sqlHandler.songs.retrieveById(playlist[0])
+        self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
+        self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
 
     def enterEvent(self, event):
         """

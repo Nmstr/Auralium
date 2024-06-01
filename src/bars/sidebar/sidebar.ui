@@ -50,6 +50,9 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -99,6 +102,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -107,8 +113,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>298</width>
-           <height>592</height>
+           <width>300</width>
+           <height>600</height>
           </rect>
          </property>
          <property name="minimumSize">

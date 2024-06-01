@@ -43,9 +43,10 @@ class MainWindow(QWidget):
         self.hotkeyAction.triggered.connect(lambda: DebugWindow(self.sqlHandler))
         self.addAction(self.hotkeyAction)
 
-        # Connect buttons for applications
+        # Connect top bar buttons
         self.ui.homeBtn.clicked.connect(lambda: self.setMainContentDisplay('home'))
         self.ui.searchBtn.clicked.connect(lambda: self.setMainContentDisplay('search'))
+        self.ui.settingsBtn.clicked.connect(lambda: self.setMainContentDisplay('settings'))
 
         # Call the method to display playlists at initialization
         self.displayPlaylists()
