@@ -17,11 +17,8 @@ jobs:
 
     - name: Set up Flatpak
       run: |
-        sudo apt install flatpak
-        sudo add-apt-repository ppa:alexlarsson/flatpak -y
         sudo apt update
-        sudo apt install flatpak-builder -y
-
+        sudo apt install -y flatpak flatpak-builder
     - name: Build and install Flatpak app
       run: |
         flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
