@@ -117,6 +117,3 @@ def retrieveAllFromSongs() -> list:
 
     distinctArtists = list(uniqueArtists)
     return distinctArtists
-
-import sqlite3
-

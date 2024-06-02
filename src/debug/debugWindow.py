@@ -1,9 +1,8 @@
 from debug.indexSongs import DebugIndexSongsWindow
 from debug.indexArtists import IndexArtistsThread
 
-from PyQt6.QtCore import QThread, pyqtSlot, pyqtSignal
-
 from PyQt6.QtWidgets import QWidget
+from PyQt6.QtCore import pyqtSlot
 
 from PyQt6 import uic
 
