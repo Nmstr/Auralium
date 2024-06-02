@@ -5,9 +5,9 @@ from PyQt6.QtCore import Qt, QPoint
 from PyQt6 import uic
 
 # Load the .ui file and get the base class and form class
-UiSearchTopResult, BaseClass = uic.loadUiType('content/search/topResult.ui')
+UiSearchTopResultSong, BaseClass = uic.loadUiType('content/search/topResultSong.ui')
 
-class SearchTopResultWidget(BaseClass, UiSearchTopResult):
+class SearchTopResultSongWidget(BaseClass, UiSearchTopResultSong):
     def __init__(self, mainWindow, song):
         self.mainWindow = mainWindow
         self.song = song
@@ -16,16 +16,17 @@ class SearchTopResultWidget(BaseClass, UiSearchTopResult):
         self.setupUi(self)
 
         # Set song info
-        self.nameLabel.setText(self.song[1])
-        self.artistLabel.setText(self.song[2])
-        self.mainWindow.songDataHandler.setSongImage(self.song[1], self.coverImg, [150, 150])
+        print(self.song)
+        self.nameLabel.setText(self.song['data'][1])
+        self.artistLabel.setText(self.song['data'][2])
+        self.mainWindow.songDataHandler.setSongImage(self.song['data'][1], self.coverImg, [150, 150])
 
         # Connect control buttons
         self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3]))
         self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
 
         # Grey out if disabled
-        if self.song[7] == 1:
+        if self.song['data'][7] == 1:
             self.setEnabled(False)
 
     def mousePressEvent(self, event) -> None:

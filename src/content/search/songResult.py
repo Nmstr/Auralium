@@ -16,16 +16,16 @@ class SearchSongResultWidget(BaseClass, UiSearchSongResult):
         self.setupUi(self)
 
         # Set song info
-        self.nameLabel.setText(self.song[1])
-        self.artistLabel.setText(self.song[2])
-        self.mainWindow.songDataHandler.setSongImage(self.song[1], self.coverImg, [150, 150])
+        self.nameLabel.setText(self.song['data'][1])
+        self.artistLabel.setText(self.song['data'][2])
+        self.mainWindow.songDataHandler.setSongImage(self.song['data'][1], self.coverImg, [150, 150])
 
         # Connect control buttons
-        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song[3]))
-        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
+        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(self.song['data'][3]))
+        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song['data'][3]))
 
         # Grey out if disabled
-        if self.song[7] == 1:
+        if self.song['data'][7] == 1:
             self.setEnabled(False)
 
     def mousePressEvent(self, event) -> None:
