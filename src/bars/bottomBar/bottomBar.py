@@ -25,6 +25,7 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         self.musicControlsPlay.clicked.connect(self.mainWindow.songQueue.play)
         self.musicControlsPause.clicked.connect(self.mainWindow.songQueue.pause)
         self.musicControlsVolume.valueChanged.connect(self.mainWindow.songQueue.setVolume)
+        self.musicControlsVolume.sliderReleased.connect(lambda: self.mainWindow.preferenceHandler.writeConfig('SETTINGS', 'volume', str(self.musicControlsVolume.value())))
         self.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
 
         # Create a QTimer to update the time slider automatically every second
@@ -36,6 +37,7 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         self.oldDuration = 0
 
         self.test.clicked.connect(self.showQueuePopover)
+        self.musicControlsVolume.setValue(int(self.mainWindow.preferenceHandler.config.get('SETTINGS', 'volume', fallback=10)))
 
     def updateSliderPositionManual(self) -> None:
         """

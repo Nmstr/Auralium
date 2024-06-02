@@ -25,13 +25,11 @@ class MainWindow(QWidget):
         super().__init__()
         self.ui = uic.loadUi('main.ui', self)
 
-        # Create song queue
-        self.sqlHandler = sqlHandler
-        self.songQueue = SongQueue(self.sqlHandler)
-        self.songDataHandler = SongDataHandler(self.sqlHandler)
-
-        # Add preference handler to self
+        # Create Handlers
         self.preferenceHandler = preferenceHandler
+        self.sqlHandler = sqlHandler
+        self.songQueue = SongQueue(self)
+        self.songDataHandler = SongDataHandler(self.sqlHandler)
 
         # Set the main content and add the bars
         self.setMainContentDisplay("home")
