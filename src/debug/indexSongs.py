@@ -131,7 +131,7 @@ class DebugIndexSongsWindow(QWidget):
         self.sqlHandler = sqlHandler
 
         super().__init__()
-        self.ui = uic.loadUi('debug/debugIndexSongs.ui', self)
+        self.ui = uic.loadUi('debug/indexSongs.ui', self)
 
         self.indexSongsThread = IndexSongsThread(self, sqlHandler)
         self.indexSongsThread.updateToErrorsSignal.connect(self.updateToErrors)

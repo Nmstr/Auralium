@@ -64,6 +64,15 @@ def createDB() -> None:
         )
         ''')
 
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS artists (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            description TEXT,
+            deleted INTEGER DEFAULT 0
+        )
+        ''')
+
         conn.commit()
     except Exception:
         raise

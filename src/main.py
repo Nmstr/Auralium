@@ -11,11 +11,11 @@ from bars.sidebar.sidebar import SidebarWidget
 
 from preferenceHandler import PreferenceHandler
 from songDataHandler import SongDataHandler
+from sqlHandler import SqlHandler
 from songQueue import SongQueue
-import sqlHandler
 
-from PyQt6.QtWidgets import QApplication, QWidget, QGraphicsScene, QVBoxLayout
-from PyQt6.QtGui import QCloseEvent, QPixmap, QAction
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout
+from PyQt6.QtGui import QCloseEvent, QAction
 from PyQt6 import uic
 
 import sys
@@ -160,6 +160,7 @@ class MainWindow(QWidget):
         return super().closeEvent(a0)
 
 if __name__ == '__main__':
+    sqlHandler = SqlHandler()
     sqlHandler.database.createDB()
     app = QApplication(sys.argv)
     preferenceHandler = PreferenceHandler(QApplication=QApplication, app=app)
