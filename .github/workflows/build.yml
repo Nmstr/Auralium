@@ -1,0 +1,28 @@
+name: Build Flatpak App
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: Set up Flatpak
+      run: |
+        sudo add-apt-repository ppa:alexlarsson/flatpak -y
+        sudo apt update
+        sudo apt install flatpak flatpak-builder -y
+
+    - name: Build and install Flatpak app
+      run: |
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        flatpak install flathub org.kde.Sdk//6.7 -y
+        flatpak-builder --install --user --force-clean build-dir flatpak/io.github.nmstr.auralium.yaml
