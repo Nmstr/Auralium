@@ -19,8 +19,8 @@ class ContextPopover(BaseClass, UiContextPopover):
         for playlist in playlists:
             self.playlistInputComboBox.addItem(playlist[1], userData=playlist[0])
 
-        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(song[3]))
-        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song[3]))
+        self.playBtn.clicked.connect(lambda: self.mainWindow.songQueue.addAndSetCurrentSong(song['data'][3]))
+        self.addToQueueBtn.clicked.connect(lambda: self.mainWindow.songQueue.addSong(self.song['data'][3]))
         self.addToPlaylistBtn.clicked.connect(lambda: self.addSongToPlaylist())
 
     def addSongToPlaylist(self) -> None:
@@ -31,9 +31,9 @@ class ContextPopover(BaseClass, UiContextPopover):
         playlist = self.sqlHandler.playlists.retrieve(playlistId)
         # Add the song to the in database playlist
         if playlist[5] is None or playlist[5] == []:
-            self.sqlHandler.playlists.addSong(playlist[0], self.song[0], 0)
+            self.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], 0)
         else:
-            self.sqlHandler.playlists.addSong(playlist[0], self.song[0], len(playlist[5]))
+            self.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], len(playlist[5]))
 
     def mousePressEvent(self, event) -> None:
         """

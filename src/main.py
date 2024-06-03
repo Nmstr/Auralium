@@ -2,6 +2,7 @@ from debug.debugWindow import DebugWindow
 
 from content.contentPlaylist import ContentPlaylistWidget
 from content.contentSearch import ContentSearchWidget
+from content.contentArtist import ContentArtistWidget
 from content.contentHome import ContentHomeWidget
 from settings.settings import SettingsWidget
 
@@ -116,12 +117,13 @@ class MainWindow(QWidget):
             playlistWidget = PlaylistItemWidget(playlist, self, self.sqlHandler)
             layout.addWidget(playlistWidget)
 
-    def setMainContentDisplay(self, content: str) -> None:
+    def setMainContentDisplay(self, content: str, *args) -> None:
         """
         A function that sets the main content display based on the content parameter.
 
         Parameters:
         - content: (str) the type of content to display
+        - *args: (variadic) optional arguments to be passed to the content widget
         """
         container = self.ui.mainContent
         layout = container.layout()
@@ -138,16 +140,19 @@ class MainWindow(QWidget):
 
         # Change the mainContent widget
         if content == "home":
-            self.homeDisplay = ContentHomeWidget(self, self.sqlHandler)
+            self.homeDisplay = ContentHomeWidget(self, self.sqlHandler, *args)
             layout.addWidget(self.homeDisplay)
         elif content == "search":
-            self.searchDisplay = ContentSearchWidget(self, self.sqlHandler)
+            self.searchDisplay = ContentSearchWidget(self, self.sqlHandler, *args)
             layout.addWidget(self.searchDisplay)
         elif content == "playlist":
-            self.playlistDisplay = ContentPlaylistWidget(self)
+            self.playlistDisplay = ContentPlaylistWidget(self, *args)
             layout.addWidget(self.playlistDisplay)
+        elif content == "artist":
+            self.artistDisplay = ContentArtistWidget(self, *args)
+            layout.addWidget(self.artistDisplay)
         elif content == "settings":
-            self.settingsDisplay = SettingsWidget(self)
+            self.settingsDisplay = SettingsWidget(self, *args)
             layout.addWidget(self.settingsDisplay)
 
     def closeEvent(self, a0: QCloseEvent | None) -> None:

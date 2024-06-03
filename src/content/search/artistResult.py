@@ -1,6 +1,4 @@
-from popovers.contextPopover.contextPopover import ContextPopover
-
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt
 
 from PyQt6 import uic
 
@@ -24,9 +22,10 @@ class SearchArtistResultWidget(BaseClass, UiSearchArtistResult):
             self.setEnabled(False)
 
     def mousePressEvent(self, event) -> None:
-        if event.button() == Qt.MouseButton.RightButton:
-            self.showContextPopover()
-            return super().mousePressEvent(event)
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.mainWindow.setMainContentDisplay('artist', self.artist)
+        
+        return super().mousePressEvent(event)
 
     def enterEvent(self, event) -> None:
         self.setStyleSheet("background-color: #333;")
