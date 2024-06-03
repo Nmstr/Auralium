@@ -19,11 +19,12 @@ class ContentArtistWidget(BaseClass, UiContentArtist):
 
         self.nameLabel.setText(artist['data'][1])
 
-        self.homeBtn.clicked.connect(lambda: self.displayHomeSongs())
+        self.homeBtn.clicked.connect(lambda: self.displaySongs('home'))
+        self.songsBtn.clicked.connect(lambda: self.displaySongs('songs'))
 
-        self.displayHomeSongs()
+        self.displaySongs('home')
 
-    def displayHomeSongs(self) -> None:
+    def displaySongs(self, area) -> None:
         """
         Dynamically add custom widgets for each song in the search results.
         This adds to the top search results
@@ -33,10 +34,15 @@ class ContentArtistWidget(BaseClass, UiContentArtist):
         """
         # Retrieve songs to display
         allSongs = self.mainWindow.sqlHandler.songs.retrieveByArtist(self.artist['data'][1])
-        randomSongs = random.sample(allSongs, 3)
-        selectedSongs = []                              # Todo: Fix this shit once dedicated widget for songs in home is created
-        for song in randomSongs:
-            selectedSongs.append({'itemType': 'song', 'data': song})
+        if area == 'home':                                                  #
+            randomSongs = random.sample(allSongs, 3)                        #
+            selectedSongs = []                                              #
+            for song in randomSongs:                                        #
+                selectedSongs.append({'itemType': 'song', 'data': song})    # Todo: Fix this shit once dedicated widget for songs in home is created
+        elif area == 'songs':                                               #
+            selectedSongs = []                                              #
+            for song in allSongs:                                           #
+                selectedSongs.append({'itemType': 'song', 'data': song})    #
 
         container = self.bottom
         # Check if the container has a layout, if not, set a new QHBoxLayout
