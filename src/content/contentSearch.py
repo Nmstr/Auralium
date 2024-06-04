@@ -1,7 +1,9 @@
 from content.search.searchEngine.searchEngine import SearchEngine
 
+from content.search.topResultArtist import SearchTopResultArtistWidget
+from content.search.topResultSong import SearchTopResultSongWidget
+from content.search.artistResult import SearchArtistResultWidget
 from content.search.songResult import SearchSongResultWidget
-from content.search.topResult import SearchTopResultWidget
 
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6 import uic
@@ -39,10 +41,9 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         searchResults = self.searchEngine.search(text)
 
         similar = searchResults[:3]
-        similarSongs = searchResults
-
         self.displaySearchResultsTop(similar)
-        self.displaySearchResultsSongs(similarSongs)
+        self.displaySearchResultsSongs(searchResults)
+        self.displaySearchResultsArtists(searchResults)
 
     def switchSearchFilter(self, filter: bool) -> None:
         """
@@ -86,17 +87,21 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
                 layoutItem.widget().deleteLater()
 
         # Dynamically add custom widgets for each song
-        for song in similar:
-            searchTopResultWidget = SearchTopResultWidget(self.mainWindow, song)
-            layout.addWidget(searchTopResultWidget)
+        for item in similar:
+            if item['itemType'] == 'song':
+                searchTopResultWidget = SearchTopResultSongWidget(self.mainWindow, song=item)
+                layout.addWidget(searchTopResultWidget)
+            elif item['itemType'] == 'artist':
+                searchTopResultWidget = SearchTopResultArtistWidget(self.mainWindow, artist=item)
+                layout.addWidget(searchTopResultWidget)
 
-    def displaySearchResultsSongs(self, similarSongs: list) -> None:
+    def displaySearchResultsSongs(self, similarResults: list) -> None:
         """
         Dynamically add custom widgets for each song in the search results.
         This adds to the general search results
 
         Parameters:
-            similarSongs (list): The list of songs to display in the search results.
+            similarResults (list): The list of results to display in the search results.
         """
         container = self.searchSongsArea
         # Check if the container has a layout, if not, set a new QHBoxLayout
@@ -112,6 +117,34 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
                 layoutItem.widget().deleteLater()
 
         # Dynamically add custom widgets for each song
-        for song in similarSongs:
-            searchSongResultWidget = SearchSongResultWidget(self.mainWindow, song)
-            layout.addWidget(searchSongResultWidget)
+        for item in similarResults:
+            if item['itemType'] == 'song':
+                searchSongResultWidget = SearchSongResultWidget(self.mainWindow, item)
+                layout.addWidget(searchSongResultWidget)
+
+    def displaySearchResultsArtists(self, similarResults: list) -> None:
+        """
+        Dynamically add custom widgets for each song in the search results.
+        This adds to the general search results
+
+        Parameters:
+            similarResults (list): The list of results to display in the search results.
+        """
+        container = self.searchArtistsArea
+        # Check if the container has a layout, if not, set a new QHBoxLayout
+        layout = container.layout()
+        if layout is None:
+            layout = QHBoxLayout()
+            container.setLayout(layout)
+
+        # Clear existing content in the layout
+        for i in reversed(range(layout.count())):
+            layoutItem = layout.itemAt(i)
+            if layoutItem.widget() is not None:
+                layoutItem.widget().deleteLater()
+
+        # Dynamically add custom widgets for each song
+        for item in similarResults:
+            if item['itemType'] == 'artist':
+                searchSongResultWidget = SearchArtistResultWidget(self.mainWindow, item)
+                layout.addWidget(searchSongResultWidget)

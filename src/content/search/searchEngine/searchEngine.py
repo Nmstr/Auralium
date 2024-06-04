@@ -21,21 +21,28 @@ class SearchEngine():
             os.mkdir(self.indexDir)
 
         # Define the schema and create the index
-        schema = Schema(id=TEXT(stored=True), title=TEXT(stored=True), artist=TEXT(stored=True))
+        schema = Schema(id=TEXT(stored=True), title=TEXT(stored=True), artist=TEXT(stored=True), itemType=TEXT(stored=True))
         create_in(self.indexDir, schema)
 
     def addToIndex(self):
         """
-        Adds all songs from the database to the search index.
+        Adds all songs and artists from the database to the search index.
         """
-        allSongs = sqlHandler.songs.retrieveAll()
-        allSongs = [song[:3] for song in allSongs]
         index = open_dir(self.indexDir) # Open index
 
+        allSongs = sqlHandler.songs.retrieveAll()
+        allSongs = [song[:3] for song in allSongs]
         # Add songs to index
         with AsyncWriter(index) as writer:
-            for song_id, title, artist in allSongs:
-                writer.add_document(id=str(song_id), title=title, artist=artist)
+            for songId, title, artist in allSongs:
+                writer.add_document(id=str(songId), title=title, artist=artist, itemType="song")
+        
+        allArtists = sqlHandler.artists.retrieveAll()
+        allArtists = [artist[:2] for artist in allArtists]
+        # Add artists to index
+        with AsyncWriter(index) as writer:
+            for artist_id, artist in allArtists:
+                writer.add_document(id=str(artist_id), artist=artist, itemType="artist")
 
     def search(self, queryStr: str, autoFuzzy: bool = True, limit: int = 20):
         """
@@ -61,6 +68,12 @@ class SearchEngine():
 
             query = parser.parse(queryStr)
             results = searcher.search(query, limit=limit)
-            
-            return [self.sqlHandler.songs.retrieveById(hit["id"]) for hit in results]
-        
+
+            result = []
+            for hit in results:
+                if hit["itemType"] == "song":
+                    result.append({'itemType': 'song', 'data': self.sqlHandler.songs.retrieveById(hit["id"])})
+                elif hit["itemType"] == "artist":
+                    result.append({'itemType': 'artist', 'data': self.sqlHandler.artists.retrieve(hit["id"])})
+
+            return result

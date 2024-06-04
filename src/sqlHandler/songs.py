@@ -175,6 +175,29 @@ def retrieveByPath(filePath: str) -> list:
         conn.close()
     return song
 
+def retrieveByArtist(artist: str) -> list:
+    """
+    Retrieve a list of songs from the database based on the provided artist.
+
+    Parameters:
+    - artist: str, the artist of the song to retrieve
+
+    Returns:
+    - list: A list of songs retrieved based on the artist.
+            Each song is a list of the song's properties.
+    """
+    try:
+        cursor, conn = connectToDB()
+        # Retrieve all songs where the artist field contains the provided artist
+        cursor.execute('SELECT * FROM songs WHERE artist LIKE ?', ('%'+artist+'%',))
+        songs = cursor.fetchall()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+    return songs
+
 def retrieveRandomSong() -> list:
     """
     Retrieve a random song from the database.

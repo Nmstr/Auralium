@@ -7,6 +7,9 @@ def connectToDB() -> tuple[sqlite3.Cursor, sqlite3.Connection]:
     Connects to the database and returns a cursor and connection object.
     """
     dbPath = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium/auralium.db'
+    dbDir = os.getenv('XDG_CONFIG_HOME', default=os.path.expanduser('~/.config')) + '/auralium'
+    if not os.path.exists(dbDir):
+        os.makedirs(dbDir)
     conn = sqlite3.connect(dbPath)
     cursor = conn.cursor()
     return cursor, conn
@@ -61,6 +64,15 @@ def createDB() -> None:
             description TEXT,
             imagePath TEXT,
             songs TEXT
+        )
+        ''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS artists (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            description TEXT,
+            deleted INTEGER DEFAULT 0
         )
         ''')
 

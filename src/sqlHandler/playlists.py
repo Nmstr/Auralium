@@ -1,11 +1,12 @@
 from .database import connectToDB
 import json
 
-def create(name: str,
-                   creator: str = None,
-                   description: str = None,
-                   imagePath: str = None
-                   ) -> None:
+def create(
+        name: str,
+        creator: str = None,
+        description: str = None,
+        imagePath: str = None
+        ) -> None:
     """
     A function to create a playlist in the database.
 
