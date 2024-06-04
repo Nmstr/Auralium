@@ -50,6 +50,23 @@ class MainWindow(QWidget):
 
         # Call the method to display playlists at initialization
         self.displayPlaylists()
+        """
+        from PyQt6.QtWidgets import QApplication, QFileDialog
+        
+        # To open a file
+        options = QFileDialog.Option.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(None, "Select File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        if fileName:
+            print(f"Selected file: {fileName}")
+
+        # To save a file
+        fileName, _ = QFileDialog.getSaveFileName(None, "Save File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        if fileName:
+            print(f"File to save: {fileName}")
+            with open(fileName, 'w') as f:
+                f.write("Hello, World!")
+        """
+
 
         self.show()
 

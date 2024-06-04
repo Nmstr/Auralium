@@ -1,6 +1,6 @@
 from content.playlists.songItem import SongItemWidget
 
-from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout, QFileDialog
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
@@ -20,6 +20,37 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
 
         self.nameLabel.setText(playlist[1])
         self.creatorLabel.setText(playlist[2])
+
+    def exportPlaylist(self) -> None:
+        """
+        Exports the playlist to a .csv file
+        """
+        playlistData = {
+            'name': self.playlist[1],
+            'creator': self.playlist[2],
+            'description': self.playlist[3],
+            'length': len(json.loads(self.playlist[5])),
+            'songs': {
+
+            }
+        }
+        for i, song in enumerate(json.loads(self.playlist[5])):
+            songData = self.sqlHandler.songs.retrieveById(song)
+            playlistData['songs'][i] = {
+                'title': songData[1],
+                'artist': songData[2],
+                'filepath': songData[3],
+                'sha256hash': songData[4],
+                'source': songData[5],
+                'release_date': songData[6],
+                'deleted': songData[7]
+            }
+        
+        options = QFileDialog.Option.DontUseNativeDialog
+        fileName, _ = QFileDialog.getSaveFileName(None, "Save Playlist", "", "Playlist Files (*.json);;All Files (*)", options=options)
+        if fileName:
+            with open(fileName, 'w') as f:
+                json.dump(playlistData, f, indent=4)
 
     def mousePressEvent(self, event) -> None:
         """
@@ -46,6 +77,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             else:
                 self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: 0')
             self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
+            self.mainWindow.playlistDisplay.exportBtn.clicked.connect(self.exportPlaylist)
             
             self.displaySongsInPlaylist()
             return super().mousePressEvent(event)

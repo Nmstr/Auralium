@@ -33,7 +33,7 @@
    <item row="1" column="1">
     <widget class="QPushButton" name="createBtn">
      <property name="text">
-      <string>PushButton</string>
+      <string>Create</string>
      </property>
     </widget>
    </item>
@@ -41,6 +41,13 @@
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Create Playlist</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QPushButton" name="importBtn">
+     <property name="text">
+      <string>Import</string>
      </property>
     </widget>
    </item>

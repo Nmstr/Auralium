@@ -6,7 +6,7 @@ def create(
         creator: str = None,
         description: str = None,
         imagePath: str = None
-        ) -> None:
+        ) -> int:
     """
     A function to create a playlist in the database.
 
@@ -30,6 +30,8 @@ def create(
     finally:
         cursor.close()
         conn.close()
+
+    return cursor.lastrowid
 
 def retrieve(playlistId: int) -> list:
     """
