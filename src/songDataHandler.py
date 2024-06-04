@@ -39,6 +39,9 @@ class SongDataHandler:
         """
         audio = MP3(filePath, ID3=ID3) # Load the MP3 file
 
+        if audio.tags is None:
+            audio.add_tags()
+
         if title:
             audio.tags.add(TIT2(encoding=3, text=title))
         if artist:

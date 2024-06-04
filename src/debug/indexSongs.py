@@ -1,4 +1,4 @@
-import songDataHandler
+from songDataHandler import SongDataHandler
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame
 from PyQt6.QtCore import QThread, pyqtSlot, pyqtSignal
@@ -36,6 +36,8 @@ class IndexSongsThread(QThread):
     
     def __init__(self, parent=None, sqlHandler=None):
         self.sqlHandler = sqlHandler
+        self.songDataHandler = SongDataHandler(self.sqlHandler)
+
         super().__init__(parent)
     
     def run(self) -> None:
@@ -58,11 +60,11 @@ class IndexSongsThread(QThread):
             processedSongs += 1
             hash = self.sqlHandler.database.hashFile(fullFilePath)
             if not self.sqlHandler.songs.retrieveBySha256hash(hash):
-                songData = songDataHandler.getTag(fullFilePath)
+                songData = self.songDataHandler.getTag(fullFilePath)
                 songData = self.checkValidData(songData)
 
                 if self.parent().metadataCheckBox.isChecked():
-                    songDataHandler.modifyTag(
+                    self.songDataHandler.modifyTag(
                         filePath=fullFilePath,
                         title=songData.title,
                         artist=songData.artist,

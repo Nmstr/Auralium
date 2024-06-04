@@ -35,7 +35,7 @@ class ContentArtistWidget(BaseClass, UiContentArtist):
         # Retrieve songs to display
         allSongs = self.mainWindow.sqlHandler.songs.retrieveByArtist(self.artist['data'][1])
         if area == 'home':                                                  #
-            randomSongs = random.sample(allSongs, 3)                        #
+            randomSongs = random.sample(allSongs, min(len(allSongs), 3))    #
             selectedSongs = []                                              #
             for song in randomSongs:                                        #
                 selectedSongs.append({'itemType': 'song', 'data': song})    # Todo: Fix this shit once dedicated widget for songs in home is created
