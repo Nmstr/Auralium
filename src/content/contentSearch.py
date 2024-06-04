@@ -52,18 +52,18 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         senderName = self.sender().objectName()
 
         if senderName == 'searchFilterAllBtn' and filter == True:
-            self.ui.searchFilterSongsBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilterSongsBtn.setChecked(False)
+            self.searchFilterArtistsBtn.setChecked(False)
         elif senderName == 'searchFilterSongsBtn' and filter == True:
-            self.ui.searchFilterAllBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilterAllBtn.setChecked(False)
+            self.searchFilterArtistsBtn.setChecked(False)
         elif senderName == 'searchFilterArtistsBtn' and filter == True:
-            self.ui.searchFilterAllBtn.setChecked(False)
-            self.ui.searchFilterSongsBtn.setChecked(False)
+            self.searchFilterAllBtn.setChecked(False)
+            self.searchFilterSongsBtn.setChecked(False)
         else:
-            self.ui.searchFilterAllBtn.setChecked(True)
-            self.ui.searchFilterSongsBtn.setChecked(False)
-            self.ui.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilterAllBtn.setChecked(True)
+            self.searchFilterSongsBtn.setChecked(False)
+            self.searchFilterArtistsBtn.setChecked(False)
 
     def displaySearchResultsTop(self, similar: list) -> None:
         """

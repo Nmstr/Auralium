@@ -21,12 +21,15 @@ def formatDate(dateString: str) -> str:
     """
     if not dateString:
         return None
-    if '-' in dateString:
-        # Date is in the format "2001-01-30"
-        date = datetime.datetime.strptime(dateString, '%Y-%m-%d').date()
-    else:
-        # Date is in the format "20010130"
-        date = datetime.datetime.strptime(dateString, '%Y%m%d').date()
+    try:
+        if '-' in dateString:
+            # Date is in the format "2001-01-30"
+            date = datetime.datetime.strptime(dateString, '%Y-%m-%d').date()
+        else:
+            # Date is in the format "20010130"
+            date = datetime.datetime.strptime(dateString, '%Y%m%d').date()
+    except ValueError:
+        return dateString
     
     formattedDate = date.strftime('%Y/%m/%d')
     return formattedDate

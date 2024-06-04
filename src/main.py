@@ -155,14 +155,14 @@ class MainWindow(QWidget):
             self.settingsDisplay = SettingsWidget(self, *args)
             layout.addWidget(self.settingsDisplay)
 
-    def closeEvent(self, a0: QCloseEvent | None) -> None:
+    def closeEvent(self, event: QCloseEvent | None) -> None:
         """
         A function that handles the close event. Closes all top-level widgets except itself.
         """
         for widget in QApplication.topLevelWidgets():
             if widget is not self:
                 widget.close()
-        return super().closeEvent(a0)
+        return super().closeEvent(event)
 
 if __name__ == '__main__':
     sqlHandler = SqlHandler()

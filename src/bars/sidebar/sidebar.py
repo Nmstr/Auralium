@@ -40,7 +40,6 @@ class SidebarWidget(BaseClass, UiSidebar):
         popover.setGeometry(int(popoverPosX), int(popoverPosY), 300, 100)
         popover.show()
 
-
     def setCursorShape(self) -> None:
         """
         Sets the cursor shape based on the position of the mouse.
@@ -53,7 +52,7 @@ class SidebarWidget(BaseClass, UiSidebar):
         else:
             self.resizeBar = False
             self.setCursor(Qt.CursorShape.ArrowCursor)
-        
+
     def mouseMoveEvent(self, event) -> None:
         """
         Handles the mouse move event.
@@ -61,5 +60,7 @@ class SidebarWidget(BaseClass, UiSidebar):
         Resizes the sidebar, if self.resizeBar is True.
         """
         if self.resizeBar:
-            self.mainWindow.ui.sidebarContainer.setFixedWidth(event.pos().x() + 20)
-            return super().mouseMoveEvent(event)
+            newPos = event.pos().x() + 20
+            if newPos > 150 and newPos < self.mainWindow.width() * 0.6:
+                self.mainWindow.ui.sidebarContainer.setFixedWidth(event.pos().x() + 20)
+        return super().mouseMoveEvent(event)
