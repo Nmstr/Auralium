@@ -6,3 +6,13 @@ QPushButton {
     padding: 5px 10px;
     font-size: 14px;
 }
+
+QPushButton:pressed {
+    background-color: #2c3035;
+    border: 1px solid #4d5156;
+}
+
+QPushButton:checked {
+    background-color: #2c3035;
+    border: 1px solid #4d5156;
+}
