@@ -16,6 +16,9 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
         super().__init__(mainWindow, Qt.WindowType.Popup)
         self.setupUi(self)
 
+        self.importKeyCombo.addItem('title')
+        self.importKeyCombo.addItem('filepath')
+        self.importKeyCombo.addItem('sha256hash')
         self.createBtn.clicked.connect(lambda: self.createPlaylist())
         self.importBtn.clicked.connect(lambda: self.importPlaylist())
 
@@ -47,7 +50,17 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
             # Create the playlist
             playlistId = self.sqlHandler.playlists.create(data['name'], data['creator'], data['description'], None)
             for index, songDetails in data['songs'].items():
-                songId = self.sqlHandler.songs.retrieveByPath(songDetails['filepath'])[0]
+                try:
+                    importKey = self.importKeyCombo.currentText()
+                    if importKey == 'title':
+                        songId = self.sqlHandler.songs.retrieveByTitle(songDetails['title'])[0]
+                    elif importKey == 'filepath':
+                        songId = self.sqlHandler.songs.retrieveByPath(songDetails['filepath'])[0]
+                    elif importKey == 'sha256hash':
+                        songId = self.sqlHandler.songs.retrieveBySha256Hash(songDetails['sha256hash'])[0]
+                except TypeError as e:
+                    print(e)
+                    continue
                 self.sqlHandler.playlists.addSong(playlistId, songId, int(index))
             self.mainWindow.displayPlaylists()
 
