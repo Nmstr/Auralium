@@ -1,3 +1,4 @@
+from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtCore import Qt
 
 from PyQt6 import uic
@@ -34,7 +35,6 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
         """
         Import a playlist.
         """
-        from PyQt6.QtWidgets import QApplication, QFileDialog
         
         # Read the file
         options = QFileDialog.Option.DontUseNativeDialog
