@@ -16,7 +16,7 @@ from sqlHandler import SqlHandler
 from songQueue import SongQueue
 
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout
-from PyQt6.QtGui import QCloseEvent, QAction, QMouseEvent
+from PyQt6.QtGui import QCloseEvent, QAction
 from PyQt6 import uic
 
 import sys
