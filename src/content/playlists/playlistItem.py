@@ -1,5 +1,11 @@
 from content.playlists.songItem import SongItemWidget
 
+from popovers.deletePlaylistPopover.deletePlaylistPopover import DeletePlaylistPopover
+
+from PyQt6.QtCore import Qt, QPoint
+
+from PyQt6 import uic
+
 from PyQt6.QtWidgets import QVBoxLayout, QFileDialog
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
@@ -78,7 +84,8 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
                 self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: 0')
             self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
             self.mainWindow.playlistDisplay.exportBtn.clicked.connect(self.exportPlaylist)
-            
+            self.mainWindow.playlistDisplay.deleteBtn.clicked.connect(lambda: self.showDeletePlaylistPopover())
+
             self.displaySongsInPlaylist()
             return super().mousePressEvent(event)
 
@@ -91,6 +98,22 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             song = self.sqlHandler.songs.retrieveById(playlist[0])
             self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
             self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
+
+    def showDeletePlaylistPopover(self) -> None:
+        """
+        Shows the delete playlist popover.
+        """
+        popover = DeletePlaylistPopover(self.mainWindow, self.sqlHandler, self.playlist)
+
+        buttonPos = self.mainWindow.playlistDisplay.deleteBtn.mapToGlobal(QPoint(0, 0))
+        
+        # Calculate the position of the popover
+        popoverPosX = buttonPos.x() + self.mainWindow.playlistDisplay.deleteBtn.width()/2
+        popoverPosY = buttonPos.y() + self.mainWindow.playlistDisplay.deleteBtn.height()/2
+        
+        # Set the position and size of the popover
+        popover.setGeometry(int(popoverPosX), int(popoverPosY), 300, 100)
+        popover.show()
 
     def enterEvent(self, event) -> None:
         """
