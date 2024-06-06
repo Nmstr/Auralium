@@ -1,0 +1,23 @@
+name: Build Flatpak
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  flatpak:
+    name: Build Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:kde-6.7
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v4
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+      with:
+        build-bundle: false
+        manifest-path: flatpak/io.github.nmstr.auralium.yaml
+        cache-key: flatpak-builder-${{ github.sha }}
