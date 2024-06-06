@@ -62,3 +62,4 @@ finish-args:
   - --socket=pulseaudio
   - --device=dri
   - --filesystem=xdg-music
+  - --talk-name=org.freedesktop.portal.*
