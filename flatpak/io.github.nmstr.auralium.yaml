@@ -9,7 +9,7 @@ modules:
     buildsystem: simple
     builddir: true
     build-commands:
-      - rm -r .venv
+      - rm -rf .venv
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} PyQt6-*.whl
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} tinytag-*.whl
       - python3 -m pip install --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} pillow-*.whl
