@@ -1,13 +1,9 @@
+from popovers.deletePlaylistPopover.deletePlaylistPopover import DeletePlaylistPopover
 from content.playlists.songItem import SongItemWidget
 
-from popovers.deletePlaylistPopover.deletePlaylistPopover import DeletePlaylistPopover
-
+from PyQt6.QtWidgets import QVBoxLayout, QFileDialog
 from PyQt6.QtCore import Qt, QPoint
 
-from PyQt6 import uic
-
-from PyQt6.QtWidgets import QVBoxLayout, QFileDialog
-from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
 import json
