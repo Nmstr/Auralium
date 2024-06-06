@@ -6,16 +6,15 @@ from PyQt6 import uic
 UiContextPopover, BaseClass = uic.loadUiType('popovers/contextPopover/contextPopover.ui')
 
 class ContextPopover(BaseClass, UiContextPopover):
-    def __init__(self, mainWindow, song, sqlHandler):
+    def __init__(self, mainWindow, song):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
         self.song = song
 
         super().__init__(mainWindow, Qt.WindowType.Popup)
         self.setupUi(self)
 
         # Add all playlists to combo box
-        playlists = self.sqlHandler.playlists.retrieveAll()
+        playlists = self.mainWindow.sqlHandler.playlists.retrieveAll()
         for playlist in playlists:
             self.playlistInputComboBox.addItem(playlist[1], userData=playlist[0])
 
@@ -28,12 +27,12 @@ class ContextPopover(BaseClass, UiContextPopover):
         A function to add a song to a playlist in the database.
         """
         playlistId = self.playlistInputComboBox.currentData()
-        playlist = self.sqlHandler.playlists.retrieve(playlistId)
+        playlist = self.mainWindow.sqlHandler.playlists.retrieve(playlistId)
         # Add the song to the in database playlist
         if playlist[5] is None or playlist[5] == []:
-            self.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], 0)
+            self.mainWindow.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], 0)
         else:
-            self.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], len(playlist[5]))
+            self.mainWindow.sqlHandler.playlists.addSong(playlist[0], self.song['data'][0], len(playlist[5]))
 
     def mousePressEvent(self, event) -> None:
         """

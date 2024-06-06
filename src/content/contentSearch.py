@@ -12,11 +12,10 @@ from PyQt6 import uic
 UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 
 class ContentSearchWidget(BaseClass, UiContentSearch):
-    def __init__(self, mainWindow, sqlHandler):
+    def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
         
-        self.searchEngine = SearchEngine(self.sqlHandler)
+        self.searchEngine = SearchEngine(self.mainWindow)
         self.searchEngine.createIndex()
         self.searchEngine.addToIndex()
 

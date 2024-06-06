@@ -11,9 +11,8 @@ import json
 UiQueuePopover, BaseClass = uic.loadUiType('popovers/queuePopover/queuePopover.ui')
 
 class QueuePopover(BaseClass, UiQueuePopover):
-    def __init__(self, mainWindow, sqlHandler):
+    def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
 
         super().__init__(mainWindow, Qt.WindowType.Popup)
         self.setupUi(self)
@@ -38,7 +37,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the song
         if currentSong is not None:
-            self.nowPlayingQueue = QueueEntryWidget(self.sqlHandler.songs.retrieveByPath(currentSong), self.mainWindow)
+            self.nowPlayingQueue = QueueEntryWidget(self.mainWindow.sqlHandler.songs.retrieveByPath(currentSong), self.mainWindow)
             layout.addWidget(self.nowPlayingQueue)
 
     def addNextInQueueItem(self) -> None:
@@ -59,7 +58,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the next songs from queue
         for song in songsNextInQueue:
-            self.nextInQueue = QueueEntryWidget(self.sqlHandler.songs.retrieveByPath(song), self.mainWindow)
+            self.nextInQueue = QueueEntryWidget(self.mainWindow.sqlHandler.songs.retrieveByPath(song), self.mainWindow)
             layout.addWidget(self.nextInQueue)
 
     def addNextInPlaylistItem(self) -> None:
@@ -80,7 +79,7 @@ class QueuePopover(BaseClass, UiQueuePopover):
 
         # Add custom Widgets for the next songs from playlist
         for song in songsNextInPlaylist:
-            songData = self.sqlHandler.songs.retrieveById(song)
+            songData = self.mainWindow.sqlHandler.songs.retrieveById(song)
             if songData[7] == 0: # Only add enabled songs
                 self.nextInPlaylist = QueueEntryWidget(songData, self.mainWindow)
                 layout.addWidget(self.nextInPlaylist)

@@ -6,9 +6,8 @@ from PyQt6 import uic
 UiDeletePlaylistPopover, BaseClass = uic.loadUiType('popovers/deletePlaylistPopover/deletePlaylistPopover.ui')
 
 class DeletePlaylistPopover(BaseClass, UiDeletePlaylistPopover):
-    def __init__(self, mainWindow, sqlHandler, playlist):
+    def __init__(self, mainWindow, playlist):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
         self.playlist = playlist
 
         super().__init__(mainWindow, Qt.WindowType.Popup)
@@ -23,7 +22,7 @@ class DeletePlaylistPopover(BaseClass, UiDeletePlaylistPopover):
         playlistName = self.nameInput.text()
         if playlistName != self.playlist[1]:
             return
-        self.sqlHandler.playlists.delete(self.playlist[0])
+        self.mainWindow.sqlHandler.playlists.delete(self.playlist[0])
         self.mainWindow.displayPlaylists()
         self.mainWindow.setMainContentDisplay('home')
 

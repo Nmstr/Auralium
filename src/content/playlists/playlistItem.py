@@ -12,10 +12,9 @@ import json
 UiPlaylistItem, BaseClass = uic.loadUiType('content/playlists/playlistsEntry.ui')
 
 class PlaylistItemWidget(BaseClass, UiPlaylistItem):
-    def __init__(self, playlist, mainWindow, sqlHandler):
-        self.playlist = playlist # Assign playlist to self.playlist to make it accessible in other functions
+    def __init__(self, playlist, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
+        self.playlist = playlist
 
         super().__init__()
         self.setupUi(self)
@@ -37,7 +36,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             }
         }
         for i, song in enumerate(json.loads(self.playlist[5])):
-            songData = self.sqlHandler.songs.retrieveById(song)
+            songData = self.mainWindow.sqlHandler.songs.retrieveById(song)
             playlistData['songs'][i] = {
                 'title': songData[1],
                 'artist': songData[2],
@@ -73,7 +72,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
             self.mainWindow.playlistDisplay.playlistCreatorLabel.setText(self.playlist[2])
             self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
             self.mainWindow.songDataHandler.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
-            self.playlist = self.sqlHandler.playlists.retrieve(self.playlist[0])
+            self.playlist = self.mainWindow.sqlHandler.playlists.retrieve(self.playlist[0])
             if self.playlist[5]:
                 self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: ' + str(len(json.loads(self.playlist[-1]))))
             else:
@@ -91,7 +90,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         """
         if self.playlist[5]:
             playlist = json.loads(self.playlist[-1])
-            song = self.sqlHandler.songs.retrieveById(playlist[0])
+            song = self.mainWindow.sqlHandler.songs.retrieveById(playlist[0])
             self.mainWindow.songQueue.addAndSetCurrentSong(song[3])
             self.mainWindow.songQueue.playingPlaylist = [self.playlist, 0]
 
@@ -99,7 +98,7 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         """
         Shows the delete playlist popover.
         """
-        popover = DeletePlaylistPopover(self.mainWindow, self.sqlHandler, self.playlist)
+        popover = DeletePlaylistPopover(self.mainWindow, self.playlist)
 
         buttonPos = self.mainWindow.playlistDisplay.deleteBtn.mapToGlobal(QPoint(0, 0))
         
@@ -162,5 +161,5 @@ class PlaylistItemWidget(BaseClass, UiPlaylistItem):
         # Dynamically add custom widgets for each playlist
         if not self.playlist[5] is None:
             for songIndex, song in enumerate(json.loads(self.playlist[5])):
-                playlistWidget = SongItemWidget(song, songIndex, self.mainWindow, self, self.sqlHandler)
+                playlistWidget = SongItemWidget(song, songIndex, self.mainWindow, self)
                 layout.addWidget(playlistWidget)

@@ -9,9 +9,8 @@ import json
 UiCreatePlaylistPopover, BaseClass = uic.loadUiType('popovers/createPlaylistPopover/createPlaylistPopover.ui')
 
 class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
-    def __init__(self, mainWindow, sqlHandler):
+    def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
 
         super().__init__(mainWindow, Qt.WindowType.Popup)
         self.setupUi(self)
@@ -29,7 +28,7 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
         playlistName = self.nameInput.text()
         if playlistName == '':
             return
-        self.sqlHandler.playlists.create(playlistName, None, None, None)
+        self.mainWindow.sqlHandler.playlists.create(playlistName, None, None, None)
         self.mainWindow.displayPlaylists()
 
         self.close()
@@ -48,20 +47,20 @@ class CreatePlaylistPopover(BaseClass, UiCreatePlaylistPopover):
             data = json.loads(data)
             
             # Create the playlist
-            playlistId = self.sqlHandler.playlists.create(data['name'], data['creator'], data['description'], None)
+            playlistId = self.mainWindow.sqlHandler.playlists.create(data['name'], data['creator'], data['description'], None)
             for index, songDetails in data['songs'].items():
                 try:
                     importKey = self.importKeyCombo.currentText()
                     if importKey == 'title':
-                        songId = self.sqlHandler.songs.retrieveByTitle(songDetails['title'])[0]
+                        songId = self.mainWindow.sqlHandler.songs.retrieveByTitle(songDetails['title'])[0]
                     elif importKey == 'filepath':
-                        songId = self.sqlHandler.songs.retrieveByPath(songDetails['filepath'])[0]
+                        songId = self.mainWindow.sqlHandler.songs.retrieveByPath(songDetails['filepath'])[0]
                     elif importKey == 'sha256hash':
-                        songId = self.sqlHandler.songs.retrieveBySha256Hash(songDetails['sha256hash'])[0]
+                        songId = self.mainWindow.sqlHandler.songs.retrieveBySha256Hash(songDetails['sha256hash'])[0]
                 except TypeError as e:
                     print(e)
                     continue
-                self.sqlHandler.playlists.addSong(playlistId, songId, int(index))
+                self.mainWindow.sqlHandler.playlists.addSong(playlistId, songId, int(index))
             self.mainWindow.displayPlaylists()
 
             self.close()

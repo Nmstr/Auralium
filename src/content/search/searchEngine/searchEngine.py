@@ -3,13 +3,11 @@ from whoosh.index import create_in, open_dir
 from whoosh.writing import AsyncWriter
 from whoosh.fields import Schema, TEXT
 
-import sqlHandler
-
 import os
 
 class SearchEngine():
-    def __init__(self, sqlHandler):
-        self.sqlHandler = sqlHandler
+    def __init__(self, mainWindow):
+        self.mainWindow = mainWindow
         cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
         self.indexDir = cacheDir + '/searchIndex'
 
@@ -30,14 +28,14 @@ class SearchEngine():
         """
         index = open_dir(self.indexDir) # Open index
 
-        allSongs = sqlHandler.songs.retrieveAll()
+        allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
         allSongs = [song[:3] for song in allSongs]
         # Add songs to index
         with AsyncWriter(index) as writer:
             for songId, title, artist in allSongs:
                 writer.add_document(id=str(songId), title=title, artist=artist, itemType="song")
         
-        allArtists = sqlHandler.artists.retrieveAll()
+        allArtists = self.mainWindow.sqlHandler.artists.retrieveAll()
         allArtists = [artist[:2] for artist in allArtists]
         # Add artists to index
         with AsyncWriter(index) as writer:
@@ -72,8 +70,8 @@ class SearchEngine():
             result = []
             for hit in results:
                 if hit["itemType"] == "song":
-                    result.append({'itemType': 'song', 'data': self.sqlHandler.songs.retrieveById(hit["id"])})
+                    result.append({'itemType': 'song', 'data': self.mainWindow.sqlHandler.songs.retrieveById(hit["id"])})
                 elif hit["itemType"] == "artist":
-                    result.append({'itemType': 'artist', 'data': self.sqlHandler.artists.retrieve(hit["id"])})
+                    result.append({'itemType': 'artist', 'data': self.mainWindow.sqlHandler.artists.retrieve(hit["id"])})
 
             return result

@@ -11,8 +11,8 @@ import io
 import os
 
 class SongDataHandler:
-    def __init__(self, sqlHandler):
-        self.sqlHandler = sqlHandler
+    def __init__(self, mainWindow):
+        self.mainWindow = mainWindow
 
     def getTag(self, filePath: str) -> tinyTag:
         """
@@ -104,9 +104,9 @@ class SongDataHandler:
         """
         graphicsScene = QGraphicsScene()
         pixmap = QPixmap()
-        songData = self.sqlHandler.songs.retrieveByTitle(songTitle)
+        songData = self.mainWindow.sqlHandler.songs.retrieveByTitle(songTitle)
         if songData:
             if songData[3]:
-                pixmap.loadFromData(self.getImgData(self.sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution=resolution))
+                pixmap.loadFromData(self.getImgData(self.mainWindow.sqlHandler.songs.retrieveByTitle(songTitle)[3], resolution=resolution))
         graphicsScene.addPixmap(pixmap)
         graphicsView.setScene(graphicsScene)
