@@ -1,8 +1,5 @@
 name: Build Flatpak
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
     branches:
       - '**'
