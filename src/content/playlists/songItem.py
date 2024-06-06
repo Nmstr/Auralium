@@ -8,10 +8,9 @@ import json
 UiSongItem, BaseClass = uic.loadUiType('content/playlists/playlistSongEntry.ui')
 
 class SongItemWidget(BaseClass, UiSongItem):
-    def __init__(self, song, songIndex, mainWindow, parent, sqlHandler):
-        self.sqlHandler = sqlHandler
-        self.song = self.sqlHandler.songs.retrieveById(song)
+    def __init__(self, song, songIndex, mainWindow, parent):
         self.mainWindow = mainWindow
+        self.song = self.mainWindow.sqlHandler.songs.retrieveById(song)
         self.songIndex = songIndex
         self.parent = parent
 
@@ -35,7 +34,7 @@ class SongItemWidget(BaseClass, UiSongItem):
         removeSongFromPlaylist = self.mainContextMenu.addAction("Remove from this playlist")
         addSongToPlaylist = self.mainContextMenu.addMenu("Add to playlist")
 
-        playlists = self.sqlHandler.playlists.retrieveAll()
+        playlists = self.mainWindow.sqlHandler.playlists.retrieveAll()
         # Clear existing actions from the submenu
         self.addSongToPlaylistContextMenu.clear()
 
@@ -54,13 +53,13 @@ class SongItemWidget(BaseClass, UiSongItem):
         Add the song to the playlist.
         """
         # Add the song to the in database playlist
-        self.sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
+        self.mainWindow.sqlHandler.playlists.addSong(playlist[0], song[0], len(playlist[5]))
 
     def removeSong(self) -> None:
         """
         Remove the song from the playlist.
         """
-        self.sqlHandler.playlists.removeSong(self.parent.playlist[0], self.songIndex) # Remove the song from the database playlist
+        self.mainWindow.sqlHandler.playlists.removeSong(self.parent.playlist[0], self.songIndex) # Remove the song from the database playlist
         
         # Remove the song from the in memory playlist
         playlist = list(self.parent.playlist) # Convert the tuple to a list

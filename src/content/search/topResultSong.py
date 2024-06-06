@@ -45,7 +45,7 @@ class SearchTopResultSongWidget(BaseClass, UiSearchTopResultSong):
         """
         Show the context popover.
         """
-        popover = ContextPopover(self.mainWindow, self.song, self.mainWindow.sqlHandler)
+        popover = ContextPopover(self.mainWindow, self.song)
 
         popoverPos = self.mapToGlobal(QPoint(0, 0))
         

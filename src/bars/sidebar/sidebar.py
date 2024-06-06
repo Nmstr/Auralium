@@ -9,9 +9,8 @@ from PyQt6 import uic
 UiSidebar, BaseClass = uic.loadUiType('bars/sidebar/sidebar.ui')
 
 class SidebarWidget(BaseClass, UiSidebar):
-    def __init__(self, mainWindow, sqlHandler):
+    def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
         self.resizeBar = False
 
         super().__init__()
@@ -27,7 +26,7 @@ class SidebarWidget(BaseClass, UiSidebar):
         """
         Shows the create playlist popover.
         """
-        popover = CreatePlaylistPopover(self.mainWindow, self.sqlHandler)
+        popover = CreatePlaylistPopover(self.mainWindow)
 
         buttonPos = self.playlistsCreateBtn.mapToGlobal(QPoint(0, 0))
         

@@ -30,7 +30,7 @@ class MainWindow(QWidget):
         self.preferenceHandler = preferenceHandler
         self.sqlHandler = sqlHandler
         self.songQueue = SongQueue(self)
-        self.songDataHandler = SongDataHandler(self.sqlHandler)
+        self.songDataHandler = SongDataHandler(self)
 
         # Set the main content and add the bars
         self.setMainContentDisplay("home")
@@ -40,7 +40,7 @@ class MainWindow(QWidget):
         # Create hotkey action
         self.hotkeyAction = QAction(self)
         self.hotkeyAction.setShortcut("F12")
-        self.hotkeyAction.triggered.connect(lambda: DebugWindow(self.sqlHandler))
+        self.hotkeyAction.triggered.connect(lambda: DebugWindow(self))
         self.addAction(self.hotkeyAction)
 
         # Connect top bar buttons
@@ -65,7 +65,7 @@ class MainWindow(QWidget):
             layout = QVBoxLayout()
             container.setLayout(layout)
         # Create the bottom bar
-        self.bottomBar = BottomBarWidget(self, self.sqlHandler)
+        self.bottomBar = BottomBarWidget(self)
         layout.addWidget(self.bottomBar)
 
     def addSidebarWidget(self) -> None:
@@ -80,7 +80,7 @@ class MainWindow(QWidget):
             layout = QVBoxLayout()
             container.setLayout(layout)
         # Create the sidebar
-        self.sidebar = SidebarWidget(self, self.sqlHandler)
+        self.sidebar = SidebarWidget(self)
         layout.addWidget(self.sidebar)
 
     def displayPlaylists(self) -> None:
@@ -114,7 +114,7 @@ class MainWindow(QWidget):
 
         # Dynamically add custom widgets for each playlist
         for playlist in playlists:
-            playlistWidget = PlaylistItemWidget(playlist, self, self.sqlHandler)
+            playlistWidget = PlaylistItemWidget(playlist, self)
             layout.addWidget(playlistWidget)
 
     def setMainContentDisplay(self, content: str, *args) -> None:
@@ -140,10 +140,10 @@ class MainWindow(QWidget):
 
         # Change the mainContent widget
         if content == "home":
-            self.homeDisplay = ContentHomeWidget(self, self.sqlHandler, *args)
+            self.homeDisplay = ContentHomeWidget(self, *args)
             layout.addWidget(self.homeDisplay)
         elif content == "search":
-            self.searchDisplay = ContentSearchWidget(self, self.sqlHandler, *args)
+            self.searchDisplay = ContentSearchWidget(self, *args)
             layout.addWidget(self.searchDisplay)
         elif content == "playlist":
             self.playlistDisplay = ContentPlaylistWidget(self, *args)

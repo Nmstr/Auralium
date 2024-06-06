@@ -11,9 +11,8 @@ from PyQt6 import uic
 UiBottomBar, BaseClass = uic.loadUiType('bars/bottomBar/bottomBar.ui')
 
 class BottomBarWidget(BaseClass, UiBottomBar):
-    def __init__(self, mainWindow, sqlHandler):
+    def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        self.sqlHandler = sqlHandler
 
         super().__init__()
         self.setupUi(self)
@@ -74,7 +73,7 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         """
         Shows the queue popover.
         """
-        popover = QueuePopover(self.mainWindow, self.sqlHandler)
+        popover = QueuePopover(self.mainWindow)
 
         buttonPos = self.test.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
         

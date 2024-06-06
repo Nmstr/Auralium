@@ -37,9 +37,9 @@ def formatDate(dateString: str) -> str:
 class IndexSongsThread(QThread):
     updateToErrorsSignal = pyqtSignal(list)
     
-    def __init__(self, parent=None, sqlHandler=None):
-        self.sqlHandler = sqlHandler
-        self.songDataHandler = SongDataHandler(self.sqlHandler)
+    def __init__(self, parent=None, mainWindow=None):
+        self.mainWindow = mainWindow
+        self.songDataHandler = SongDataHandler(self.mainWindow)
 
         super().__init__(parent)
     
@@ -61,8 +61,8 @@ class IndexSongsThread(QThread):
             self.parent().pathToFileLabel.setText(fullFilePath) # Update the displayed path to the file
 
             processedSongs += 1
-            hash = self.sqlHandler.database.hashFile(fullFilePath)
-            if not self.sqlHandler.songs.retrieveBySha256hash(hash):
+            hash = self.mainWindow.sqlHandler.database.hashFile(fullFilePath)
+            if not self.mainWindow.sqlHandler.songs.retrieveBySha256hash(hash):
                 songData = self.songDataHandler.getTag(fullFilePath)
                 songData = self.checkValidData(songData)
 
@@ -73,7 +73,7 @@ class IndexSongsThread(QThread):
                         artist=songData.artist,
                         releaseDate=songData.year
                     ) # Modify the song's tag
-                result = self.sqlHandler.songs.insertSongIntoDB(
+                result = self.mainWindow.sqlHandler.songs.insertSongIntoDB(
                     title=songData.title,
                     filePath=fullFilePath,
                     artist=songData.artist,
@@ -132,13 +132,13 @@ class IndexSongsThread(QThread):
             pass
 
 class DebugIndexSongsWindow(QWidget):
-    def __init__(self, sqlHandler):
-        self.sqlHandler = sqlHandler
+    def __init__(self, mainWindow):
+        self.mainWindow = mainWindow
 
         super().__init__()
         self.ui = uic.loadUi('debug/indexSongs.ui', self)
 
-        self.indexSongsThread = IndexSongsThread(self, sqlHandler)
+        self.indexSongsThread = IndexSongsThread(self, self.mainWindow)
         self.indexSongsThread.updateToErrorsSignal.connect(self.updateToErrors)
         self.startIndexing()
 

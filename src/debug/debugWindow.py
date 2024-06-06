@@ -7,15 +7,15 @@ from PyQt6.QtCore import pyqtSlot
 from PyQt6 import uic
 
 class DebugWindow(QWidget):
-    def __init__(self, sqlHandler):
-        self.sqlHandler = sqlHandler
+    def __init__(self, mainWindow):
+        self.mainWindow = mainWindow
 
         super().__init__()
         self.ui = uic.loadUi('debug/debugWindow.ui', self)
 
-        self.ui.indexSongs.clicked.connect(lambda: DebugIndexSongsWindow(sqlHandler))
+        self.ui.indexSongs.clicked.connect(lambda: DebugIndexSongsWindow(self.mainWindow))
 
-        self.indexArtistsThread = IndexArtistsThread(debugWindow=self, sqlHandler=sqlHandler)
+        self.indexArtistsThread = IndexArtistsThread(debugWindow=self, mainWindow=self.mainWindow)
         self.ui.indexArtists.clicked.connect(lambda: self.startIndexing())
 
         self.show()
