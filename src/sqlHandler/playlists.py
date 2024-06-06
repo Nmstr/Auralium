@@ -33,6 +33,26 @@ def create(
 
     return cursor.lastrowid
 
+def delete(playlistId: int) -> None:
+    """
+    A function to delete a playlist from the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute("DELETE FROM playlists WHERE id = ?", (playlistId,))
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
 def retrieve(playlistId: int) -> list:
     """
     A function to retrieve a playlist from the database.

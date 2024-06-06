@@ -1,7 +1,6 @@
 from popovers.createPlaylistPopover.createPlaylistPopover import CreatePlaylistPopover
 
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtCore import QPoint
+from PyQt6.QtCore import Qt, QTimer, QPoint
 from PyQt6.QtGui import QCursor
 
 from PyQt6 import uic
@@ -26,7 +25,7 @@ class SidebarWidget(BaseClass, UiSidebar):
 
     def showCreatePlaylistPopover(self) -> None:
         """
-        Shows the queue popover.
+        Shows the create playlist popover.
         """
         popover = CreatePlaylistPopover(self.mainWindow, self.sqlHandler)
 
