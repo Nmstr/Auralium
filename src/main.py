@@ -10,7 +10,6 @@ from content.playlists.playlistItem import PlaylistItemWidget
 from bars.bottomBar.bottomBar import BottomBarWidget
 from bars.sidebar.sidebar import SidebarWidget
 
-from content.search.searchEngine.searchEngine import SearchEngine
 from preferenceHandler import PreferenceHandler
 from songDataHandler import SongDataHandler
 from sqlHandler import SqlHandler
