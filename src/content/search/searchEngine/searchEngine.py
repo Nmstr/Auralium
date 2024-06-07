@@ -35,7 +35,7 @@ class SearchEngine():
     def addToIndex(self):
         """
         Adds all songs and artists from the database to the search index.
-        """  
+        """
         index = open_dir(self.indexDir) # Open index
 
         allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
