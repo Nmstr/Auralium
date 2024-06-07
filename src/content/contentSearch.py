@@ -17,7 +17,6 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         
         self.searchEngine = SearchEngine(self.mainWindow)
         self.searchEngine.createIndex()
-        self.searchEngine.addToIndex()
 
         super().__init__()
         self.setupUi(self)

@@ -3,24 +3,63 @@ from whoosh.index import create_in, open_dir
 from whoosh.writing import AsyncWriter
 from whoosh.fields import Schema, TEXT
 
+import hashlib
 import os
+
+def calculateHash(data):
+    """
+    Calculates the hash of a data object.
+    Used to determine when to add to the search index.
+
+    Parameters:
+    - data: object, the data to be hashed
+
+    Returns:
+    - str, the hash of the data
+    """
+    hasher = hashlib.sha256()
+    data = str(data).encode('utf-8')
+    hasher.update(data)
+    return hasher.hexdigest()
 
 class SearchEngine():
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
         cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
         self.indexDir = cacheDir + '/searchIndex'
+        hashFile = cacheDir + '/searchIndexHash.txt'
+        if not os.path.exists(hashFile):
+            self.createIndex(force=True)
 
-    def createIndex(self):
+        # Auto detect when search index is out of date
+        allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
+        hash = calculateHash(allSongs)
+        with open(hashFile, 'r') as f:
+            if hash != f.read():
+                self.createIndex(force=True)
+                with open(hashFile, 'w') as f:
+                    f.write(hash)
+
+    def createIndex(self, *, force: bool = False):
         """
         Creates an index for the search engine.
-        """
-        if not os.path.exists(self.indexDir):
-            os.mkdir(self.indexDir)
 
-        # Define the schema and create the index
-        schema = Schema(id=TEXT(stored=True), title=TEXT(stored=True), artist=TEXT(stored=True), itemType=TEXT(stored=True))
-        create_in(self.indexDir, schema)
+        Parameters:
+            force (bool, optional): If set to True, the index directory will be recreated even if it already exists. Defaults to False.
+
+        Returns:
+            None
+        """
+        if not os.path.exists(self.indexDir) or force:
+            os.makedirs(self.indexDir, exist_ok=True)
+            # Define the schema and create the index
+            schema = Schema(id=TEXT(stored=True),
+                            title=TEXT(stored=True),
+                            artist=TEXT(stored=True),
+                            itemType=TEXT(stored=True))
+            create_in(self.indexDir, schema)
+
+            self.addToIndex()
 
     def addToIndex(self):
         """

@@ -1,3 +1,5 @@
+from content.search.searchEngine.searchEngine import SearchEngine
+
 from debug.indexSongs import DebugIndexSongsWindow
 from debug.indexArtists import IndexArtistsThread
 
@@ -17,6 +19,7 @@ class DebugWindow(QWidget):
 
         self.indexArtistsThread = IndexArtistsThread(debugWindow=self, mainWindow=self.mainWindow)
         self.ui.indexArtists.clicked.connect(lambda: self.startIndexing())
+        self.ui.searchIndex.clicked.connect(lambda: SearchEngine(self.mainWindow).createIndex(force=True))
 
         self.show()
 
