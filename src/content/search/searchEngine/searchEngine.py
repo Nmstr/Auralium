@@ -11,9 +11,15 @@ class SearchEngine():
         cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
         self.indexDir = cacheDir + '/searchIndex'
 
-    def createIndex(self, force: bool = False):
+    def createIndex(self, *, force: bool = False):
         """
         Creates an index for the search engine.
+
+        Parameters:
+            force (bool, optional): If set to True, the index directory will be recreated even if it already exists. Defaults to False.
+
+        Returns:
+            None
         """
         if not os.path.exists(self.indexDir) or force:
             os.makedirs(self.indexDir, exist_ok=True)
