@@ -11,21 +11,25 @@ class SearchEngine():
         cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
         self.indexDir = cacheDir + '/searchIndex'
 
-    def createIndex(self):
+    def createIndex(self, force: bool = False):
         """
         Creates an index for the search engine.
         """
-        if not os.path.exists(self.indexDir):
-            os.mkdir(self.indexDir)
+        if not os.path.exists(self.indexDir) or force:
+            os.makedirs(self.indexDir, exist_ok=True)
+            # Define the schema and create the index
+            schema = Schema(id=TEXT(stored=True),
+                            title=TEXT(stored=True),
+                            artist=TEXT(stored=True),
+                            itemType=TEXT(stored=True))
+            create_in(self.indexDir, schema)
 
-        # Define the schema and create the index
-        schema = Schema(id=TEXT(stored=True), title=TEXT(stored=True), artist=TEXT(stored=True), itemType=TEXT(stored=True))
-        create_in(self.indexDir, schema)
+            self.addToIndex()
 
     def addToIndex(self):
         """
         Adds all songs and artists from the database to the search index.
-        """
+        """  
         index = open_dir(self.indexDir) # Open index
 
         allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
