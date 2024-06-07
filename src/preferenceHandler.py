@@ -43,7 +43,7 @@ class PreferenceHandler():
         config.read(configPath)
         return config
     
-    def writeConfig(self, section: str, option: str, value: str, reload: bool = True) -> None:
+    def writeConfig(self, *, section: str, option: str, value: str, reload: bool = True) -> None:
         """
         Write a value to the configuration file.
 

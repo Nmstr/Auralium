@@ -27,7 +27,7 @@ class SongDataHandler:
         tag = tinyTag.get(filePath, image=True)
         return tag
 
-    def modifyTag(self, filePath: str, title: str, artist: str, releaseDate: str) -> None:
+    def modifyTag(self, filePath: str, *, title: str, artist: str, releaseDate: str) -> None:
         """
         A function to modify the tag of the specified file path.
         
