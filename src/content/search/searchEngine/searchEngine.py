@@ -22,6 +22,7 @@ class SearchEngine():
             None
         """
         if not os.path.exists(self.indexDir) or force:
+            print('Creating search index...')
             os.makedirs(self.indexDir, exist_ok=True)
             # Define the schema and create the index
             schema = Schema(id=TEXT(stored=True),

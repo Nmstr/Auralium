@@ -1,3 +1,4 @@
+from content.search.searchEngine.searchEngine import SearchEngine
 from songDataHandler import SongDataHandler
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame
@@ -180,6 +181,9 @@ class DebugIndexSongsWindow(QWidget):
 
         # Set newContainer as the new content frame
         self.ui.contentFrame = newContainer
+
+        # Update the index of the search engine
+        SearchEngine(self.mainWindow).createIndex(force=True)
 
     @pyqtSlot()
     def startIndexing(self):
