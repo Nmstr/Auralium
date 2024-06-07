@@ -3,13 +3,42 @@ from whoosh.index import create_in, open_dir
 from whoosh.writing import AsyncWriter
 from whoosh.fields import Schema, TEXT
 
+import hashlib
 import os
+
+def calculateHash(data):
+    """
+    Calculates the hash of a data object.
+    Used to determine when to add to the search index.
+
+    Parameters:
+    - data: object, the data to be hashed
+
+    Returns:
+    - str, the hash of the data
+    """
+    hasher = hashlib.sha256()
+    data = str(data).encode('utf-8')
+    hasher.update(data)
+    return hasher.hexdigest()
 
 class SearchEngine():
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
         cacheDir = os.getenv('XDG_CACHE_HOME', default=os.path.expanduser('~/.cache') + '/auralium')
         self.indexDir = cacheDir + '/searchIndex'
+        hashFile = cacheDir + '/searchIndexHash.txt'
+        if not os.path.exists(hashFile):
+            self.createIndex(force=True)
+
+        # Auto detect when search index is out of date
+        allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
+        hash = calculateHash(allSongs)
+        with open(hashFile, 'r') as f:
+            if hash != f.read():
+                self.createIndex(force=True)
+                with open(hashFile, 'w') as f:
+                    f.write(hash)
 
     def createIndex(self, *, force: bool = False):
         """
@@ -22,7 +51,6 @@ class SearchEngine():
             None
         """
         if not os.path.exists(self.indexDir) or force:
-            print('Creating search index...')
             os.makedirs(self.indexDir, exist_ok=True)
             # Define the schema and create the index
             schema = Schema(id=TEXT(stored=True),
