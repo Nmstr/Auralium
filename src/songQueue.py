@@ -133,16 +133,3 @@ class SongQueue():
         if self.playing:
             pygame.mixer.music.load(self.queue[self.currentSongIndex])
             pygame.mixer.music.play()
-    
-    def getQueue(self) -> list:
-        """
-        A function that returns the current song queue along with its current index in the queue.
-        """
-        print('-----')
-        print(self.queue)
-        print(self.currentSongIndex)
-        print(self.getCurrentSong())
-        print(self.playing)
-        print(self.playingPlaylist)
-        print('-----')
-        return self.queue, self.currentSongIndex
