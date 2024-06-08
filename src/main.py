@@ -6,7 +6,7 @@ from content.contentArtist import ContentArtistWidget
 from content.contentHome import ContentHomeWidget
 from settings.settings import SettingsWidget
 
-from content.playlists.playlistItem import PlaylistItemWidget
+from content.playlists.playlistEntry import PlaylistEntryWidget
 from bars.bottomBar.bottomBar import BottomBarWidget
 from bars.sidebar.sidebar import SidebarWidget
 
@@ -114,7 +114,7 @@ class MainWindow(QWidget):
 
         # Dynamically add custom widgets for each playlist
         for playlist in playlists:
-            playlistWidget = PlaylistItemWidget(playlist, self)
+            playlistWidget = PlaylistEntryWidget(playlist, self)
             layout.addWidget(playlistWidget)
 
     def setMainContentDisplay(self, content: str, *args) -> None:

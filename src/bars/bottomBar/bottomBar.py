@@ -82,7 +82,7 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         """
         popover = QueuePopover(self.mainWindow)
 
-        buttonPos = self.showQueueBtn.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
+        buttonPos = self.showQueueBtn.mapToGlobal(QPoint(0, 0)) # Get the position of the button
         
         # Calculate the size of the popover
         popoverSizeX = self.mainWindow.width() * 0.4
