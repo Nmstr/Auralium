@@ -1,12 +1,12 @@
 # Auralium
 
 Auralium is a free and open source music player for Linux!
-```                                                                   
-    // | |                                                         
-   //__| |              __      ___     // ( )           _   __    
-  / ___  |   //   / / //  ) ) //   ) ) // / / //   / / // ) )  ) ) 
- //    | |  //   / / //      //   / / // / / //   / / // / /  / /  
-//     | | ((___( ( //      ((___( ( // / / ((___( ( // / /  / /   
+```
+    // | |
+   //__| |              __      ___     // ( )           _   __
+  / ___  |   //   / / //  ) ) //   ) ) // / / //   / / // ) )  ) )
+ //    | |  //   / / //      //   / / // / / //   / / // / /  / /
+//     | | ((___( ( //      ((___( ( // / / ((___( ( // / /  / /
 ```
 ## Features
 - Fast and native
@@ -59,4 +59,3 @@ Prerequisites: Make sure you have flatpak and git installed on your system.
 4. Run the application
 
 `flatpak run io.github.nmstr.auralium`
-
