@@ -30,7 +30,6 @@ class PlaylistEntryWidget(BaseClass, UiPlaylistEntry):
         """
         if event.button() == Qt.MouseButton.LeftButton:
             self.mainWindow.setMainContentDisplay('playlist')
-
             self.mainWindow.playlistDisplay.updatePlaylist(self.playlist)
 
             return super().mousePressEvent(event)
