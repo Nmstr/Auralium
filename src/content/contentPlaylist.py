@@ -23,6 +23,7 @@ class ContentPlaylistWidget(BaseClass, UiContentPlaylist):
         self.playlist = playlist
         self.mainWindow.playlistDisplay.playlistIdLabel.setText(str(self.playlist[0]))
         self.mainWindow.playlistDisplay.playlistNameLabel.setText(self.playlist[1])
+        self.mainWindow.playlistDisplay.playlistNameLabelImg.setText(self.playlist[1])
         self.mainWindow.playlistDisplay.playlistCreatorLabel.setText(self.playlist[2])
         self.mainWindow.playlistDisplay.playlistDescriptionLabel.setText(self.playlist[3])
         self.mainWindow.songDataHandler.setSongImage(self.playlist[1], self.mainWindow.playlistDisplay.playlistImg) # TODO: actually add proper img support instead of using placeholder img from song img recovery
