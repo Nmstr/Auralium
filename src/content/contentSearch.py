@@ -45,7 +45,6 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
             similar = [item for item in searchResults if item['itemType'] == 'song'][:3]
         elif self.searchFilter == 'artists':
             similar = [item for item in searchResults if item['itemType'] == 'artist'][:3]
-        print(similar)
         self.displaySearchResultsTop(similar)
         self.displaySearchResultsSongs(searchResults)
         self.displaySearchResultsArtists(searchResults)
