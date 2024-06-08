@@ -14,6 +14,7 @@ UiContentSearch, BaseClass = uic.loadUiType('content/contentSearch.ui')
 class ContentSearchWidget(BaseClass, UiContentSearch):
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
+        self.searchFilter = 'all'
         
         self.searchEngine = SearchEngine(self.mainWindow)
         self.searchEngine.createIndex()
@@ -38,7 +39,12 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         """
         searchResults = self.searchEngine.search(text)
 
-        similar = searchResults[:3]
+        if self.searchFilter == 'all':
+            similar = searchResults[:3]
+        elif self.searchFilter == 'songs':
+            similar = [item for item in searchResults if item['itemType'] == 'song'][:3]
+        elif self.searchFilter == 'artists':
+            similar = [item for item in searchResults if item['itemType'] == 'artist'][:3]
         self.displaySearchResultsTop(similar)
         self.displaySearchResultsSongs(searchResults)
         self.displaySearchResultsArtists(searchResults)
@@ -52,16 +58,22 @@ class ContentSearchWidget(BaseClass, UiContentSearch):
         if senderName == 'searchFilterAllBtn' and filter == True:
             self.searchFilterSongsBtn.setChecked(False)
             self.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilter = 'all'
         elif senderName == 'searchFilterSongsBtn' and filter == True:
             self.searchFilterAllBtn.setChecked(False)
             self.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilter = 'songs'
         elif senderName == 'searchFilterArtistsBtn' and filter == True:
             self.searchFilterAllBtn.setChecked(False)
             self.searchFilterSongsBtn.setChecked(False)
+            self.searchFilter = 'artists'
         else:
             self.searchFilterAllBtn.setChecked(True)
             self.searchFilterSongsBtn.setChecked(False)
             self.searchFilterArtistsBtn.setChecked(False)
+            self.searchFilter = 'all'
+
+        self.searchBarTextChange(self.searchBar.text())
 
     def displaySearchResultsTop(self, similar: list) -> None:
         """

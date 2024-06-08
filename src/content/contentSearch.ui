@@ -117,7 +117,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-308</y>
+        <y>-402</y>
         <width>666</width>
         <height>1000</height>
        </rect>
@@ -256,7 +256,7 @@
        <item>
         <widget class="QScrollArea" name="searchArtists">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -275,6 +275,9 @@
          </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
