@@ -20,12 +20,11 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         # Connect buttons for music controls
         self.musicControlsNext.clicked.connect(self.mainWindow.songQueue.goToNextSong)
         self.musicControlsLast.clicked.connect(self.mainWindow.songQueue.goToPreviousSong)
-        self.musicControlsGetQueue.clicked.connect(self.mainWindow.songQueue.getQueue)
-        self.musicControlsPlay.clicked.connect(self.mainWindow.songQueue.play)
-        self.musicControlsPause.clicked.connect(self.mainWindow.songQueue.pause)
+        self.musicControlsPlay.clicked.connect(self.playMusic)
         self.musicControlsVolume.valueChanged.connect(self.mainWindow.songQueue.setVolume)
         self.musicControlsVolume.sliderReleased.connect(lambda: self.mainWindow.preferenceHandler.writeConfig(section = 'SETTINGS', option = 'volume', value = str(self.musicControlsVolume.value())))
         self.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
+        self.showQueueBtn.clicked.connect(self.showQueuePopover)
 
         # Create a QTimer to update the time slider automatically every second
         self.timer = QTimer(self)
@@ -35,8 +34,16 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         # Create value for song duration
         self.oldDuration = 0
 
-        self.test.clicked.connect(self.showQueuePopover)
         self.musicControlsVolume.setValue(int(self.mainWindow.preferenceHandler.config.get('SETTINGS', 'volume', fallback=10)))
+
+    def playMusic(self) -> None:
+        """
+        Plays the current song in the queue.
+        """
+        if self.mainWindow.songQueue.playing:
+            self.mainWindow.songQueue.pause()
+        else:
+            self.mainWindow.songQueue.play()
 
     def updateSliderPositionManual(self) -> None:
         """
@@ -75,14 +82,14 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         """
         popover = QueuePopover(self.mainWindow)
 
-        buttonPos = self.test.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
+        buttonPos = self.showQueueBtn.mapToGlobal(QPoint(0, 0)) # Get the position of the butto
         
         # Calculate the size of the popover
         popoverSizeX = self.mainWindow.width() * 0.4
         popoverSizeY = self.mainWindow.height() * 0.8
         # Calculate the position of the popover
-        popoverPosX = buttonPos.x() + self.test.width()/2 - popoverSizeX
-        popoverPosY = buttonPos.y() + self.test.height()/2 - popoverSizeY
+        popoverPosX = buttonPos.x() + self.showQueueBtn.width()/2 - popoverSizeX
+        popoverPosY = buttonPos.y() + self.showQueueBtn.height()/2 - popoverSizeY
         
         # Set the position and size of the popover
         popover.setGeometry(int(popoverPosX), int(popoverPosY), int(popoverSizeX), int(popoverSizeY))
