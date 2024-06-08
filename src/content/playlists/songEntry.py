@@ -5,9 +5,9 @@ from PyQt6 import uic
 import json
 
 # Load the .ui file and get the base class and form class
-UiSongItem, BaseClass = uic.loadUiType('content/playlists/playlistSongEntry.ui')
+UiSongEntry, BaseClass = uic.loadUiType('content/playlists/songEntry.ui')
 
-class SongItemWidget(BaseClass, UiSongItem):
+class SongEntryWidget(BaseClass, UiSongEntry):
     def __init__(self, song, songIndex, mainWindow, parent):
         self.mainWindow = mainWindow
         self.song = self.mainWindow.sqlHandler.songs.retrieveById(song)
