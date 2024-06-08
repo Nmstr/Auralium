@@ -29,7 +29,8 @@ class SearchEngine():
         self.indexDir = cacheDir + '/searchIndex'
         hashFile = cacheDir + '/searchIndexHash.txt'
         if not os.path.exists(hashFile):
-            self.createIndex(force=True)
+            with open(hashFile, 'w') as f:
+                f.write('')
 
         # Auto detect when search index is out of date
         allSongs = self.mainWindow.sqlHandler.songs.retrieveAll()
