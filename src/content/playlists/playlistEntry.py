@@ -32,7 +32,7 @@ class PlaylistEntryWidget(BaseClass, UiPlaylistEntry):
             self.mainWindow.setMainContentDisplay('playlist')
             self.mainWindow.playlistDisplay.updatePlaylist(self.playlist)
 
-            return super().mousePressEvent(event)
+        return super().mousePressEvent(event)
 
     def enterEvent(self, event) -> None:
         """
