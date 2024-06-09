@@ -177,3 +177,24 @@ def moveSong(playlistId: int, songPosition: int, destinationPosition: int) -> No
         raise
     finally:
         cursor.close()
+
+def rename(playlistId: int, newName: str) -> None:
+    """
+    A function to rename a playlist in the database.
+
+    Parameters:
+    - playlistId: int, required, the id of the playlist
+    - newName: str, required, the new name of the playlist
+
+    Returns:
+    - None
+    """
+    try:
+        cursor, conn = connectToDB()
+        cursor.execute("UPDATE playlists SET name = ? WHERE id = ?", (newName, playlistId))
+        conn.commit()
+    except Exception:
+        raise
+    finally:
+        cursor.close()
+        conn.close()

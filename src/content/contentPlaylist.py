@@ -1,4 +1,4 @@
-from popovers.deletePlaylistPopover.deletePlaylistPopover import DeletePlaylistPopover
+from popovers.genericTextInputPopover.genericTextInputPopover import GenericTextInputPopover
 from content.playlists.songEntry import SongEntryWidget
 
 from PyQt6.QtWidgets import QVBoxLayout, QFileDialog
@@ -19,6 +19,11 @@ class ContentPlaylistWidget(BaseClass, UiContentPlaylist):
         super().__init__()
         self.setupUi(self)
 
+        self.deleteBtn.clicked.connect(lambda: self.showPlaylistActionPopover(action='delete'))
+        self.renameBtn.clicked.connect(lambda: self.showPlaylistActionPopover(action='rename'))
+        self.playBtn.clicked.connect(lambda: self.playPlaylist())
+        self.exportBtn.clicked.connect(lambda: self.exportPlaylist)
+
     def updatePlaylist(self, playlist):
         self.playlist = playlist
         self.mainWindow.playlistDisplay.playlistIdLabel.setText(str(self.playlist[0]))
@@ -32,9 +37,6 @@ class ContentPlaylistWidget(BaseClass, UiContentPlaylist):
             self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: ' + str(len(json.loads(self.playlist[-1]))))
         else:
             self.mainWindow.playlistDisplay.playlistLengthLabel.setText('Songs: 0')
-        self.mainWindow.playlistDisplay.playBtn.clicked.connect(lambda: self.playPlaylist())
-        self.mainWindow.playlistDisplay.exportBtn.clicked.connect(self.exportPlaylist)
-        self.mainWindow.playlistDisplay.deleteBtn.clicked.connect(lambda: self.showDeletePlaylistPopover())
 
         self.displaySongsInPlaylist()
 
@@ -79,13 +81,19 @@ class ContentPlaylistWidget(BaseClass, UiContentPlaylist):
             with open(fileName, 'w') as f:
                 json.dump(playlistData, f, indent=4)
 
-    def showDeletePlaylistPopover(self) -> None:
+    def showPlaylistActionPopover(self, *, action: str) -> None:
         """
         Shows the delete playlist popover.
-        """
-        popover = DeletePlaylistPopover(self.mainWindow, self.playlist)
 
-        buttonPos = self.mainWindow.playlistDisplay.deleteBtn.mapToGlobal(QPoint(0, 0))
+        Args:
+            action (str): The action to perform. Can be 'delete' or 'rename'.
+        """
+        if action == 'delete':
+            popover = GenericTextInputPopover(self.mainWindow, popoverType='deletePlaylist', playlist=self.playlist)
+            buttonPos = self.mainWindow.playlistDisplay.deleteBtn.mapToGlobal(QPoint(0, 0))
+        elif action == 'rename':
+            popover = GenericTextInputPopover(self.mainWindow, popoverType='renamePlaylist', playlist=self.playlist)
+            buttonPos = self.mainWindow.playlistDisplay.renameBtn.mapToGlobal(QPoint(0, 0))
         
         # Calculate the position of the popover
         popoverPosX = buttonPos.x() + self.mainWindow.playlistDisplay.deleteBtn.width()/2
