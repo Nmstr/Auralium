@@ -22,6 +22,15 @@ class SongEntryWidget(BaseClass, UiSongEntry):
         self.artistLabel.setText(self.song[2])
         self.mainWindow.songDataHandler.setSongImage(self.song[1], self.coverImg, [100, 100])
 
+        duration = round(self.mainWindow.songDataHandler.getTag(self.song[3]).duration)
+        minutes, seconds = divmod(duration, 60)
+        if minutes < 10:
+            minutes = f'0{minutes}'
+        if seconds < 10:
+            seconds = f'0{seconds}'
+        self.lengthLabel.setText(f'{minutes}:{seconds}')
+        self.lengthLabel.setToolTip(f'{duration} seconds')
+
         # Connect move button
         self.goUpBtn.clicked.connect(lambda: self.goSongUp(self.songIndex))
         self.goDownBtn.clicked.connect(lambda: self.goSongDown(self.songIndex))
