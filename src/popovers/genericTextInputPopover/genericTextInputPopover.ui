@@ -18,21 +18,21 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
-    <widget class="QPushButton" name="deleteBtn">
+    <widget class="QPushButton" name="confirmBtn">
      <property name="text">
-      <string>Delete</string>
+      <string>confirmBtn</string>
      </property>
     </widget>
    </item>
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="informationLabel">
      <property name="text">
-      <string>Delete Playlist</string>
+      <string>informationLabel</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLineEdit" name="nameInput">
+    <widget class="QLineEdit" name="textInput">
      <property name="inputMask">
       <string/>
      </property>
@@ -40,7 +40,7 @@
       <string/>
      </property>
      <property name="placeholderText">
-      <string>Enter playlist name to confirm</string>
+      <string>textInput</string>
      </property>
     </widget>
    </item>
