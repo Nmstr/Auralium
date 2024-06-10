@@ -1,9 +1,12 @@
 from popovers.queuePopover.queuePopover import QueuePopover
 
-import songDataHandler
+from bars.bottomBar.controlBtns.volumeSlider import VolumeSlider
+from bars.bottomBar.controlBtns.timeSlider import TimeSlider
+from bars.bottomBar.controlBtns.playButton import PlayButton
+from bars.bottomBar.controlBtns.nextButton import NextButton
+from bars.bottomBar.controlBtns.lastButton import LastButton
 
-from PyQt6.QtCore import QTimer, QPoint
-from PyQt6 import uic
+from PyQt6.QtCore import QPoint
 
 from PyQt6 import uic
 
@@ -17,68 +20,28 @@ class BottomBarWidget(BaseClass, UiBottomBar):
         super().__init__()
         self.setupUi(self)
 
-        # Connect buttons for music controls
-        self.musicControlsNext.clicked.connect(self.mainWindow.songQueue.goToNextSong)
-        self.musicControlsLast.clicked.connect(self.mainWindow.songQueue.goToPreviousSong)
-        self.musicControlsPlay.clicked.connect(self.playMusic)
-        self.musicControlsVolume.valueChanged.connect(self.mainWindow.songQueue.setVolume)
-        self.musicControlsVolume.sliderReleased.connect(lambda: self.mainWindow.preferenceHandler.writeConfig(section = 'SETTINGS', option = 'volume', value = str(self.musicControlsVolume.value())))
-        self.musicControlsTime.sliderReleased.connect(self.updateSliderPositionManual)
+        # Add buttons for playback control
+        layout = self.controlBtnFrame.layout()
+        self.lastBtn = LastButton(self.mainWindow)
+        self.playBtn = PlayButton(self.mainWindow)
+        self.nextBtn = NextButton(self.mainWindow)
+        layout.addWidget(self.lastBtn)
+        layout.addWidget(self.playBtn)
+        layout.addWidget(self.nextBtn)
+
+        layout = self.controlSliderFrame.layout()
+        self.timeSlider = TimeSlider(self.mainWindow)
+        layout.addWidget(self.timeSlider)
+
+        layout = self.rightSideFrame.layout()
+        self.volumeSider = VolumeSlider(self.mainWindow)
+        layout.addWidget(self.volumeSider)
+
         self.showQueueBtn.clicked.connect(self.showQueuePopover)
-
-        # Create a QTimer to update the time slider automatically every second
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.updateTimeSliderAuto)
-        self.timer.start(1000)
-
-        # Create value for song duration
-        self.oldDuration = 0
-
-        self.musicControlsVolume.setValue(int(self.mainWindow.preferenceHandler.config.get('SETTINGS', 'volume', fallback=10)))
-
-    def playMusic(self) -> None:
-        """
-        Plays the current song in the queue.
-        """
-        if self.mainWindow.songQueue.playing:
-            self.mainWindow.songQueue.pause()
-        else:
-            self.mainWindow.songQueue.play()
-
-    def updateSliderPositionManual(self) -> None:
-        """
-        Updates the slider position manually based on the value of musicControlsTime.
-        Changes the position in the song.
-        """
-        timeInSeconds = self.musicControlsTime.value()
-        self.mainWindow.songQueue.setTime(timeInSeconds)
-
-    def updateTimeSliderAuto(self) -> None:
-        """
-        Updates the time slider automatically based on the current song's duration.
-        Adjusts the slider value and triggers actions based on song progress.
-        """
-        newValue = self.musicControlsTime.value()
-        if self.mainWindow.songQueue.playing:
-            newValue += 1
-            self.musicControlsTime.setValue(newValue)
-
-        try:
-            newDuration = self.mainWindow.songDataHandler.getTag(self.mainWindow.songQueue.getCurrentSong()).duration
-            if self.oldDuration != newDuration:
-                self.musicControlsTime.setValue(0)
-                self.musicControlsTime.setRange(0, int(newDuration))
-            self.oldDuration = newDuration
-
-            if newValue >= int(newDuration):
-                self.musicControlsTime.setValue(0)
-                self.mainWindow.songQueue.goToNextSong()
-        except Exception:
-            pass #print('No song loaded')
 
     def showQueuePopover(self) -> None:
         """
-        Shows the queue popover.
+        #Shows the queue popover.
         """
         popover = QueuePopover(self.mainWindow)
 

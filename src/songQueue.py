@@ -42,6 +42,16 @@ class SongQueue():
         """
         pygame.mixer.music.set_pos(time)
     
+    def getDuration(self) -> int:
+        """
+        Returns the duration of the current song in the queue.
+        """
+        if self.playing:
+            duration = round(self.mainWindow.songDataHandler.getTag(self.queue[self.currentSongIndex]).duration)
+        else:
+            duration = 0
+        return duration
+
     def getVolume(self) -> float:
         """
         Returns the current volume of the song in the queue.
@@ -81,6 +91,7 @@ class SongQueue():
         pygame.mixer.music.load(self.queue[self.currentSongIndex])
         pygame.mixer.music.play()
         self.playing = True
+        self.mainWindow.bottomBar.timeSlider.positionEstimate = 0
 
     def getCurrentSong(self) -> str:
         """
