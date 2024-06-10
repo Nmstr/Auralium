@@ -41,4 +41,5 @@ class NextButton(QGraphicsView):
         """
         if event.button() == Qt.MouseButton.LeftButton:
             self.mainWindow.songQueue.goToNextSong()
+            self.mainWindow.bottomBar.timeSlider.positionEstimate = 0
         return super().mousePressEvent(event)
