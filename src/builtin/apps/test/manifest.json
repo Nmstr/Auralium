@@ -1,0 +1,5 @@
+{
+  "name": "test",
+  "module_name": "builtin.apps.test.app",
+  "app_class_name": "TestApp"
+}

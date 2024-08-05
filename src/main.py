@@ -1,26 +1,41 @@
-from audioplayer import AudioPlayer
-import time
+from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from audio_player import AudioPlayer
+import sys
 
-# Usage
-player = AudioPlayer("mysound.wav")
-player.play()
-print("Current volume:", player.volume)
-player.volume = 0.05
-print("Current volume:", player.volume)
-time.sleep(5)
-print("Current position:", player.position)
-print("Current volume:", player.volume)
-player.pause()
-time.sleep(2)
-print("Current position:", player.position)
-player.volume = 0.025
-print("Current volume:", player.volume)
-player.play()
-print("Current position:", player.position)
-time.sleep(5)
-player.volume = 0.05
-player.position = 30
-print("Current position:", player.position)
-time.sleep(5)
-print("Current position:", player.position)
-player.stop()
+class MyApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Auralium")
+
+        # Load the UI file
+        loader = QUiLoader()
+        ui_file = QFile("src/main.ui")
+        ui_file.open(QFile.ReadOnly)
+        self.ui = loader.load(ui_file, self)
+        ui_file.close()
+        self.setGeometry(self.ui.geometry())
+
+        from loadutils import load_apps
+        load_apps(self)
+
+        # Create the player
+        self.player = AudioPlayer("mysound.wav")
+        self.player.volume = 0.05
+
+        # Connect buttons
+        self.ui.play_btn.clicked.connect(self.play)
+        self.ui.stop_btn.clicked.connect(self.stop)
+    
+    def play(self):
+        self.player.play()
+
+    def stop(self):
+        self.player.stop()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MyApp()
+    window.show()
+    sys.exit(app.exec())

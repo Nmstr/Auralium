@@ -1,0 +1,5 @@
+{
+  "name": "Search",
+  "module_name": "builtin.apps.search.app",
+  "app_class_name": "SearchApp"
+}
